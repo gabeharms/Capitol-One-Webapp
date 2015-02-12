@@ -19,7 +19,7 @@ module CustomerSessionsHelper
   
   # Returns true if the given user is the current user.
   def current_customer?(customer)
-    customer == current_user
+    customer == current_customer
   end
   
   # Redirects to stored location (or to the default).

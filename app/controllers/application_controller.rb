@@ -6,4 +6,12 @@ class ApplicationController < ActionController::Base
   include CustomerSessionsHelper
   include EmployeeSessionsHelper
   
+  # Confirms a logged-in user.
+    def logged_in_customer
+      unless customer_logged_in?
+        store_location
+        flash[:danger] = "Please log in."
+        redirect_to customer_login_url
+      end
+    end
 end

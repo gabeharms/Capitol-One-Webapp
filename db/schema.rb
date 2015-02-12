@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150206211230) do
+ActiveRecord::Schema.define(version: 20150211201655) do
 
   create_table "customers", force: :cascade do |t|
     t.string   "name"
@@ -32,5 +32,18 @@ ActiveRecord::Schema.define(version: 20150206211230) do
   end
 
   add_index "employees", ["email"], name: "index_employees_on_email", unique: true
+
+  create_table "tickets", force: :cascade do |t|
+    t.text     "title"
+    t.integer  "customer_id"
+    t.integer  "employee_id"
+    t.boolean  "complete"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "tickets", ["customer_id", "employee_id", "created_at"], name: "index_tickets_on_customer_id_and_employee_id_and_created_at"
+  add_index "tickets", ["customer_id"], name: "index_tickets_on_customer_id"
+  add_index "tickets", ["employee_id"], name: "index_tickets_on_employee_id"
 
 end

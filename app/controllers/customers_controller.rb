@@ -1,7 +1,7 @@
 class CustomersController < ApplicationController
   before_action :logged_in_employee, only: [:index,:destroy]
-  before_action :logged_in_customer, only: [:edit, :update]
-  before_action :correct_customer,   only: [:edit, :update]
+  before_action :logged_in_customer, only: [:edit, :update, :show]
+  before_action :correct_customer,   only: [:edit, :update, :show]
  
   def new
     @customer = Customer.new
@@ -9,6 +9,8 @@ class CustomersController < ApplicationController
   
   def show
     @customer = Customer.find(params[:id])
+    @tickets = @customer.tickets.paginate(page: params[:page])
+    @ticket = current_customer.tickets.build if customer_logged_in?
   end
   
   def index

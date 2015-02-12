@@ -9,3 +9,8 @@ archer:
   name: Sterling Archer
   email: duchess@example.gov
   password_digest: <%= Customer.digest('password') %>
+  
+lana:
+  name: Lana Brown
+  email: girls@example.gov
+  password_digest: <%= Customer.digest('password') %>

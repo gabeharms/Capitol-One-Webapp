@@ -29,3 +29,9 @@ end
                password:              password,
                password_confirmation: password)
 end
+
+customers = Customer.order(:created_at).take(6)
+50.times do
+  title = Faker::Lorem.sentence(word_count = 4)
+  customers.each { |customer| customer.tickets.create!(title: title) }
+end
