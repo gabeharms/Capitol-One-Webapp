@@ -14,6 +14,7 @@
 ActiveRecord::Schema.define(version: 20150212153208) do
 
   create_table "comments", force: :cascade do |t|
+    t.integer  "customer_id"
     t.integer  "ticket_id"
     t.integer  "employee_id"
     t.boolean  "initiator"
@@ -22,61 +23,62 @@ ActiveRecord::Schema.define(version: 20150212153208) do
     t.datetime "updated_at",  null: false
   end
 
-  add_index "comments", ["comment"], name: "index_comments_on_comment"
   add_index "comments", ["created_at"], name: "index_comments_on_created_at"
+  add_index "comments", ["customer_id"], name: "index_comments_on_customer_id"
   add_index "comments", ["employee_id"], name: "index_comments_on_employee_id"
   add_index "comments", ["ticket_id"], name: "index_comments_on_ticket_id"
 
   create_table "customers", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "first_name", limit: 25
+    t.string   "last_name",  limit: 50
+    t.string   "email",                 default: "", null: false
+    t.string   "password",   limit: 40
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "customers", ["email"], name: "index_customers_on_email"
   add_index "customers", ["last_name"], name: "index_customers_on_last_name"
 
   create_table "employees", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "first_name", limit: 25
+    t.string   "last_name",  limit: 50
+    t.string   "email",                 default: "", null: false
+    t.string   "password",   limit: 40
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "employees", ["email"], name: "index_employees_on_email"
   add_index "employees", ["last_name"], name: "index_employees_on_last_name"
 
   create_table "ticket_catagories", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 25
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "ticket_statuses", force: :cascade do |t|
-    t.string   "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "status",     limit: 25
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "tickets", force: :cascade do |t|
-    t.text     "title"
     t.integer  "customer_id"
     t.integer  "employee_id"
     t.integer  "ticket_category_id"
-    t.integer  "ticket_statuses_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.integer  "ticket_status_id"
+    t.boolean  "visible",                       default: true
+    t.string   "title",              limit: 50
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   add_index "tickets", ["created_at"], name: "index_tickets_on_created_at"
   add_index "tickets", ["customer_id"], name: "index_tickets_on_customer_id"
   add_index "tickets", ["employee_id"], name: "index_tickets_on_employee_id"
   add_index "tickets", ["ticket_category_id"], name: "index_tickets_on_ticket_category_id"
-  add_index "tickets", ["ticket_statuses_id"], name: "index_tickets_on_ticket_statuses_id"
+  add_index "tickets", ["ticket_status_id"], name: "index_tickets_on_ticket_status_id"
 
 end
