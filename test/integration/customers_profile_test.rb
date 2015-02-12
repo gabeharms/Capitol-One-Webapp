@@ -11,8 +11,8 @@ class CustomersProfileTest < ActionDispatch::IntegrationTest
     customer_log_in_as(@customer)
     get customer_path(@customer)
     assert_template 'customers/show'
-    assert_select 'title', full_title(@customer.name)
-    assert_select 'h1', text: @customer.name
+    assert_select 'title', full_title(@customer.first_name)
+    assert_select 'h1', text: @customer.first_name
     assert_select 'h1>img.gravatar'
     #assert_match @customer.tickets.count.to_s, response.body
     assert_select 'div.pagination'

@@ -1,5 +1,5 @@
 <h1>
         <%= gravatar_for @customer %>
-        <%= @customer.name %>
+        <%= @customer.first_name %>
 </h1>
 <span><%= pluralize(current_customer.tickets.count, "Ticket") %></span>

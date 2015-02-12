@@ -3,7 +3,7 @@ require 'test_helper'
 class EmployeeTest < ActiveSupport::TestCase
   
   def setup
-    @employee = Employee.new(name: "Example User", email: "user@example.com",
+    @employee = Employee.new(first_name: "Example", last_name: "Employee", email: "user@example.com",
                                 password: "foobar", password_confirmation: "foobar")
   end
 
@@ -12,7 +12,8 @@ class EmployeeTest < ActiveSupport::TestCase
   end
   
   test "name should be present" do
-    @employee.name = "     "
+    @employee.first_name = "     "
+    @employee.last_name = "     "
     assert_not @employee.valid?
   end
   

@@ -11,39 +11,72 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211201655) do
+ActiveRecord::Schema.define(version: 20150212153208) do
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "ticket_id"
+    t.integer  "employee_id"
+    t.boolean  "initiator"
+    t.text     "comment"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "comments", ["comment"], name: "index_comments_on_comment"
+  add_index "comments", ["created_at"], name: "index_comments_on_created_at"
+  add_index "comments", ["employee_id"], name: "index_comments_on_employee_id"
+  add_index "comments", ["ticket_id"], name: "index_comments_on_ticket_id"
 
   create_table "customers", force: :cascade do |t|
-    t.string   "name"
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "email"
+    t.string   "password_digest"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.string   "password_digest"
   end
 
-  add_index "customers", ["email"], name: "index_customers_on_email", unique: true
+  add_index "customers", ["email"], name: "index_customers_on_email"
+  add_index "customers", ["last_name"], name: "index_customers_on_last_name"
 
   create_table "employees", force: :cascade do |t|
-    t.string   "name"
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "email"
+    t.string   "password_digest"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.string   "password_digest"
   end
 
-  add_index "employees", ["email"], name: "index_employees_on_email", unique: true
+  add_index "employees", ["email"], name: "index_employees_on_email"
+  add_index "employees", ["last_name"], name: "index_employees_on_last_name"
+
+  create_table "ticket_catagories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ticket_statuses", force: :cascade do |t|
+    t.string   "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "tickets", force: :cascade do |t|
     t.text     "title"
     t.integer  "customer_id"
     t.integer  "employee_id"
-    t.boolean  "complete"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "ticket_category_id"
+    t.integer  "ticket_statuses_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
-  add_index "tickets", ["customer_id", "employee_id", "created_at"], name: "index_tickets_on_customer_id_and_employee_id_and_created_at"
+  add_index "tickets", ["created_at"], name: "index_tickets_on_created_at"
   add_index "tickets", ["customer_id"], name: "index_tickets_on_customer_id"
   add_index "tickets", ["employee_id"], name: "index_tickets_on_employee_id"
+  add_index "tickets", ["ticket_category_id"], name: "index_tickets_on_ticket_category_id"
+  add_index "tickets", ["ticket_statuses_id"], name: "index_tickets_on_ticket_statuses_id"
 
 end

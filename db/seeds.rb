@@ -9,10 +9,12 @@
 
 
 99.times do |n|
-  name  = Faker::Name.name
+  first_name  = Faker::Name.first_name
+  last_name = Faker::Name.last_name
   email = "customer-#{n+1}@railstutorial.org"
   password = "password"
-  Customer.create!(name:  name,
+  Customer.create!(first_name:  first_name,
+               last_name: last_name,
                email: email,
                password:              password,
                password_confirmation: password)
@@ -21,10 +23,12 @@
 end
 
 99.times do |n|
-  name  = Faker::Name.name
+  first_name  = Faker::Name.first_name
+  last_name = Faker::Name.last_name
   email = "employee-#{n+1}@railstutorial.org"
   password = "password"
-  Employee.create!(name:  name,
+  Employee.create!(first_name:  first_name,
+               last_name: last_name,
                email: email,
                password:              password,
                password_confirmation: password)

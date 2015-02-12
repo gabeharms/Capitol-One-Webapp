@@ -20,7 +20,7 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test "should redirect update when not logged in" do
-    patch :update, id: @customer, customer: { name: @customer.name, email: @customer.email }
+    patch :update, id: @customer, customer: { first_name: @customer.first_name, last_name: @customer.last_name, email: @customer.email }
     assert_not flash.empty?
     assert_redirected_to customer_login_url
   end
@@ -34,7 +34,7 @@ class CustomersControllerTest < ActionController::TestCase
 
   test "should redirect update when logged in as wrong user" do
     customer_log_in_as(@other_user)
-    patch :update, id: @customer, customer: { name: @customer.name, email: @customer.email }
+    patch :update, id: @customer, customer: { first_name: @customer.first_name, last_name: @customer.last_name, email: @customer.email }
     assert flash.empty?
     assert_redirected_to root_url
   end

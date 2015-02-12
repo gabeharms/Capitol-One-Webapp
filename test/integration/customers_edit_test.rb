@@ -10,7 +10,8 @@ class CustomersEditTest < ActionDispatch::IntegrationTest
     customer_log_in_as(@customer)
     get edit_customer_path(@customer)
     assert_template 'customers/edit'
-    patch customer_path(@customer), customer: { name:  "",
+    patch customer_path(@customer), customer: { first_name:  "",
+                                    last_name: "",
                                     email: "foo@invalid",
                                     password:              "foo",
                                     password_confirmation: "bar" }
@@ -21,16 +22,19 @@ class CustomersEditTest < ActionDispatch::IntegrationTest
     get edit_customer_path(@customer)
     customer_log_in_as(@customer)
     assert_redirected_to edit_customer_path(@customer)
-    name  = "Foo Bar"
+    first_name  = "Foo"
+    last_name   = "bar"
     email = "foo@bar.com"
-    patch customer_path(@customer), customer: { name:  name,
+    patch customer_path(@customer), customer: { first_name:  first_name,
+                                    last_name: last_name,
                                     email: email,
                                     password:              "",
                                     password_confirmation: "" }
     assert_not flash.empty?
     assert_redirected_to @customer
     @customer.reload
-    assert_equal @customer.name,  name
+    assert_equal @customer.first_name,  first_name
+    assert_equal @customer.last_name,  last_name
     assert_equal @customer.email, email
   end
 end

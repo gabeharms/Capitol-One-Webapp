@@ -4,7 +4,7 @@ class CustomerTest < ActiveSupport::TestCase
   
   
   def setup
-    @customer = Customer.new(name: "Example User", email: "user@example.com",
+    @customer = Customer.new(first_name: "Example", last_name: "User", email: "user@example.com",
                                 password: "foobar", password_confirmation: "foobar")
   end
 
@@ -13,7 +13,7 @@ class CustomerTest < ActiveSupport::TestCase
   end
   
   test "name should be present" do
-    @customer.name = "     "
+    @customer.last_name = "     "
     assert_not @customer.valid?
   end
   
