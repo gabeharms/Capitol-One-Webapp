@@ -4,9 +4,11 @@ class TicketsControllerTest < ActionController::TestCase
  
   def setup
     @ticket = tickets(:orange)
+  
   end
 
   test "should redirect create when not logged in" do
+    
     assert_no_difference 'Ticket.count' do
       post :create, ticket: { title: "Lorem ipsum" }
     end

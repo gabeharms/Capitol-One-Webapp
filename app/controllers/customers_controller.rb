@@ -11,6 +11,7 @@ class CustomersController < ApplicationController
     @customer = Customer.find(params[:id])
     @tickets = @customer.tickets.paginate(page: params[:page])
     @ticket = current_customer.tickets.build if customer_logged_in?
+    @comment = current_customer.tickets.first.comments.build if customer_logged_in?
   end
   
   def index
