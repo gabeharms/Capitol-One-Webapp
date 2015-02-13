@@ -1,3 +1,33 @@
 // Place all the styles related to the Employees controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.empl-filter-bar{
+	width: 100%;
+	.item{
+		width: 19.6%;
+		height: 3em;
+		float: left;
+		display: block;
+		margin: 0 0.2%;
+		background-color:#174877;
+		color:#FFFFFF;
+		text-align:center;
+		line-height:3em;
+    	border-radius: 10px;
+	}
+	.item:hover{
+		background-color:#002e5a;
+	}
+	.label{
+		text-align:left;
+		width: 100%;
+		display:block;
+		font-size:1.0em;
+		font-weight: normal;
+  		color: $gray-light;
+	}
+}
