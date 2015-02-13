@@ -1,0 +1,16 @@
+<% provide(:title, @ticket.title) %>
+<div class="row">
+  <div>
+      <h3>Issue: <%= @ticket.title %></h3>
+      <ol class="ticket-list">
+        <!-- insert comments here? -->
+        <%= render @comments %>
+      </ol>
+      <div class="comment-box">
+        <%= form_for(@comment) do |f| %>
+          <%= f.text_area :message, placeholder: "Description..." %>
+          <%= f.submit "Post", class: "btn btn-primary" %>
+        <% end %>  
+      </div>
+  </div>
+</div>
