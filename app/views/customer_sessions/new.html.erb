@@ -6,12 +6,12 @@
     <%= form_for(:session, url: customer_login_path) do |f| %>
 
       <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' %>
+      <%= f.email_field :email, class: 'form-control form-group', placeholder: 'Email Address' %>
 
       <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
+      <%= f.password_field :password, class: 'form-control form-group', placeholder: 'Password' %>
 
-      <%= f.submit "Log in", class: "btn btn-primary" %>
+      <%= f.submit "Log in", class: "btn btn-primary form-group" %>
     <% end %>
 
     <p>New user? <%= link_to "Sign up now!", customer_signup_path %></p>

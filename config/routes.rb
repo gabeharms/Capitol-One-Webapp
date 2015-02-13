@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   get    'employee_login'   => 'employee_sessions#new'
   post   'employee_login'   => 'employee_sessions#create'
   delete 'employee_logout'  => 'employee_sessions#destroy'
- 
+
 #  get 'signup'  => 'users#new'
   
 #  get    'login'   => 'sessions#new'

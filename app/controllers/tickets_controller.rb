@@ -20,6 +20,12 @@ class TicketsController < ApplicationController
     redirect_to request.referrer || root_url
   end
 
+  def show
+    @ticket = Ticket.find(params[:id])
+    @comments = Comment.where(ticket_id: @ticket).all
+    @comment = Comment.new
+  end
+
   private
 
     def ticket_params

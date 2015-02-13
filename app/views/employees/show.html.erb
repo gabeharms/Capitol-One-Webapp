@@ -14,7 +14,12 @@
       <h3>Tickets (<%= @tickets.count %>)</h3>
       <ol class="ticket-list">
         <!-- put a link tag around the following line that will go to the respective single ticket page -->
-        <%= render @tickets %>
+        <% @tickets.each do |ticket| %>
+          <li>
+            <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
+          </li>
+        <% end %>
+        <!--<a href="http://google.com"><div><%= render @tickets %></div></a>-->
       </ol>
       <%= will_paginate @tickets %>
   </div>
