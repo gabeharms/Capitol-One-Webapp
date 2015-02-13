@@ -8,6 +8,7 @@ class EmployeesController < ApplicationController
 
   def show
     @employee = Employee.find(params[:id])
+    @tickets = Ticket.paginate(page: params[:page])
   end
   
   def create
