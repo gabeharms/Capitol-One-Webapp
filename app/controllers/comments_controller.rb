@@ -4,14 +4,27 @@ class CommentsController < ApplicationController
   before_action :correct_customer,   only: :destroy
   
   def create
-    @comment = current_customer.tickets.find_by(id: params[:comment][:id]).comments.build(comment_params)
-    if @comment.save
-      flash[:success] = "Comment Posted!"
-      redirect_to current_customer    # This changes once the Ticket Conversation page has been created
+    if logged_in_customer?
+      @comment = current_customer.tickets.find_by(id: params[:comment][:id]).comments.build(comment_params)
+      if @comment.save
+        flash[:success] = "Comment Posted!"
+        redirect_to current_customer    # This changes once the Ticket Conversation page has been created
+      else
+        flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
+        #redirect_to current_customer
+        redirect_to root_url    # This changes once the Ticket Conversation page has been created
+      end
     else
-      flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
-      #redirect_to current_customer
-      redirect_to root_url    # This changes once the Ticket Conversation page has been created
+      #@comment = current_employee.tickets.find_by(id: params[:comment][:id]).comments.build(comment_params)
+      @comment = current_employee.new(comment_params)
+      if @comment.save
+        flash[:success] = "Comment Posted!"
+        redirect_to current_customer    # This changes once the Ticket Conversation page has been created
+      else
+        flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
+        #redirect_to current_customer
+        redirect_to root_url    # This changes once the Ticket Conversation page has been created
+      end
     end
   end
  
