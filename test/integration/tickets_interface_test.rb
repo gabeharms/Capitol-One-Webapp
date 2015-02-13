@@ -22,8 +22,8 @@ class TicketsInterfaceTest < ActionDispatch::IntegrationTest
     assert_difference 'Ticket.count', 1 do
       post tickets_path, ticket: { title: title }
     end
-
     assert_redirected_to @customer
+    
     follow_redirect!
     assert_match title, response.body
     

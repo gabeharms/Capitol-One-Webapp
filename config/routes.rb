@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   
   get 'customer_signup'  => 'customers#new'
   get 'employee_signup'  => 'employees#new'
+  get    'employee_tickets' => 'employees#display_tickets'
   
   get    'customer_login'   => 'customer_sessions#new'
   post   'customer_login'   => 'customer_sessions#create'
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
   get    'employee_login'   => 'employee_sessions#new'
   post   'employee_login'   => 'employee_sessions#create'
   delete 'employee_logout'  => 'employee_sessions#destroy'
+ 
 #  get 'signup'  => 'users#new'
   
 #  get    'login'   => 'sessions#new'

@@ -21,7 +21,7 @@
           </li
         <% elsif employee_logged_in? %>
           <li><%= link_to "Customers", customers_path %></li>
-          <li><%= link_to "Tickets", current_employee %></li>
+          <li><%= link_to "Tickets", employee_tickets_path %></li>
 
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

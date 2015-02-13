@@ -22,7 +22,10 @@ class EmployeesEditTest < ActionDispatch::IntegrationTest
   test "successful edit with friendly forwarding" do
     get edit_employee_path(@employee)
     employee_log_in_as(@employee)
-    assert_redirected_to edit_employee_path(@employee)
+    assert_redirected_to employee_tickets_path
+    follow_redirect!
+    
+    assert_template 'employees/display_tickets'
     first_name  = "Foo"
     last_name   = "Bar"
     email = "foo@bar.com"

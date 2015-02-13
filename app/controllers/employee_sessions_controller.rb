@@ -8,7 +8,7 @@ class EmployeeSessionsController < ApplicationController
     employee = Employee.find_by(email: params[:session][:email].downcase)
     if employee && employee.authenticate(params[:session][:password])
       employee_log_in employee
-      redirect_back_or employee
+      redirect_to employee_tickets_path
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'

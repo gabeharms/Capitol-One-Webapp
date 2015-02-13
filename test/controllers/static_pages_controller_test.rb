@@ -3,7 +3,7 @@ require 'test_helper'
 class StaticPagesControllerTest < ActionController::TestCase
   
   def setup
-    @base_title = "Gabe Harms Website"
+    @base_title = "Capital One Web Application"
   end
   
   test "should get home" do

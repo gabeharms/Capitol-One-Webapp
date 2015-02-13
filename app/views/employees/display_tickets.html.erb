@@ -1,0 +1,21 @@
+<% provide(:title, @employee.first_name) %>
+<div class="row">
+  <div class="empl-filter-bar">
+  	  <div class="label">Filter:</div>
+      <div class="item">Most Recent</div>
+      <div class="item">Least Recent</div>
+      <div class="item">Priority</div>
+      <div class="item">Customer</div>
+      <div class="item">Last Filter</div>
+  </div>
+</div>
+<div class="row">
+  <div>
+      <h3>Tickets (<%= @tickets.count %>)</h3>
+      <ol class="ticket-list">
+        <!-- put a link tag around the following line that will go to the respective single ticket page -->
+        <%= render @tickets %>
+      </ol>
+      <%= will_paginate @tickets %>
+  </div>
+</div>

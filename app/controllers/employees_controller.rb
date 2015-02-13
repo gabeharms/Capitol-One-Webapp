@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :logged_in_employee, only: [:edit, :update]
+  before_action :logged_in_employee, only: [:edit, :update, :display_tickets]
   before_action :correct_employee,   only: [:edit, :update]
   
   def new
@@ -8,6 +8,11 @@ class EmployeesController < ApplicationController
 
   def show
     @employee = Employee.find(params[:id])
+    @tickets = Ticket.paginate(page: params[:page])
+  end
+  
+  def display_tickets
+    @employee = current_employee
     @tickets = Ticket.paginate(page: params[:page])
   end
   
