@@ -5,59 +5,44 @@ class CommentsController < ApplicationController
   
   def create
     
-    if customer_logged_in?
-      correct_customer
-      
-      @comment = current_customer.tickets.find_by(id: params[:comment][:id]).comments.build(comment_params)
-      if @comment.save
-        
-        flash[:success] = "Comment Posted!"
-        redirect_to current_customer    # This changes once the Ticket Conversation page has been created
-      else
-        flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
-        #redirect_to current_customer
-        redirect_to root_url    # This changes once the Ticket Conversation page has been created
-      end
-    elsif employee_logged_in?
-      correct_employee
-      
-      @comment = current_employee.tickets.find_by(id: params[:comment][:id]).comments.build(comment_params)
-      if @comment.save
-        flash[:success] = "Comment Posted!"
-        redirect_to current_employee    # This changes once the Ticket Conversation page has been created
-      else
-        flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
-        #redirect_to current_customer
-        redirect_to root_url    # This changes once the Ticket Conversation page has been created
-      end
+    @ticket = Ticket.find_by(id: params[:comment][:id])
+    @comment = Ticket.find_by(id: params[:comment][:id]).comments.build(message: params[:comment][:message])
+
+    if ( employee_logged_in? )
+      @comment.employee = current_employee
+      @comment.initiator = true
     else
-      flash[:danger]  = "Please Login."
-        #redirect_to current_customer
-        redirect_to customer_login_url    # This changes once the Ticket Conversation page has been created
+      @comment.employee = nil 
+      @comment.initiator = false 
     end
+
+    if @comment.save
+      flash[:success] = "Comment Posted!"
+    else
+      flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
+    end
+      
+    redirect_to @ticket   # This changes once the Ticket Conversation page has been created
   end
  
   # Further Implemented once the ticket pages can be viewed
   # This will allow us to store the current ticket somewhere which is important
-#  def destroy
-#    @comment.destroy
-#    flash[:success] = "Ticket deleted"
-#    redirect_to request.referrer || root_url
-#  end
+  def destroy
+    @comment = Comment.find_by(id: params[:comment_id])
+    @ticket = @comment.ticket
+    @comment.destroy
+    flash[:success] = "Comment deleted"
+    redirect_to @ticket
+
+  end
 
   private
 
     def comment_params
-      params.require(:comment).permit(:id, :message)
+      params.require(:comment).permit(:id, :message, :comment_id)
     end
     
-    def correct_user
-      #if customer_logged_in?
-        #@comment = current_customer.tickets.find_by(params[:comment][:id]).customer
-      
-      #@employee = Ticket.find_by(params[:comment][:id]).employee     #implemented once employees have tickets
-      redirect_to root_url if @customer != current_customer #|| @employee !=current_employee 
-    end                                                        #implemented once employees have tickets
+                                                        #implemented once employees have tickets
     
     def correct_customer
       @customer = Ticket.find_by(params[:comment][:id]).customer
@@ -75,6 +60,31 @@ class CommentsController < ApplicationController
         store_location
         flash[:danger] = "Please log in."
         redirect_to customer_login_url
+      end
+    end
+
+    def find_customer
+      @ticket = current_customer.tickets.find_by(id: params[:id])
+      if @ticket.nil?
+        false
+      else
+        true
+      end
+    end
+
+    def correct_user
+      if(!employee_logged_in?)
+        if(!current_customer.nil?)
+          if(!find_customer)
+            store_location
+            flash[:danger] = "Please log in2."
+            redirect_to customer_login_url
+          end
+        else
+          store_location
+          flash[:danger] = "Please log in."
+          redirect_to customer_login_url
+        end 
       end
     end
     

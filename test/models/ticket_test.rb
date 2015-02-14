@@ -14,7 +14,7 @@ class TicketTest < ActiveSupport::TestCase
 
   test "user id should be present" do
     @ticket.customer_id = nil
-    assert_not @ticket.valid?
+    assert @ticket.valid?
   end
 
   test "content should be present " do

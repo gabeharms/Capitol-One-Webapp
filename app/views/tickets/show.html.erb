@@ -3,12 +3,28 @@
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
       <ol class="ticket-list">
-        <!-- insert comments here? -->
-        <%= render @comments %>
+        <!-- if comment.initiator is true then color it for employee -->
+        <% @comments.each do |comment| %>
+          <li><%= comment.message %>
+            
+            <% if employee_logged_in? %>
+              <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
+                                method: :delete, data: { confirm: "Are you sure?" } %> 
+            <% elsif current_customer?(@ticket.customer) %>
+
+              <% if customer_comment? (comment.initiator) %>
+                <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
+                                method: :delete, data: { confirm: "Are you sure?" } %> 
+              <%end%>
+            <% end %>              
+          </li>
+        <% end %>
       </ol>
       <div class="comment-box">
-        <%= form_for(@comment) do |f| %>
+        <%= form_for(@comment, method: 'post') do |f| %>
+        
           <%= f.text_area :message, placeholder: "Description..." %>
+          <%= f.hidden_field :id, :value => @ticket.id %>
           <%= f.submit "Post", class: "btn btn-primary" %>
         <% end %>  
       </div>

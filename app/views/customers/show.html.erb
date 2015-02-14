@@ -11,8 +11,16 @@
   <div class="col-md-8">
     <% if @customer.tickets.any? %>
       <h3>Tickets (<%= @customer.tickets.count %>)</h3>
-      <ol class="microposts">
-        <%= render @tickets %>
+      <ol class="ticket-list">
+        <% @tickets.each do |ticket| %>
+          <li>
+            <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
+            <% if current_customer?(ticket.customer) %>
+            <%= link_to "delete", ticket, method: :delete,
+                                       data: { confirm: "You sure?" } %>
+            <% end %>
+          </li>
+        <% end %>
       </ol>
       <%= will_paginate @tickets %>
     <% end %>

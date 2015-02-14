@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   post   'employee_login'   => 'employee_sessions#create'
   delete 'employee_logout'  => 'employee_sessions#destroy'
 
+  delete 'destroy_comment'   => 'comments#destroy'
 #  get 'signup'  => 'users#new'
   
 #  get    'login'   => 'sessions#new'
@@ -49,7 +50,7 @@ Rails.application.routes.draw do
   
 #  resources :account_activations, only: [:edit] 
 #  resources :password_resets,     only: [:new, :create, :edit, :update]
-   resources :tickets,          only: [:create, :destroy]
+   resources :tickets,          only: [:create, :destroy, :show]
    resources :comments,          only: [:create, :destroy]
 #  resources :relationships,       only: [:create, :destroy]
   
