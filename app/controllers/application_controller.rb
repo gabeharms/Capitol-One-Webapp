@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
     def logged_in_customer
       unless customer_logged_in?
         store_location
-        flash[:danger] = "Please log in."
+        flash[:danger] = "Please log in1."
         redirect_to customer_login_url
       end
     end

@@ -1,3 +1,37 @@
 // Place all the styles related to the Comments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.post-comment{
+	float: right;
+	width: 100px;
+}
+
+.delete-comment-button{
+	width: 75px;
+	float: right;
+}
+
+.new-comment-field{
+	-webkit-border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #848484; 
+    outline:0; 
+    text-wrap: normal;
+    min-height:100px;
+}
+
+.comment-box{
+	margin: 0 20px;
+}
+
+.customer-comment-li{
+	background: #cce1fe !important;
+	border: 1px solid #a4b6d0;
+}
+
+.employee-comment-li{
+	background: #f4f4f4 !important;
+	border: 1px solid #b5b5b5;
+}

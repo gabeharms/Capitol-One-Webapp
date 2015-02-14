@@ -77,7 +77,7 @@ class CommentsController < ApplicationController
         if(!current_customer.nil?)
           if(!find_customer)
             store_location
-            flash[:danger] = "Please log in2."
+            flash[:danger] = "Please log in."
             redirect_to customer_login_url
           end
         else

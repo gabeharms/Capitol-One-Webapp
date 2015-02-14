@@ -6,28 +6,25 @@
 @import "bootstrap";
 
 .empl-filter-bar{
-	width: 100%;
 	.item{
-		width: 19.6%;
-		height: 3em;
-		float: left;
+		height: 2em;
+		line-height: 1.9em;
 		display: block;
 		margin: 0 0.2%;
-		background-color:#174877;
-		color:#FFFFFF;
-		text-align:center;
-		line-height:3em;
-    	border-radius: 10px;
+		color:#174877;
+		padding: 1px 10px;
+		margin: 2px 0;
+		border-radius: 5px;
 	}
 	.item:hover{
-		background-color:#002e5a;
+		color:#002e5a;
+		background-color: #e8e8e8;
 	}
-	.label{
-		text-align:left;
-		width: 100%;
-		display:block;
-		font-size:1.0em;
-		font-weight: normal;
-  		color: $gray-light;
+	.refine-label{
+		margin: 20px 0 10px 0;
+		text-align: left;
+		font-size:1.5em;
+		font-weight: 500;
+  		color: #999999;
 	}
 }

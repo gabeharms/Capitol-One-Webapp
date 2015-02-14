@@ -5,27 +5,32 @@
       <ol class="ticket-list">
         <!-- if comment.initiator is true then color it for employee -->
         <% @comments.each do |comment| %>
-          <li><%= comment.message %>
-            
-            <% if employee_logged_in? %>
-              <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
-                                method: :delete, data: { confirm: "Are you sure?" } %> 
-            <% elsif current_customer?(@ticket.customer) %>
-
-              <% if customer_comment? (comment.initiator) %>
+          <% if customer_comment? (comment.initiator) %>
+            <li class="customer-comment-li"><%= comment.message %>
+          <% else %>
+            <li class="employee-comment-li"><%= comment.message %>
+          <% end %>
+              
+              <% if employee_logged_in? %>
                 <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
-                                method: :delete, data: { confirm: "Are you sure?" } %> 
-              <%end%>
-            <% end %>              
-          </li>
+                                  method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
+                <div class="clear-float"></div>
+              <% elsif current_customer?(@ticket.customer) %>
+
+                <% if customer_comment? (comment.initiator) %>
+                  <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
+                                  method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
+                  <div class="clear-float"></div>
+                <%end%>
+              <% end %>              
+            </li>
         <% end %>
       </ol>
       <div class="comment-box">
         <%= form_for(@comment, method: 'post') do |f| %>
-        
-          <%= f.text_area :message, placeholder: "Description..." %>
+          <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
           <%= f.hidden_field :id, :value => @ticket.id %>
-          <%= f.submit "Post", class: "btn btn-primary" %>
+          <%= f.submit "Post", class: "btn btn-primary post-comment" %>
         <% end %>  
       </div>
   </div>
