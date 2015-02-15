@@ -6,22 +6,29 @@
         <!-- if comment.initiator is true then color it for employee -->
         <% @comments.each do |comment| %>
           <% if customer_comment? (comment.initiator) %>
-            <li class="customer-comment-li"><%= comment.message %>
+            <li class="customer-comment-li">
+              <div class="ticket-info">
+              <p class="comment-name"><%= @ticket.customer.first_name %></p>
           <% else %>
-            <li class="employee-comment-li"><%= comment.message %>
+            <li class="employee-comment-li">
+              <div class="ticket-info">
+              <p class="comment-name"><%= comment.employee.first_name %></p>
           <% end %>
-              
+                <%= comment.message %>
+                <p class="timestamp">
+                  <%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %>
+                </p>
+              </div>
               <% if employee_logged_in? %>
                 <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
                                   method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
                 <div class="clear-float"></div>
               <% elsif current_customer?(@ticket.customer) %>
-
                 <% if customer_comment? (comment.initiator) %>
                   <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
                                   method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
-                  <div class="clear-float"></div>
                 <%end%>
+                <div class="clear-float"></div>
               <% end %>              
             </li>
         <% end %>

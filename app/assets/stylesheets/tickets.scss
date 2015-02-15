@@ -25,6 +25,11 @@
     border-radius: 15px;
     background:#f2f2f2;
   }
+  .ticket-info{
+    float: left;
+    display: block;
+    width: 70%;
+  }
   .user {
     margin-top: 5em;
     padding-top: 0;
@@ -38,9 +43,11 @@
     }
   }
   .timestamp {
-    color: #d3d3d3;
+    color: #9d9d9d;
     display: block;
-    margin-left: 60px;
+    padding:0;
+    margin: 0;
+    width: 70%;
   }
   .gravatar {
     float: left;

@@ -19,7 +19,12 @@
           <!-- put a link tag around the following line that will go to the respective single ticket page -->
           <% @tickets.each do |ticket| %>
             <li>
-              <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
+              <div class="ticket-info">
+                <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
+                <p class="timestamp">
+                  <%= time_ago_in_words(ticket.created_at).capitalize %> ago
+                </p>
+              </div>
               <% if employee_logged_in? %>
                 <div class="div-align-right">
                     <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
