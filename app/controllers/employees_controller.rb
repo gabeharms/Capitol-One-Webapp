@@ -13,12 +13,12 @@ class EmployeesController < ApplicationController
   
   def display_tickets
     @employee = current_employee
-    var = params[:var]
-    if var.nil?
+    filter = params[:filter]
+    if filter.nil?
       @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif var == '1'
+    elsif filter == '1'
       @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif var == '2'
+    elsif filter == '2'
       @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
     end
   end
