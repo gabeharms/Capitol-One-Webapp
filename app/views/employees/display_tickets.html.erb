@@ -3,16 +3,19 @@
   <div class="row">
     <h3 class="page-title">Open Tickets (<%= @tickets.count %>)</h3>
     <div class="col-md-2 empl-filter-bar">
-        <div class="refine-label">Refine by</div>
-        <div class="item">Most Recent</div>
-        <div class="item">Least Recent</div>
-        <div class="item">Priority</div>
-        <div class="item">Customer</div>
-        <div class="item">Last Filter</div>
-        <div class="refine-label">Analyze</div>
-        <div class="item">Statistics</div>
-        <div class="refine-label">Search for</div>
-        <div class="item">search box...</div>
+      <%= link_to create_ticket_path do %>
+        <div class="create-ticket">Create Ticket</div>
+      <% end %>
+      <div class="refine-label">Refine by</div>
+      <div class="item">Most Recent</div>
+      <div class="item">Least Recent</div>
+      <div class="item">Priority</div>
+      <div class="item">Customer</div>
+      <div class="item">Last Filter</div>
+      <div class="refine-label">Analyze</div>
+      <div class="item">Statistics</div>
+      <div class="refine-label">Search for</div>
+      <div class="item">search box...</div>
     </div>
     <div class="col-md-10">
         <ol class="ticket-list">

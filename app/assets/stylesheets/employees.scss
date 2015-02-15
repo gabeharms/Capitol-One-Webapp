@@ -12,7 +12,7 @@
 		display: block;
 		margin: 0 0.2%;
 		color:#174877;
-		padding: 1px 10px;
+		padding: 1px 15px;
 		margin: 2px 0;
 		border-radius: 5px;
 	}
@@ -21,10 +21,22 @@
 		background-color: #e8e8e8;
 	}
 	.refine-label{
-		margin: 20px 0 10px 0;
+		margin: 10px 0 5px 5px;
 		text-align: left;
 		font-size:1.5em;
 		font-weight: 500;
   		color: #999999;
+	}
+	.create-ticket{
+		width: 120px;
+		margin: 25px 0 10px 0;
+		padding: 5px 10px;
+		color: #FFFFFF;
+		text-align: center;
+		font-weight: 450;
+		font-size: 1.1em;
+		background: #002e5a;
+		border: 1px solid #f3f3f3;
+		border-radius: 10px;
 	}
 }

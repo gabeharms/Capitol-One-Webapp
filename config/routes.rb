@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get 'help'    => 'static_pages#help'
   get 'about'   => 'static_pages#about'
   get 'contact' => 'static_pages#contact'
+
+  get 'create_ticket' => 'employees#create_ticket'
   
   get 'customer_signup'  => 'customers#new'
   get 'employee_signup'  => 'employees#new'
