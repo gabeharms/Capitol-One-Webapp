@@ -22,6 +22,12 @@ class EmployeesController < ApplicationController
       @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
     end
   end
+
+  def create_ticket
+    @employee = current_employee
+    @tickets = Ticket.paginate(page: params[:page])
+    @ticket = @tickets.build if employee_logged_in?
+  end
   
   def create
     @employee = Employee.new(employee_params)    # Not the final implementation!
