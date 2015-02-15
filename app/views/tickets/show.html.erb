@@ -12,7 +12,7 @@
           <% else %>
             <li class="employee-comment-li">
               <div class="ticket-info">
-              <p class="comment-name"><%= comment.employee.first_name %></p>
+              <p class="comment-name">Employee (<%= comment.employee.first_name %>)</p>
           <% end %>
                 <%= comment.message %>
                 <p class="timestamp">
