@@ -15,7 +15,7 @@ class EmployeesController < ApplicationController
     @employee = current_employee
     var = params[:var]
     if var.nil?
-      @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
+      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
     elsif var == '1'
       @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
     elsif var == '2'
