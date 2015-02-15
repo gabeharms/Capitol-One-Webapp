@@ -1,17 +1,30 @@
 class TicketsController < ApplicationController
-  before_action :logged_in_customer, only: :create
+  before_action :logged_in_user, only: :create
   #before_action :correct_customer,   only: :destroy
   before_action :correct_user, only: [:show, :destroy]
   
   def create
-    @ticket = current_customer.tickets.build(ticket_params)
-    if @ticket.save
-      flash[:success] = "Ticket Created! You'll be hereing from us shortly."
-      redirect_to current_customer
-    else
-      flash[:danger]  = "Invalid Post. Please tell us what your issue is."
-      #redirect_to current_customer
-      redirect_to current_customer
+    if(customer_logged_in?)
+      @ticket = current_customer.tickets.build(ticket_params)
+      if @ticket.save
+        flash[:success] = "Ticket Created! You'll be hearing from us shortly."
+        redirect_to current_customer
+      else
+        flash[:danger]  = "Invalid Post. Please tell us what your issue is."
+        #redirect_to current_customer
+        redirect_to current_customer
+      end
+    elsif(employee_logged_in?)
+      @ticket = Ticket.new(ticket_params)
+      @ticket.employee_id = current_employee.id
+      if @ticket.save
+        flash[:success] = "Ticket Created!"
+        redirect_to current_employee
+      else
+        flash[:danger]  = "Invalid Post."
+        #redirect_to current_customer
+        redirect_to current_employee
+      end
     end
   end
 
@@ -28,12 +41,13 @@ class TicketsController < ApplicationController
     @ticket = Ticket.find(params[:id])
     @comments = Comment.where(ticket_id: @ticket)
     @comment = Comment.new
+    @employee = Employee.find_by(id: @ticket.employee_id)
   end
 
   private
 
     def ticket_params
-      params.require(:ticket).permit(:title)
+      params.require(:ticket).permit(:customer_id, :title)
     end
     
     def correct_customer
@@ -48,6 +62,10 @@ class TicketsController < ApplicationController
       else
         true
       end
+    end
+
+    def logged_in_user
+      (customer_logged_in? || employee_logged_in?)
     end
 
     def correct_user

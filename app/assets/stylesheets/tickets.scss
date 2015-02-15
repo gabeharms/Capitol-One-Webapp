@@ -61,13 +61,23 @@
 }
 
 .new-ticket-field{
-	-webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px; 
     -moz-border-radius: 5px; 
     border-radius: 5px; 
     border: 1px solid #848484; 
     outline:0; 
     text-wrap: normal;
     min-height:200px;
+    resize: none;
+}
+
+.new-ticket-customer-id-field{
+    -webkit-border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #848484;
+    max-height: 25px;
+    resize: none;
 }
 
 /* end neal styles */
