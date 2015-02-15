@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
-  before_action :logged_in_customer, only: [:create, :destroy]
-  before_action :correct_customer,   only: :destroy
-  before_action :correct_user, only: :show
+  before_action :logged_in_customer, only: :create
+  #before_action :correct_customer,   only: :destroy
+  before_action :correct_user, only: [:show, :destroy]
   
   def create
     @ticket = current_customer.tickets.build(ticket_params)
@@ -19,7 +19,7 @@ class TicketsController < ApplicationController
     # Need a better way to delete so employee can still see
     #@ticket.customer_id = nil
     #@ticket.save
-    @ticket.destroy
+    ticket = Ticket.find(params[:id]).destroy
     flash[:success] = "Ticket deleted"
     redirect_to request.referrer || root_url
   end
