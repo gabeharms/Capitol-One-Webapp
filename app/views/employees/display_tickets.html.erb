@@ -7,8 +7,8 @@
         <div class="create-ticket">Create Ticket</div>
       <% end %>
       <div class="refine-label">Refine by</div>
-      <div class="item">Most Recent</div>
-      <div class="item">Least Recent</div>
+      <div class="item"> <%= link_to('Most Recent', {:action => 'display_tickets', :var => '1'}) %></div>
+      <div class="item"> <%= link_to('Least Recent', {:action => 'display_tickets', :var => '2'}) %></div>
       <div class="item">Priority</div>
       <div class="item">Customer</div>
       <div class="item">Last Filter</div>

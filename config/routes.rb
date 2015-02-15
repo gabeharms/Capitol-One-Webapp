@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   
   get 'customer_signup'  => 'customers#new'
   get 'employee_signup'  => 'employees#new'
-  get    'employee_tickets' => 'employees#display_tickets'
+  get 'employee_tickets' => 'employees#display_tickets'
   
   get    'customer_login'   => 'customer_sessions#new'
   post   'customer_login'   => 'customer_sessions#create'
