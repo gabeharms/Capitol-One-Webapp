@@ -13,6 +13,7 @@ class EmployeesController < ApplicationController
   
   def display_tickets
     @employee = current_employee
+    @category = TicketCatagory.all
     filter = params[:filter]
     if filter.nil?
       @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])

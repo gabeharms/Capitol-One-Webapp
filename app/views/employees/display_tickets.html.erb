@@ -20,6 +20,12 @@
       <div class="item">Statistics</div>
       <div class="refine-label">Search for</div>
       <div class="item">search box...</div>
+      <div class="refine-label">Categories</div>
+      
+      <% @category.each do |category| %> 
+        <div class="item"><%= category.name %></div>
+      <% end %>
+      
     </div>
     <div class="col-md-10">
         <ol class="ticket-list">
