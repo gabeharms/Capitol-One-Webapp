@@ -7,7 +7,9 @@
       <% elsif !employee_logged_in?  %>
         This ticket was created by you.<br>
       <% end %>
+      <% if @ticket.ticket_category_id != nil %>  
         Category: <%= @category.name %>
+      <% end %>
       <ol class="ticket-list">
         <!-- if comment.initiator is true then color it for employee -->
         <% @comments.each do |comment| %>
