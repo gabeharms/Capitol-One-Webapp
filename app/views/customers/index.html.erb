@@ -1,11 +1,15 @@
 <% provide(:title, 'All Customers') %>
 <h1>All Customers</h1>
 
-<%= will_paginate %>
+<%= form_tag customers_path, :method => 'get' do %>
+  <p>
+    <div class="search_bar"><%= text_field_tag :search, params[:search], :placeholder => 'Enter a name', :size => 100 %></div>
+    <div class="submit_button"><%= submit_tag "Search", :name => nil %></div>
+  </p>
+<% end %>
 
 <ul class="users">
   <%= render @customers %>
-  <p> nealll</p>
 </ul>
 
 <%= will_paginate %>

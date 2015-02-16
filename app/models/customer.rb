@@ -17,7 +17,6 @@ class Customer < ActiveRecord::Base
   
   has_secure_password
   
-  
    # Returns the hash digest of the given string.
   def Customer.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

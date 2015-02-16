@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  before_action :logged_in_employee, only: [:index,:destroy]
+  before_action :logged_in_employee, only: [:index,:destroy, :show_info]
   before_action :logged_in_customer, only: [:edit, :update, :show]
   before_action :correct_customer,   only: [:edit, :update, :show]
  
@@ -15,8 +15,17 @@ class CustomersController < ApplicationController
     @catagories = TicketCatagory.all
   end
   
+  def show_info
+    @customer = Customer.find(params[:id])
+    @tickets = @customer.tickets.paginate(page: params[:page])
+  end
+  
   def index
-    @customers= Customer.paginate(page: params[:page])
+    if params[:search]
+      @customers = Customer.where(:first_name => params[:search]).paginate(page: params[:page])
+    else
+      @customers = Customer.all.paginate(page: params[:page])
+    end
   end
   
   

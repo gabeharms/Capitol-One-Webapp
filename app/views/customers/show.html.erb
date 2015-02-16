@@ -13,25 +13,8 @@
   <div class="col-md-8">
     <% if @customer.tickets.any? %>
       <h3>Tickets (<%= @customer.tickets.count %>)</h3>
-      <ol class="ticket-list">
-        <% @tickets.each do |ticket| %>
-          <li>
-            <div class="ticket-info">
-              <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
-              <p class="timestamp">
-                    <%= time_ago_in_words(ticket.created_at).capitalize %> ago
-              </p>
-            </div>
-            <% if current_customer?(ticket.customer) %>
-              <div class="div-align-right">
-                  <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-              </div>
-              <div class="clear-float"></div>
-            <% end %>
-          </li>
-        <% end %>
-      </ol>
-      <%= will_paginate @tickets %>
+            <%= render 'shared/ticket_list' %>
+
     <% end %>
   </div>
 </div>
