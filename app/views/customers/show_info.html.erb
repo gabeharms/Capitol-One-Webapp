@@ -1,0 +1,7 @@
+<% provide(:title, @customer.first_name) %>
+
+<h3 class="page-title">Customer - <%=@customer.first_name%> <%=@customer.last_name %></h3>
+
+    <div class="col-md-10">
+        <%= render 'shared/ticket_list' %>
+    </div>
