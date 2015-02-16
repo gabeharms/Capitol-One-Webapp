@@ -25,6 +25,8 @@ class TicketsController < ApplicationController
         #redirect_to current_customer
         redirect_to current_employee
       end
+    else
+       redirect_to customer_login_url
     end
   end
 
@@ -32,7 +34,7 @@ class TicketsController < ApplicationController
     # Need a better way to delete so employee can still see
     #@ticket.customer_id = nil
     #@ticket.save
-    ticket = Ticket.find(params[:id]).destroy
+    Ticket.find(params[:id]).destroy
     flash[:success] = "Ticket deleted"
     redirect_to request.referrer || root_url
   end

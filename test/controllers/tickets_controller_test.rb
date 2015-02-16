@@ -28,6 +28,6 @@ class TicketsControllerTest < ActionController::TestCase
     assert_no_difference 'Ticket.count' do
       delete :destroy, id: ticket
     end
-    assert_redirected_to root_url
+    assert_redirected_to customer_login_url
   end
 end
