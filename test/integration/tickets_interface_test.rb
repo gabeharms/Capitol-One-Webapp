@@ -28,7 +28,7 @@ class TicketsInterfaceTest < ActionDispatch::IntegrationTest
     assert_match title, response.body
     
     # Delete a post.
-    assert_select 'a', text: 'delete'
+    #assert_select 'a', text: 'delete'
     first_ticket = @customer.tickets.paginate(page: 1).first
     assert_difference 'Ticket.count', -1 do
       delete ticket_path(first_ticket)
