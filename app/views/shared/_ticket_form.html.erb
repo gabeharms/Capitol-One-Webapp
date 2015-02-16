@@ -2,12 +2,17 @@
   <%= render 'shared/error_messages', object: f.object %>
   <div>
     <% if (employee_logged_in?) %>
+    	Customer ID:
     	<%= f.text_area :customer_id, class: "new-ticket-customer-id-field form-group", placeholder: "Customer ID" %> 
+    	Select a category for this ticket
+    <% else %>
+    	What are you having an issue with?	
     <% end %>
-    <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Type your question here..." %>  
     
-    <%= f.collection_select(:id, @catagories, :id, :name, class: "form-group") %>
+    <%= f.collection_select(:ticket_category_id, @catagories, :id, :name, class: "form-group") %>
   	<div class="spacer20"></div>
+  	Please describe the issue below
+    <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Type your question here..." %>  
   </div>
   <%= f.submit "Post", class: "btn btn-primary form-group" %>
 <% end %>

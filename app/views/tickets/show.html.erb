@@ -3,10 +3,11 @@
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
       <% if @ticket.employee_id != nil %>
-        This ticket was created by <%= @employee.first_name %>
+        This ticket was created by <%= @employee.first_name %><br>
       <% elsif !employee_logged_in?  %>
-        This ticket was created by you.
+        This ticket was created by you.<br>
       <% end %>
+        Category: <%= @category.name %>
       <ol class="ticket-list">
         <!-- if comment.initiator is true then color it for employee -->
         <% @comments.each do |comment| %>

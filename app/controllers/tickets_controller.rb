@@ -44,12 +44,13 @@ class TicketsController < ApplicationController
     @comments = Comment.where(ticket_id: @ticket)
     @comment = Comment.new
     @employee = Employee.find_by(id: @ticket.employee_id)
+    @category = TicketCatagory.find_by(id: @ticket.ticket_category_id)
   end
 
   private
 
     def ticket_params
-      params.require(:ticket).permit(:customer_id, :title)
+      params.require(:ticket).permit(:customer_id, :title, :ticket_category_id)
     end
     
     def correct_customer
