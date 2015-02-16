@@ -27,6 +27,7 @@ class EmployeesController < ApplicationController
     @employee = current_employee
     @tickets = Ticket.paginate(page: params[:page])
     @ticket = @tickets.build if employee_logged_in?
+    @catagories = TicketCatagory.all
   end
   
   def create

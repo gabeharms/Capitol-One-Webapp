@@ -12,6 +12,7 @@ class CustomersController < ApplicationController
     @tickets = @customer.tickets.paginate(page: params[:page])
     @ticket = current_customer.tickets.build if customer_logged_in?
     @comment = current_customer.tickets.first.comments.build if customer_logged_in?
+    @catagories = TicketCatagory.all
   end
   
   def index
