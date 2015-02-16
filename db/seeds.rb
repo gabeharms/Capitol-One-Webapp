@@ -39,3 +39,8 @@ customers = Customer.order(:created_at).take(6)
   title = Faker::Lorem.sentence(word_count = 4)
   customers.each { |customer| customer.tickets.create!(title: title) }
 end
+
+10.times do |i|
+  name = Faker::Hacker.adjective
+  TicketCatagory.create(name: name)
+end

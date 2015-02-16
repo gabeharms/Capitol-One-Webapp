@@ -4,7 +4,8 @@
     <% if (employee_logged_in?) %>
     	<%= f.text_area :customer_id, class: "new-ticket-customer-id-field form-group", placeholder: "Customer ID" %> 
     <% end %>
-    <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Whats your question..." %>  
+    <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Type your question here..." %>  
+    <%= f.collection_select :ticket_category, TicketCatagory.all, class: "new-ticket-field form-group"  %> 
   </div>
   <%= f.submit "Post", class: "btn btn-primary form-group" %>
 <% end %>
