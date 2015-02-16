@@ -15,6 +15,7 @@ class EmployeesController < ApplicationController
     @employee = current_employee
     @category = TicketCatagory.all
     filter = params[:filter]
+    category = params[:category]
     if filter.nil?
       @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
     elsif filter == '1'
@@ -22,6 +23,11 @@ class EmployeesController < ApplicationController
     elsif filter == '2'
       @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
     end
+
+    if !category.nil?
+      @tickets = Ticket.where(ticket_category_id: category).paginate(page: params[:page])
+    end
+
   end
 
   def create_ticket
