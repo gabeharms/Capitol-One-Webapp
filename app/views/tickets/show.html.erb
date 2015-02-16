@@ -2,6 +2,9 @@
 <div class="row">
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
+      <% if @ticket.customer_id != nil %>
+        This ticket belongs to <%= @customer.first_name %> <%= @customer.last_name %> <br>
+      <% end %>
       <% if @ticket.employee_id != nil %>
         This ticket was created by <%= @employee.first_name %><br>
       <% elsif !employee_logged_in?  %>

@@ -31,6 +31,10 @@ class EmployeesController < ApplicationController
   end
 
   def create_ticket
+    customer_id = params[:customer_id]
+    if !customer_id.nil?
+      @customer = Customer.find(customer_id)
+    end
     @employee = current_employee
     @tickets = Ticket.paginate(page: params[:page])
     @ticket = @tickets.build if employee_logged_in?

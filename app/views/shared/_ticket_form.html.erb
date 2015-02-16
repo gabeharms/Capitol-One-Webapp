@@ -3,7 +3,11 @@
   <div>
     <% if (employee_logged_in?) %>
     	Customer ID:
-    	<%= f.text_area :customer_id, class: "new-ticket-customer-id-field form-group", placeholder: "Customer ID" %> 
+    	<% if !@customer.nil? %>
+    	   <%= f.text_area :customer_id, class: "new-ticket-customer-id-field form-group", value: @customer.id %> 
+      <% else %>
+    	  <%= f.text_area :customer_id, class: "new-ticket-customer-id-field form-group", placeholder: "Customer ID" %>
+    	<% end %>
     	Select a category for this ticket
     <% else %>
     	What are you having an issue with?	
@@ -12,7 +16,7 @@
     <%= f.collection_select(:ticket_category_id, @catagories, :id, :name, class: "form-group") %>
   	<div class="spacer20"></div>
   	Please describe the issue below
-    <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Type your question here..." %>  
+    <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Enter ticket title..." %>  
   </div>
   <%= f.submit "Post", class: "btn btn-primary form-group" %>
 <% end %>

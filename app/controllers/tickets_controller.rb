@@ -44,6 +44,7 @@ class TicketsController < ApplicationController
     @comments = Comment.where(ticket_id: @ticket)
     @comment = Comment.new
     @employee = Employee.find_by(id: @ticket.employee_id)
+    @customer = Customer.find_by(id: @ticket.customer_id)
     @category = TicketCatagory.find_by(id: @ticket.ticket_category_id)
   end
 
