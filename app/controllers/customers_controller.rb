@@ -21,7 +21,9 @@ class CustomersController < ApplicationController
   end
   
   def index
-    if params[:search]
+    if params[:search] == ''  #checks if search field contains anything. This is usefull, when user searches for something then deletes the search
+      @customers = Customer.all.paginate(page: params[:page])
+    elsif params[:search]
       @customers = Customer.where(:first_name => params[:search]).paginate(page: params[:page])
     else
       @customers = Customer.all.paginate(page: params[:page])

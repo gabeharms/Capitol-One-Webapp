@@ -2,13 +2,13 @@
 <div class="row">
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
-      <% if @ticket.customer_id != nil %>
-        This ticket belongs to <%= @customer.first_name %> <%= @customer.last_name %> <br>
-      <% end %>
       <% if @ticket.employee_id != nil %>
-        This ticket was created by <%= @employee.first_name %><br>
+        This ticket was created by employee: <%= @employee.first_name %><br>
       <% elsif !employee_logged_in?  %>
-        This ticket was created by you.<br>
+        This ticket was created by you.<br>  
+      <% end %>
+      <% if employee_logged_in? && @ticket.customer_id != nil %>
+        This ticket belongs to customer: <%= @customer.first_name %> <%= @customer.last_name %><br>  
       <% end %>
       <% if @ticket.ticket_category_id != nil %>  
         Category: <%= @category.name %>

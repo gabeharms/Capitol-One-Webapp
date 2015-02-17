@@ -1,15 +1,31 @@
 <% provide(:title, 'All Customers') %>
 <h1>All Customers</h1>
-
 <%= form_tag customers_path, :method => 'get' do %>
   <p>
-    <div class="search_bar"><%= text_field_tag :search, params[:search], :placeholder => 'Enter a name', :size => 100 %></div>
-    <div class="submit_button"><%= submit_tag "Search", :name => nil %></div>
+    <div class="customer-search">
+    	<div class="search-bar"><%= text_field_tag :search, params[:search], :placeholder => 'Enter a name', :size => 100, class: "search-customer-field form-group" %></div>
+    	<div class="button"><%= submit_tag "Search", :name => nil, class: "btn btn-primary form-group" %></div>
+    	<div class="clear-float"></div>
+    </div>
+    <div class="clear-float"></div>
   </p>
 <% end %>
 
-<ul class="users">
-  <%= render @customers %>
+<ul class="ticket-list">
+  <% @customers.each do |customer| %>
+  	<li>
+  		<div class="div-align-left">
+	  		<%= link_to({:controller => 'customers', :action => 'show_info', :id => customer.id}) do %>
+	  			<%= customer.first_name %> <%= customer.last_name %><% end %> <!-- DO NOT move this 'end' to the next line as it will add a space char in the link -->
+	  		<br><%= customer.email %>
+  		</div>
+  		<div class="div-align-right">
+            <%= button_to "delete", customer, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
+        </div>
+        <div class="clear-float"></div>
+  	</li>
+  <% end %>
+  <!--<%= render @customers %>-->
 </ul>
 
 <%= will_paginate %>

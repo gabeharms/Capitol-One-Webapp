@@ -1,13 +1,19 @@
 <% provide(:title, @customer.first_name) %>
+<div class="container">
+	
+	<div class="title-left"><h3 class="page-title"><%=@customer.last_name%>, <%=@customer.first_name%></h3></div>
+	<div class="title-right"><h3 class="page-title"><%=@customer.email%></h3></div>
+	<div class="clear-float"></div>
 
-<h3 class="page-title"><%=@customer.last_name%>, <%=@customer.first_name%></h3>
-<h3 class="page-title"><%=@customer.email%></h3>
-<h3 class="page-title"><%=@customer.id%></h3>
+	<div class="col-md-2 user-info">
+		<%= link_to({:controller => 'employees', :action => 'create_ticket', :customer_id => @customer.id}) do %>
+		    <div class="create-ticket">Create Ticket</div>
+		<% end %>
+		<h4><br>Customer ID: <%=@customer.id%></h4>
+	</div>
 
-    <%= link_to({:controller => 'employees', :action => 'create_ticket', :customer_id => @customer.id}) do %>
-        <div class="create-ticket">Create Ticket</div>
-    <% end %>
-    
-<div class="col-md-10">
-    <%= render 'shared/ticket_list' %>
+	<div class="col-md-10">
+	    <%= render 'shared/ticket_list' %>
+	</div>
+
 </div>

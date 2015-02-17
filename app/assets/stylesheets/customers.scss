@@ -1,3 +1,63 @@
 // Place all the styles related to the Customers controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.customer-search{
+	float: right;
+	.button{
+		display: block;
+		width: 100px;
+		float: left;
+		margin-right: 10px;
+	}
+	.search-bar{
+		display: block;
+		width: 200px;
+		float: left;
+		margin-right: 20px;
+	}
+}
+
+.search-customer-field{
+	-webkit-border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #848484; 
+    outline:0; 
+    text-wrap: normal;
+    min-height:35px;
+    resize: none;
+    padding-left: 5px;
+}
+
+.create-ticket{
+	width: 120px;
+	margin: 25px 0 10px 0;
+	padding: 5px 10px;
+	color: #FFFFFF;
+	text-align: center;
+	font-weight: 450;
+	font-size: 1.1em;
+	background: #002e5a;
+	border: 1px solid #f3f3f3;
+	border-radius: 10px;
+}
+
+.title-left{
+	float: left;
+}
+
+.title-right{
+	float: right;
+	padding-right: 20px;
+}
+
+.div-align-right{
+	float: right;
+}
+
+.div-align-left{
+	float: left;
+    display: block;
+    width: 70%;
+}
