@@ -1,7 +1,7 @@
 <li id="ticket-<%= ticket.id %>">
   <%= link_to gravatar_for(ticket.customer, size: 50), ticket.customer %>
   <span class="user"><%= link_to ticket.customer.first_name, ticket.customer %></span>
-  <span class="content"><%= ticket.title %></span>
+  <span class="content"><%= ticket.title %>  </span>
   <span class="timestamp">
     Posted <%= time_ago_in_words(ticket.created_at) %> ago.
     <% if current_customer?(ticket.customer) %>
