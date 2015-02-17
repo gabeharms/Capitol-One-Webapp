@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20150212153208) do
     t.integer  "employee_id"
     t.boolean  "initiator"
     t.text     "message"
+    t.string   "picture"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

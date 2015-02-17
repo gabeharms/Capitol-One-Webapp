@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
   def create
     
     @ticket = Ticket.find_by(id: params[:comment][:id])
-    @comment = Ticket.find_by(id: params[:comment][:id]).comments.build(message: params[:comment][:message])
+    @comment = Ticket.find_by(id: params[:comment][:id]).comments.build(message: params[:comment][:message], picture: params[:comment][:picture])
 
     if ( employee_logged_in? )
       @comment.employee = current_employee
@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
   private
 
     def comment_params
-      params.require(:comment).permit(:id, :message, :comment_id)
+      params.require(:comment).permit(:id, :message, :comment_id, :picture)
     end
     
                                                         #implemented once employees have tickets
