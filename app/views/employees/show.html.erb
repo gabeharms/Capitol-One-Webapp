@@ -32,10 +32,10 @@
     <div class="col-md-2 empl-filter-bar" id="two-four">
       <a href="#" id="create-popup"><div class="create-ticket-e">Create Ticket</div></a>
       <div class="refine-label">Refine by</div>
-      <%= link_to({:action => 'display_tickets', :filter => '1'}) do %>
+      <%= link_to({:filter => '1'}) do %>
         <div class="item">Most Recent</div>
       <% end %>
-      <%= link_to({:action => 'display_tickets', :filter => '2'}) do %>
+      <%= link_to({:filter => '2'}) do %>
         <div class="item">Least Recent</div>
       <% end %>
       <div class="item">Priority</div>
@@ -48,7 +48,7 @@
       <div class="refine-label">Categories</div>
       
       <% @category.each do |category| %> 
-        <%= link_to({:action => 'display_tickets', :category => category.id}) do %>  
+        <%= link_to({:category => category.id}) do %>  
           <div class="item"><%= category.name %></div>
         <% end %>
       <% end %>

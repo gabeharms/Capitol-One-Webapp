@@ -18,6 +18,14 @@ class CustomersController < ApplicationController
   def show_info
     @customer = Customer.find(params[:id])
     @tickets = @customer.tickets.paginate(page: params[:page])
+
+    customer_id = params[:customer_id]
+    if !customer_id.nil?
+      @customer = Customer.find(customer_id)
+    end
+    @employee = current_employee
+    @ticket = @tickets.build if employee_logged_in?
+    @catagories = TicketCatagory.all
   end
   
   def index
