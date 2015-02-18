@@ -1,20 +1,33 @@
 <% provide(:title, @customer.first_name) %>
-<div class="row">
-  <aside class="col-md-4">
-    <!--<section class="user_info">
-        <%= render 'shared/customer_info' %>
-      </section>-->
-      <section class="micropost_form">
-        <h3>What's Your Question?</h3>
-        <div class="spacer20"></div>
-        <%= render 'shared/ticket_form' %>
-      </section>
-  </aside>
-  <div class="col-md-8">
-    <% if @customer.tickets.any? %>
-      <h3>Tickets (<%= @customer.tickets.count %>)</h3>
-            <%= render 'shared/ticket_list' %>
+<script>
+    $(document).ready(function(){
+      $("#toggler").hide();
 
+      $("#create-toggle").click(function(){
+        $("#toggler").toggle('slide');
+        return false;
+      });
+    });
+</script>
+<div class="row">
+  <div class="col-md-8">
+    <div>
+      <a href="#" id="create-toggle"><div class="create-ticket">Create Ticket</div></a>
+      <h3 class="title-left">Tickets (<%= @customer.tickets.count %>)</h3>
+      <div class="clear-float"></div>
+    </div>
+    <% if @customer.tickets.any? %>  
+            <%= render 'shared/ticket_list' %>
     <% end %>
   </div>
+  <aside class="col-md-4">
+      <div id="toggler">
+        <div class="spacer20"></div>
+        <div class="spacer20"></div>
+        <h3>What's your Question?</h3>
+        <section class="micropost_form">
+          <%= render 'shared/ticket_form' %>
+        </section>
+      </div>
+  </aside>
 </div>
