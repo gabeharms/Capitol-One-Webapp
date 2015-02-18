@@ -40,7 +40,8 @@ customers = Customer.order(:created_at).take(6)
   customers.each { |customer| customer.tickets.create!(title: title) }
 end
 
-10.times do |i|
-  name = Faker::Hacker.adjective
+catagories = ['Checking Account', 'Savings Account', 'Credit Card', 'Customer Settings', 'Lost Password', 'Issue with Website']
+catagories.each do |i|
+  name = i
   TicketCatagory.create(name: name)
 end
