@@ -9,6 +9,9 @@ class CommentsController < ApplicationController
     @comment = Ticket.find_by(id: params[:comment][:id]).comments.build(message: params[:comment][:message], picture: params[:comment][:picture])
 
     if ( employee_logged_in? )
+      @ticket.employee = current_employee
+      @ticket.save
+      
       @comment.employee = current_employee
       @comment.initiator = true
     else
@@ -22,7 +25,7 @@ class CommentsController < ApplicationController
       flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
     end
       
-    redirect_to @ticket   # This changes once the Ticket Conversation page has been created
+    redirect_to @ticket   # This changes once the Ticket Conversation page has been created0
   end
  
   # Further Implemented once the ticket pages can be viewed
