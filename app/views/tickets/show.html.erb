@@ -4,7 +4,7 @@
       <h3>Issue: <%= @ticket.title %></h3>
       <% if @ticket.created_by_customer == false %>
         This ticket was created by a Capitol One Agent<br>
-      <% elsif !employee_logged_in?  %>
+      <% elsif @ticket.created_by_customer == false  %>
         This ticket was created by you.<br>  
       <% end %>
       <% if !@ticket.employee.nil? %>

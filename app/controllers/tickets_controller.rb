@@ -25,7 +25,7 @@ class TicketsController < ApplicationController
      
       @ticket.employee = current_employee
       @ticket.ticket_open    = true
-      @ticket.created_by_customer = true
+      @ticket.created_by_customer = false
       @ticket.visible = true
       
       if @ticket.save
