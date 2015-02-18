@@ -30,38 +30,7 @@
   <div class="row">
     <h3 class="page-title">Open Tickets (<%= @tickets.count %>)</h3>
     <div class="col-md-2 empl-filter-bar" id="two-four">
-      <a href="#" id="create-popup"><div class="create-ticket-e">Create Ticket</div></a>
-      <div class="refine-label">Refine by</div>
-      <%= link_to({:action => 'display_tickets', :filter => 'Most_Recent'}) do %>
-        <div class="item">Most Recent</div>
-      <% end %>
-      <%= link_to({:action => 'display_tickets', :filter => 'Least_Recent'}) do %>
-        <div class="item">Least Recent</div>
-      <% end %>
-      <%= link_to({:action => 'display_tickets', :filter => 'All'}) do %>
-        <div class="item">All</div>
-      <% end %>
-
-      <% @statuses.each do |status| %> 
-        <%= link_to({:action => 'display_tickets', :status => status.id}) do %>  
-          <div class="item"><%= status.status %></div>
-        <% end %>
-      <% end %>
-      
-      <div class="refine-label">Analyze</div>
-      <%= link_to({:action => 'display_statistics'}) do %>
-        <div class="item">Statistics</div>
-      <% end %>
-      <div class="refine-label">Search for</div>
-      <div class="item">search box...</div>
-      <div class="refine-label">Categories</div>
-      
-      <% @category.each do |category| %> 
-        <%= link_to({:action => 'display_tickets', :category => category.id}) do %>  
-          <div class="item"><%= category.name %></div>
-        <% end %>
-      <% end %>
-      
+      <%= render 'shared/filter_column' %>
     </div>
     <div class="col-md-10" id="ten-eight">
       <%= render 'shared/all_tickets_list' %>
