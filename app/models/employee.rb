@@ -1,5 +1,6 @@
 class Employee < ActiveRecord::Base
   
+  has_many :tickets
   
   before_save { email.downcase! }
   

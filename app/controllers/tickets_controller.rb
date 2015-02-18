@@ -4,8 +4,14 @@ class TicketsController < ApplicationController
   before_action :correct_user, only: [:show, :destroy]
   
   def create
+    
     if(customer_logged_in?)
       @ticket = current_customer.tickets.build(ticket_params)
+      
+      @ticket.ticket_open    = true
+      @ticket.created_by_customer = true
+      @ticket.visible = true
+      
       if @ticket.save
         flash[:success] = "Ticket Created! You'll be hearing from us shortly."
         redirect_to current_customer
@@ -16,7 +22,12 @@ class TicketsController < ApplicationController
       end
     elsif(employee_logged_in?)
       @ticket = Ticket.new(ticket_params)
-      @ticket.employee_id = current_employee.id
+     
+      @ticket.employee = current_employee
+      @ticket.ticket_open    = true
+      @ticket.created_by_customer = true
+      @ticket.visible = true
+      
       if @ticket.save
         flash[:success] = "Ticket Created!"
         redirect_to current_employee
