@@ -23,4 +23,5 @@
 /spring/*.pid
 
 # Ignore bullshit
-/.c9
+/.c9/metadata/tab0
+/.c9/metadata/tab7
