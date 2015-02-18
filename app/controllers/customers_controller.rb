@@ -13,11 +13,15 @@ class CustomersController < ApplicationController
     @ticket = current_customer.tickets.build if customer_logged_in?
     @comment = current_customer.tickets.first.comments.build if customer_logged_in?
     @catagories = TicketCatagory.all
+    @open_tickets = @customer.tickets.where(ticket_open: true)
+    @closed_tickets = @customer.tickets.where(ticket_open: false)
   end
   
   def show_info
     @customer = Customer.find(params[:id])
     @tickets = @customer.tickets.paginate(page: params[:page])
+    @open_tickets = @customer.tickets.where(ticket_open: true)
+    @closed_tickets = @customer.tickets.where(ticket_open: false)
 
     customer_id = params[:customer_id]
     if !customer_id.nil?
@@ -32,7 +36,8 @@ class CustomersController < ApplicationController
     if params[:search] == ''  #checks if search field contains anything. This is usefull, when user searches for something then deletes the search
       @customers = Customer.all.paginate(page: params[:page])
     elsif params[:search]
-      @customers = Customer.where(:first_name => params[:search]).paginate(page: params[:page])
+      first_name = params[:search]
+      @customers = Customer.where("lower(first_name) = ?", first_name.downcase).paginate(page: params[:page])
     else
       @customers = Customer.all.paginate(page: params[:page])
     end
