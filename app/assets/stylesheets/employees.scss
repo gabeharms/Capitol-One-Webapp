@@ -44,3 +44,18 @@
 		border-radius: 10px;
 	}
 }
+.pop-up-container{
+	position: fixed;
+	z-index: 99;
+	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+	.pop-up{
+		position: relative;
+		margin: auto;
+		padding: 20px;
+		border: 1px solid #e8e8e8;
+		border-radius: 10px;
+		background: #FFFFFF;
+	}
+}
