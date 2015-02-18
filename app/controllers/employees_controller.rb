@@ -10,6 +10,8 @@ class EmployeesController < ApplicationController
     @employee = Employee.find(params[:id])
     @tickets = current_employee.tickets.paginate(page: params[:page])
     @ticket = @tickets.build if employee_logged_in?
+    @open_tickets = @employee.tickets.where(ticket_open: true)
+    @closed_tickets = @employee.tickets.where(ticket_open: false)
     @category = TicketCatagory.all
     @catagories = @category
     customer_id = params[:customer_id]
