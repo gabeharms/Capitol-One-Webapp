@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(version: 20150212153208) do
     t.integer  "ticket_status_id"
     t.boolean  "visible",                        default: true
     t.boolean  "created_by_customer"
-    t.boolean  "ticket_open"
     t.string   "title",               limit: 50
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false

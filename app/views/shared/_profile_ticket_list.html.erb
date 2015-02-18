@@ -1,33 +1,21 @@
 <ol class="ticket-list">
-  <h3>Open Tickets:</h3>
-  <% @open_tickets.each do |ticket| %>
-    <li>
-      <div class="ticket-info">
-        <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
-        <p class="timestamp">
-          <%= time_ago_in_words(ticket.created_at).capitalize %> ago
-        </p>
-      </div>
-      <div class="div-align-right">
-            <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
+  
+  <% TicketStatus.all.each do |status| %>
+    <h3><%=status.status%></h3>
+      <% @tickets.where(ticket_status_id: status.id).each do |ticket| %>
+      <li>
+        <div class="ticket-info">
+          <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
+          <p class="timestamp">
+            <%= time_ago_in_words(ticket.created_at).capitalize %> ago
+          </p>
         </div>
-      <div class="clear-float"></div>
-    </li>
-  <% end %>
-  <h3>Closed Tickets:</h3>
-  <% @closed_tickets.each do |ticket| %>
-    <li>
-      <div class="ticket-info">
-        <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
-        <p class="timestamp">
-          <%= time_ago_in_words(ticket.created_at).capitalize %> ago
-        </p>
-      </div>
-      <div class="div-align-right">
-            <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-        </div>
-      <div class="clear-float"></div>
-    </li>
+        <div class="div-align-right">
+              <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
+          </div>
+        <div class="clear-float"></div>
+      </li>
+    <% end %>
   <% end %>
 </ol>
 <%= will_paginate @tickets %>

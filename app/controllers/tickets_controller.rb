@@ -8,7 +8,7 @@ class TicketsController < ApplicationController
     if(customer_logged_in?)
       @ticket = current_customer.tickets.build(ticket_params)
       
-      @ticket.ticket_open    = true
+      @ticket.ticket_status_id = 1
       @ticket.created_by_customer = true
       @ticket.visible = true
       
@@ -24,7 +24,7 @@ class TicketsController < ApplicationController
       @ticket = Ticket.new(ticket_params)
      
       @ticket.employee = current_employee
-      @ticket.ticket_open    = true
+      @ticket.ticket_status_id = 1
       @ticket.created_by_customer = false
       @ticket.visible = true
       

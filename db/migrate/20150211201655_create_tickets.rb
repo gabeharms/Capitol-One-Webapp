@@ -7,7 +7,6 @@ class CreateTickets < ActiveRecord::Migration
       t.references :ticket_status,   index: true
       t.boolean "visible", :default => true 
       t.boolean "created_by_customer"
-      t.boolean "ticket_open"
       t.string  "title",   :limit => 50
 
       t.timestamps null: false

@@ -6,11 +6,11 @@ class CommentsController < ApplicationController
   def create
     
     @ticket = Ticket.find_by(id: params[:comment][:id])
+    @ticket.ticket_status_id = 1
     @comment = Ticket.find_by(id: params[:comment][:id]).comments.build(message: params[:comment][:message], picture: params[:comment][:picture])
 
     if ( employee_logged_in? )
       @ticket.employee = current_employee
-      @ticket.save
       
       @comment.employee = current_employee
       @comment.initiator = true
@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
       @comment.initiator = false 
     end
 
-    if @comment.save
+    if @comment.save && @ticket.save
       flash[:success] = "Comment Posted!"
     else
       flash[:danger]  = "Invalid Comment. Please tell us what your issue is."

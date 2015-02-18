@@ -37,7 +37,7 @@ end
 customers = Customer.order(:created_at).take(6)
 50.times do
   title = Faker::Lorem.sentence(word_count = 4)
-  customers.each { |customer| customer.tickets.create!(title: title) }
+  customers.each { |customer| customer.tickets.create!(title: title, ticket_status_id: 1)}
 end
 
 catagories = ['Checking Account', 'Savings Account', 'Credit Card', 'Customer Settings', 'Lost Password', 'Issue with Website']
