@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'customer_signup'  => 'customers#new'
   get 'employee_signup'  => 'employees#new'
   get 'employee_tickets' => 'employees#display_tickets'
+  post 'update_status' => 'tickets#update_status'
   
   get    'customer_login'   => 'customer_sessions#new'
   post   'customer_login'   => 'customer_sessions#create'
@@ -53,7 +54,7 @@ Rails.application.routes.draw do
   
 #  resources :account_activations, only: [:edit] 
 #  resources :password_resets,     only: [:new, :create, :edit, :update]
-   resources :tickets,          only: [:create, :destroy, :show]
+   resources :tickets,          only: [:create, :destroy, :show, :update]
    resources :comments,          only: [:create, :destroy]
 #  resources :relationships,       only: [:create, :destroy]
   

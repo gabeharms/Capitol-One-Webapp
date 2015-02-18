@@ -11,11 +11,16 @@
           </p>
         </div>
         <div class="div-align-right">
+          <% if ticket.ticket_status_id == 1 %>
+              <%= button_to "resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
+          <% elsif ticket.ticket_status_id == 2 %>
+              <%= button_to "reopen", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
+          <% end %>
               <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
           </div>
         <div class="clear-float"></div>
       </li>
     <% end %>
+    <%= will_paginate @tickets %>
   <% end %>
 </ol>
-<%= will_paginate @tickets %>
