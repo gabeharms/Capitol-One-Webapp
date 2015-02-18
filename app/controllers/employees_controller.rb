@@ -1,6 +1,6 @@
 class EmployeesController < ApplicationController
-  before_action :logged_in_employee, only: [:edit, :update, :display_tickets]
-  before_action :correct_employee,   only: [:edit, :update]
+  before_action :logged_in_employee, only: [:edit, :update, :display_tickets, :show]
+  before_action :correct_employee,   only: [:edit, :update, :show]
   
   def new
     @employee = Employee.new
@@ -8,7 +8,7 @@ class EmployeesController < ApplicationController
 
   def show
     @employee = Employee.find(params[:id])
-    @tickets = Ticket.paginate(page: params[:page])
+    @tickets = current_employee.tickets.paginate(page: params[:page])
   end
   
   def display_tickets
@@ -54,9 +54,9 @@ class EmployeesController < ApplicationController
     @employee = Employee.new(employee_params)    # Not the final implementation!
     if @employee.save
       flash[:success] = "Welcome to the Sample App!"
-      redirect_to @employee
+      redirect_to employee_tickets_path
     else
-      render 'new'
+      render 'employees/new'
     end
   end
   
