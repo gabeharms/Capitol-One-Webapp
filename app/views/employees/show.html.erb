@@ -1,25 +1,61 @@
-<!-- this page is now display_tickets.html.erb -->
-<!--<% provide(:title, @employee.first_name) %>
-<div class="row">
-  <div class="empl-filter-bar">
-  	  <div class="label">Filter:</div>
-      <div class="item">Most Recent</div>
-      <div class="item">Least Recent</div>
+<% provide(:title, @employee.first_name) %>
+<script>
+    $(document).ready(function(){
+      $("#pop-up-toggle").hide();
+
+      $("#create-popup").click(function(){
+        $("#pop-up-toggle").fadeToggle();
+        $("#container").fadeTo( "fast", 0.5 );
+        return false;
+      });
+
+      $("#hide-popup").click(function(){
+        $("#pop-up-toggle").fadeToggle();
+        $("#container").fadeTo( "fast", 1 );
+        return false;
+      });
+    });
+</script>
+<div class="pop-up-container" id="pop-up-toggle">
+  <div class="pop-up">
+    <h3>Create Ticket</h3>
+    <a href="#" id="hide-popup">Close</a>
+    <div class="spacer20"></div>
+    <section class="micropost_form">
+      <%= render 'shared/ticket_form' %>
+    </section>
+  </div>
+</div>
+<div class=".container-fluid" id="container">
+  <div class="row">
+    <h3 class="page-title"><%= @employee.first_name %>: Tickets (<%= @tickets.count %>)</h3>
+    <div class="col-md-2 empl-filter-bar" id="two-four">
+      <a href="#" id="create-popup"><div class="create-ticket-e">Create Ticket</div></a>
+      <div class="refine-label">Refine by</div>
+      <%= link_to({:action => 'display_tickets', :filter => '1'}) do %>
+        <div class="item">Most Recent</div>
+      <% end %>
+      <%= link_to({:action => 'display_tickets', :filter => '2'}) do %>
+        <div class="item">Least Recent</div>
+      <% end %>
       <div class="item">Priority</div>
       <div class="item">Customer</div>
       <div class="item">Last Filter</div>
+      <div class="refine-label">Analyze</div>
+      <div class="item">Statistics</div>
+      <div class="refine-label">Search for</div>
+      <div class="item">search box...</div>
+      <div class="refine-label">Categories</div>
+      
+      <% @category.each do |category| %> 
+        <%= link_to({:action => 'display_tickets', :category => category.id}) do %>  
+          <div class="item"><%= category.name %></div>
+        <% end %>
+      <% end %>
+      
+    </div>
+    <div class="col-md-10" id="ten-eight">
+      <%= render 'shared/ticket_list' %>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div>
-      <h3>Tickets (<%= @tickets.count %>)</h3>
-      <ol class="ticket-list">
-        <% @tickets.each do |ticket| %>
-          <li>
-            <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
-          </li>
-        <% end %>
-      </ol>
-      <%= will_paginate @tickets %>
-  </div>
-</div>-->

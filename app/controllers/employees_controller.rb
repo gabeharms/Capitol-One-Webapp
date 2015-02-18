@@ -7,8 +7,29 @@ class EmployeesController < ApplicationController
   end
 
   def show
-    @employee = Employee.find(params[:id])
+    @employee = current_employee
+    @category = TicketCatagory.all
     @tickets = Ticket.paginate(page: params[:page])
+    @ticket = @tickets.build if employee_logged_in?
+    @catagories = TicketCatagory.all
+    customer_id = params[:customer_id]
+    filter = params[:filter]
+    category = params[:category]
+    if filter.nil?
+      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
+    elsif filter == '1'
+      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
+    elsif filter == '2'
+      @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
+    end
+
+    if !category.nil?
+      @tickets = Ticket.where(ticket_category_id: category).paginate(page: params[:page])
+    end
+    
+    if !customer_id.nil?
+      @customer = Customer.find(customer_id)
+    end
   end
   
   def display_tickets
