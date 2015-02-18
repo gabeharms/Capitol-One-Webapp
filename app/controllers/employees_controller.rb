@@ -1,35 +1,14 @@
 class EmployeesController < ApplicationController
-  before_action :logged_in_employee, only: [:edit, :update, :display_tickets]
-  before_action :correct_employee,   only: [:edit, :update]
+  before_action :logged_in_employee, only: [:edit, :update, :display_tickets, :show]
+  before_action :correct_employee,   only: [:edit, :update, :show]
   
   def new
     @employee = Employee.new
   end
 
   def show
-    @employee = current_employee
-    @category = TicketCatagory.all
-    @tickets = Ticket.paginate(page: params[:page])
-    @ticket = @tickets.build if employee_logged_in?
-    @catagories = TicketCatagory.all
-    customer_id = params[:customer_id]
-    filter = params[:filter]
-    category = params[:category]
-    if filter.nil?
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == '1'
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == '2'
-      @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
-    end
-
-    if !category.nil?
-      @tickets = Ticket.where(ticket_category_id: category).paginate(page: params[:page])
-    end
-    
-    if !customer_id.nil?
-      @customer = Customer.find(customer_id)
-    end
+    @employee = Employee.find(params[:id])
+    @tickets = current_employee.tickets.paginate(page: params[:page])
   end
   
   def display_tickets
@@ -75,9 +54,9 @@ class EmployeesController < ApplicationController
     @employee = Employee.new(employee_params)    # Not the final implementation!
     if @employee.save
       flash[:success] = "Welcome to the Sample App!"
-      redirect_to @employee
+      redirect_to employee_tickets_path
     else
-      render 'new'
+      render 'employees/new'
     end
   end
   
