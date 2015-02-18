@@ -45,3 +45,9 @@ catagories.each do |i|
   name = i
   TicketCatagory.create(name: name)
 end
+
+statuses = ['In Progess','Resolved']
+statuses.each do |s|
+  TicketStatus.create(status: s)
+end
+
