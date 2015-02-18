@@ -58,6 +58,21 @@ class TicketsController < ApplicationController
     @customer = Customer.find_by(id: @ticket.customer_id)
     @category = TicketCatagory.find_by(id: @ticket.ticket_category_id)
   end
+  
+  def update_status
+    ticket = params[:ticket_id]
+    if !ticket.nil?
+      ticket = Ticket.find(ticket)
+      if ticket.ticket_status_id == 1
+        ticket.ticket_status_id = 2
+      elsif ticket.ticket_status_id == 2
+        ticket.ticket_status_id = 1
+      end
+      
+      ticket.save
+    end
+    redirect_to request.referrer
+  end
 
   private
 
