@@ -9,6 +9,27 @@ class EmployeesController < ApplicationController
   def show
     @employee = Employee.find(params[:id])
     @tickets = current_employee.tickets.paginate(page: params[:page])
+    @ticket = @tickets.build if employee_logged_in?
+    @category = TicketCatagory.all
+    @catagories = @category
+    customer_id = params[:customer_id]
+    filter = params[:filter]
+    category = params[:category]
+    if filter.nil?
+      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
+    elsif filter == '1'
+      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
+    elsif filter == '2'
+      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
+    end
+
+    if !category.nil?
+      @tickets = current_employee.tickets.where(ticket_category_id: category, employee_id: current_employee).paginate(page: params[:page])
+    end
+    
+    if !customer_id.nil?
+      @customer = Customer.find(customer_id)
+    end
   end
   
   def display_tickets
@@ -38,17 +59,7 @@ class EmployeesController < ApplicationController
     
   end
 
-  # don't need this create_ticket section or page if new slide feature accepted
-  def create_ticket
-    customer_id = params[:customer_id]
-    if !customer_id.nil?
-      @customer = Customer.find(customer_id)
-    end
-    @employee = current_employee
-    @tickets = Ticket.paginate(page: params[:page])
-    @ticket = @tickets.build if employee_logged_in?
-    @catagories = TicketCatagory.all
-  end
+
   
   def create
     @employee = Employee.new(employee_params)    # Not the final implementation!
