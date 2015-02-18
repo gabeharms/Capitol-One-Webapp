@@ -42,7 +42,9 @@
       <div class="item">Customer</div>
       <div class="item">Last Filter</div>
       <div class="refine-label">Analyze</div>
-      <div class="item">Statistics</div>
+      <%= link_to({:action => 'display_statistics'}) do %>
+        <div class="item">Statistics</div>
+      <% end %>
       <div class="refine-label">Search for</div>
       <div class="item">search box...</div>
       <div class="refine-label">Categories</div>
