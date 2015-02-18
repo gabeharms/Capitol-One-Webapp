@@ -1,0 +1,6 @@
+<% provide(:title, "Statistics") %>
+<h1>Statistics</h1>
+    <% @categories.each do |category| %> 
+    	<h3><div class="category"><%= category.name %></h3>
+    	<div class="ticket"><%= @tickets.where(ticket_category_id: category.id).count %>  / <%= @tickets.count %>
+	<% end %>

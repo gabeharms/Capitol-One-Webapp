@@ -65,6 +65,11 @@ class EmployeesController < ApplicationController
     
   end
 
+  def display_statistics
+    @categories = TicketCatagory.all
+    @tickets = Ticket.all
+  end
+
 
   
   def create

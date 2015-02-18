@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   delete 'employee_logout'  => 'employee_sessions#destroy'
 
   delete 'destroy_comment'   => 'comments#destroy'
+
+  get 'statistics' => 'employees#display_statistics'
 #  get 'signup'  => 'users#new'
   
 #  get    'login'   => 'sessions#new'
