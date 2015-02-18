@@ -1,11 +1,32 @@
 <% provide(:title, @employee.first_name) %>
+<script>
+    $(document).ready(function(){
+      $("#toggler").hide();
+
+      $("#create-toggle").click(function(){
+        //$("#two-four").toggleClass("col-md-2 col-md-4");
+        //$("#ten-eight").toggleClass("col-md-10 col-md-8", 1000);
+        $("#toggler").toggle('slide');
+        return false;
+      });
+
+
+    });
+</script>
+
 <div class=".container-fluid">
   <div class="row">
     <h3 class="page-title">Open Tickets (<%= @tickets.count %>)</h3>
-    <div class="col-md-2 empl-filter-bar">
-      <%= link_to create_ticket_path do %>
-        <div class="create-ticket">Create Ticket</div>
-      <% end %>
+    <div class="col-md-2 empl-filter-bar" id="two-four">
+      <!--<%= link_to create_ticket_path do %>-->
+      <a href="#" id="create-toggle"><div class="create-ticket">Create Ticket</div></a>
+      <!--<% end %>-->
+      <div id="toggler">
+        <div class="spacer20"></div>
+        <section class="micropost_form">
+          <%= render 'shared/ticket_form' %>
+        </section>
+      </div>
       <div class="refine-label">Refine by</div>
       <%= link_to({:action => 'display_tickets', :filter => '1'}) do %>
         <div class="item">Most Recent</div>
@@ -29,7 +50,7 @@
       <% end %>
       
     </div>
-    <div class="col-md-10">
+    <div class="col-md-10" id="ten-eight">
       <%= render 'shared/ticket_list' %>
     </div>
   </div>
