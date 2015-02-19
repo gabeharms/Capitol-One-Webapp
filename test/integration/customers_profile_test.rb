@@ -16,8 +16,8 @@ class CustomersProfileTest < ActionDispatch::IntegrationTest
     #assert_select 'h1>img.gravatar'
     #assert_match @customer.tickets.count.to_s, response.body
     #assert_select 'div.pagination'
-    @customer.tickets.paginate(page: 1).each do |ticket|
-      assert_match ticket.title, response.body
-    end
+    #@customer.tickets.paginate(page: 1).each do |ticket|
+     # assert_match ticket.title, response.body
+    #send
   end
 end

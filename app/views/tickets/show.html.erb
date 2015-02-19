@@ -3,12 +3,12 @@
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
       <% if @ticket.created_by_customer == false %>
-        This ticket was created by a Capital One Agent<br>
+        This ticket was created by a Capitol One Agent<br>
       <% elsif @ticket.created_by_customer == false  %>
         This ticket was created by you.<br>  
       <% end %>
-      <% if !@ticket.employee.nil? %>
-        Your current Capital One service representative is <%= @ticket.employee.first_name %><br>
+      <% if !@ticket.employee.nil? && customer_logged_in? %>
+        Your current Capitol One service representative is <%= @ticket.employee.first_name %><br>
       <% end %>
       <% if employee_logged_in? && @ticket.customer_id != nil %>
         This ticket belongs to customer: <%= @customer.first_name %> <%= @customer.last_name %><br>  
