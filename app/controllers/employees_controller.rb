@@ -12,15 +12,22 @@ class EmployeesController < ApplicationController
     @ticket = @tickets.build if employee_logged_in?
     @category = TicketCatagory.all
     @catagories = @category
+    @statuses = TicketStatus.all
     customer_id = params[:customer_id]
     filter = params[:filter]
     category = params[:category]
-    if filter.nil?
+    status = params[:status]
+    if filter.nil? && status.nil?
       @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == '1'
+    elsif filter == 'Most_Recent'
       @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == '2'
+    elsif filter == 'Least_Recent'
       @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
+    elsif filter == 'All'
+      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
+    elsif !status.nil?
+      @tickets = current_employee.tickets.where(ticket_status_id: status).paginate(page: params[:page])
+
     end
 
     if !category.nil?
