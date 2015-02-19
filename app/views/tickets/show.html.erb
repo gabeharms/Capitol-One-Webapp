@@ -29,7 +29,8 @@
               <p class="comment-name">Employee (<%= comment.employee.first_name %>)</p>
           <% end %>
                 <%= comment.message %>
-                <%= image_tag comment.picture.url if comment.picture? %>
+                <p class="comment-attachment">Attachments:</p>
+                  <%= image_tag comment.picture.url if comment.picture? %>
                 <p class="timestamp">
                   <%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %>
                 </p>
@@ -52,12 +53,12 @@
         <%= form_for(@comment, html: { multipart: true }) do |f| %>
           <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
           <%= f.hidden_field :id, :value => @ticket.id %>
-          <%= f.submit "Post", class: "btn btn-primary post-comment" %>
           <% if customer_logged_in? %>
             <span class="picture">
               <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
             </span>
           <% end %>
+          <%= f.submit "Post", class: "btn btn-primary post-comment" %>
         <% end %>
         <script type="text/javascript">
           $('#ticket_picture').bind('change', function() {
