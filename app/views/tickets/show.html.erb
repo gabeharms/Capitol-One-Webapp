@@ -2,13 +2,33 @@
 <div class="row">
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
+      <% if employee_logged_in? %>
+        <% if @ticket.employee_id == current_employee.id %>
+          <div class="float-right margin-right">
+            <% if @ticket.ticket_status_id == 1 %>
+                <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
+            <% elsif @ticket.ticket_status_id == 2 %>
+                <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+      <% if customer_logged_in? %>
+        <div class="float-right margin-right">
+          <% if @ticket.ticket_status_id == 1 %>
+              <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
+          <% elsif @ticket.ticket_status_id == 2 %>
+              <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+          <% end %>
+        </div>
+      <% end %>
       <% if @ticket.created_by_customer == false %>
-        This ticket was created by a Capitol One Agent<br>
-      <% elsif @ticket.created_by_customer == false  %>
-        This ticket was created by you.<br>  
+        This ticket was created by a Capital One Agent<br>
+      <% elsif @ticket.created_by_customer == true  %>
+        This ticket was created by you.<br> 
       <% end %>
       <% if !@ticket.employee.nil? && customer_logged_in? %>
-        Your current Capitol One service representative is <%= @ticket.employee.first_name %><br>
+        Your current Capital One service representative is <%= @ticket.employee.first_name %><br>
       <% end %>
       <% if employee_logged_in? && @ticket.customer_id != nil %>
         This ticket belongs to customer: <%= @customer.first_name %> <%= @customer.last_name %><br>  
@@ -29,7 +49,10 @@
               <p class="comment-name">Employee (<%= comment.employee.first_name %>)</p>
           <% end %>
                 <%= comment.message %>
-                <%= image_tag comment.picture.url if comment.picture? %>
+                <% if comment.picture? %>
+                  <p class="comment-attachment">Attachments:</p>
+                  <%= image_tag comment.picture.url if comment.picture? %>
+                <% end %>
                 <p class="timestamp">
                   <%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %>
                 </p>
@@ -52,12 +75,12 @@
         <%= form_for(@comment, html: { multipart: true }) do |f| %>
           <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
           <%= f.hidden_field :id, :value => @ticket.id %>
-          <%= f.submit "Post", class: "btn btn-primary post-comment" %>
           <% if customer_logged_in? %>
             <span class="picture">
               <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
             </span>
           <% end %>
+          <%= f.submit "Post", class: "btn btn-primary post-comment" %>
         <% end %>
         <script type="text/javascript">
           $('#ticket_picture').bind('change', function() {
