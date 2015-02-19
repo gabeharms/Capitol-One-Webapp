@@ -2,6 +2,26 @@
 <div class="row">
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
+      <% if employee_logged_in? %>
+        <% if @ticket.employee_id == current_employee.id %>
+          <div class="float-right margin-right">
+            <% if @ticket.ticket_status_id == 1 %>
+                <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
+            <% elsif @ticket.ticket_status_id == 2 %>
+                <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+      <% if customer_logged_in? %>
+        <div class="float-right margin-right">
+          <% if @ticket.ticket_status_id == 1 %>
+              <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
+          <% elsif @ticket.ticket_status_id == 2 %>
+              <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+          <% end %>
+        </div>
+      <% end %>
       <% if @ticket.created_by_customer == false %>
         This ticket was created by a Capital One Agent<br>
       <% elsif @ticket.created_by_customer == true  %>
@@ -29,8 +49,10 @@
               <p class="comment-name">Employee (<%= comment.employee.first_name %>)</p>
           <% end %>
                 <%= comment.message %>
-                <p class="comment-attachment">Attachments:</p>
+                <% if comment.picture? %>
+                  <p class="comment-attachment">Attachments:</p>
                   <%= image_tag comment.picture.url if comment.picture? %>
+                <% end %>
                 <p class="timestamp">
                   <%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %>
                 </p>
