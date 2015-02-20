@@ -74,6 +74,16 @@ class TicketsController < ApplicationController
     redirect_to request.referrer
   end
 
+  def update_employee_on_ticket
+    ticket = params[:ticket_id]
+    if !ticket.nil?
+      ticket = Ticket.find(ticket)
+      ticket.employee = current_employee
+      ticket.save
+    end
+    redirect_to request.referrer
+  end
+
   private
 
     def ticket_params

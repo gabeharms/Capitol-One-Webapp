@@ -3,15 +3,17 @@
   <div>
       <h3>Issue: <%= @ticket.title %></h3>
       <% if employee_logged_in? %>
-        <% if @ticket.employee_id == current_employee.id %>
-          <div class="float-right margin-right">
+        <div class="float-right margin-right">
+          <% if @ticket.employee_id == current_employee.id %>
             <% if @ticket.ticket_status_id == 1 %>
                 <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
             <% elsif @ticket.ticket_status_id == 2 %>
                 <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
             <% end %>
-          </div>
-        <% end %>
+          <% elsif @ticket.employee_id == nil %>
+            <%= button_to "claim", update_employee_on_ticket_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+          <% end %>
+        </div>
       <% end %>
       <% if customer_logged_in? %>
         <div class="float-right margin-right">
