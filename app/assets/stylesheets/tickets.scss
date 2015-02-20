@@ -84,3 +84,9 @@
   padding: 15px 0 0 0;
   border-bottom: 1px solid #848484;
 }
+
+hr{
+  color: #333333;             //for IE
+  border-color: #333333;      //for chrome and firefox
+  background-color: #333333;  //for safari
+}

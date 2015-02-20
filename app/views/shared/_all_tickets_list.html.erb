@@ -8,8 +8,15 @@
         </p>
       </div>
       <div class="div-align-right">
-          <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-      </div>
+          <div class="float-right">
+            <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
+          </div>
+          <div class="float-right margin-right">
+            <% if employee_logged_in? && ticket.employee_id == nil %>
+                <%= button_to "claim", update_employee_on_ticket_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
+            <% end %>
+          </div>
+        </div>
       <div class="clear-float"></div>
     </li>
   <% end %>
