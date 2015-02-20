@@ -2,10 +2,14 @@ require 'test_helper'
 
 class CustomersIndexTest < ActionDispatch::IntegrationTest
   
-  
   def setup
     @customer = customers(:michael)
     @employee = employees(:michael)
+  end
+
+  def teardown
+    @customer = nil
+    @employee = nil
   end
 
   test "index as employee including pagination and delete links" do
