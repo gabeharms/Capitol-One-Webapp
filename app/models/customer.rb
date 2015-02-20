@@ -24,6 +24,10 @@ class Customer < ActiveRecord::Base
     end
   end
   
+  def self.search_by_first_name(first_name)
+    where("lower(first_name) = ?", first_name.downcase)
+  end
+  
    # Returns the hash digest of the given string.
   def Customer.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
