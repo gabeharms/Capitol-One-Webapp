@@ -17,6 +17,13 @@ class Customer < ActiveRecord::Base
   
   has_secure_password
   
+  # Named Scopes and Logic Functions
+  def self.search_by_id(id)
+    if !id.nil?
+      find(id)
+    end
+  end
+  
    # Returns the hash digest of the given string.
   def Customer.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
