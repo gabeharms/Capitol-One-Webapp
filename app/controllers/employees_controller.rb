@@ -2,6 +2,7 @@ class EmployeesController < ApplicationController
   before_action :logged_in_employee, only: [:edit, :update, :display_tickets, :show]
   before_action :correct_employee,   only: [:edit, :update, :show]
   
+  
   def new
     @employee = Employee.new
   end
@@ -50,26 +51,51 @@ class EmployeesController < ApplicationController
     filter = params[:filter]
     category = params[:category]
     status = params[:status]
-    if filter.nil? && status.nil?
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Most_Recent'
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Least_Recent'
-      @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
-    elsif filter == 'All'
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif !status.nil?
-      @tickets = Ticket.where(ticket_status_id: status).paginate(page: params[:page])
-    end
+    
+  
+    
+    order = params[:order_select]
+    
 
-    if !category.nil?
-      @tickets = Ticket.where(ticket_category_id: category).paginate(page: params[:page])
+    if order ==  'Most_Recent' || order.nil? 
+      if filter.nil? && status.nil?
+        @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
+      elsif filter == 'All'
+        @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
+      elsif !status.nil?
+        @tickets = Ticket.where(ticket_status_id: status).reorder("tickets.created_at DESC").paginate(page: params[:page])
+      end
+      
+      if !category.nil?
+        @tickets = Ticket.where(ticket_category_id: category).reorder("tickets.created_at DESC").paginate(page: params[:page])
+      end
+      
+      if !customer_id.nil?
+        @customer = Customer.find(customer_id)
+      end
+      
+    elsif order == 'Least_Recent'
+     if filter.nil? && status.nil?
+        @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
+     elsif filter == 'All'
+        @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
+     elsif !status.nil?
+        @tickets = Ticket.where(ticket_status_id: status).reorder("tickets.created_at ASC").paginate(page: params[:page])
+     end
+     
+      if !category.nil?
+        @tickets = Ticket.where(ticket_category_id: category).reorder("tickets.created_at ASC").paginate(page: params[:page])
+      end
+      
+      if !customer_id.nil?
+        @customer = Customer.find(customer_id)
+      end
     end
-    
-    if !customer_id.nil?
-      @customer = Customer.find(customer_id)
+  
+     respond_to do |format|
+      format.html { }
+      format.js 
     end
-    
   end
 
   def display_statistics
