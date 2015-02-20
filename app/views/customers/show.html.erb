@@ -10,24 +10,25 @@
     });
 </script>
 <div class="row">
-  <div class="col-md-8">
-    <div>
-      <a href="#" id="create-toggle"><div class="create-ticket">Create Ticket</div></a>
-      <h3 class="title-left">Tickets (<%= @customer.tickets.count %>)</h3>
-      <div class="clear-float"></div>
-    </div>
-    <% if @customer.tickets.any? %>  
-            <%= render 'shared/profile_ticket_list' %>
-    <% end %>
+  <div class="col-md-12">
+    <a href="#" id="create-toggle"><div class="create-ticket">Create Ticket</div></a>
+    <h3 class="title-left">Tickets (<%= @customer.tickets.count %>)</h3>
+    <div class="clear-float"></div>
   </div>
-  <aside class="col-md-4">
+  <aside class="col-md-12">
       <div id="toggler">
         <div class="spacer20"></div>
-        <div class="spacer20"></div>
-        <h3>What's your Question?</h3>
+        <hr>
+        <h2>What's your Question?</h2>
         <section class="micropost_form">
           <%= render 'shared/ticket_form' %>
         </section>
       </div>
   </aside>
+  <div class="col-md-12">
+    <% if @customer.tickets.any? %>  
+            <%= render 'shared/profile_ticket_list' %>
+    <% end %>
+  </div>
+  
 </div>
