@@ -20,7 +20,7 @@
 <div class="item">search box...</div>
 <div class="refine-label">Categories</div>
 
-<% @category.each do |category| %> 
+<% @catagories.each do |category| %> 
   <%= link_to({:action => 'display_tickets', :category => category.id}) do %>  
     <div class="item"><%= category.name %></div>
   <% end %>

@@ -5,6 +5,10 @@ class CustomersLoginTest < ActionDispatch::IntegrationTest
   def setup
     @customer = customers(:michael)
   end
+
+  def teardown
+    @customer = nil
+  end
   
   test "login with invalid information" do
     customer_log_in_as(@customer)

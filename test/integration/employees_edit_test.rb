@@ -2,9 +2,12 @@ require 'test_helper'
 
 class EmployeesEditTest < ActionDispatch::IntegrationTest
   
-  
   def setup
     @employee = employees(:michael)
+  end
+
+  def teardown
+    @employee = nil
   end
 
   test "unsuccessful edit" do

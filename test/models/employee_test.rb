@@ -7,6 +7,10 @@ class EmployeeTest < ActiveSupport::TestCase
                                 password: "foobar", password_confirmation: "foobar")
   end
 
+  def teardown
+    @employee = nil
+  end
+
   test "should be valid" do
     assert @employee.valid?
   end

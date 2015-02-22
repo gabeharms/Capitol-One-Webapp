@@ -8,7 +8,7 @@ class CustomersController < ApplicationController
   end
   
   def show
-    @customer = Customer.find(params[:id])
+    @customer = Customer.search_by_id(params[:id])
     @tickets = @customer.tickets.paginate(page: params[:page])
     @ticket = current_customer.tickets.build if customer_logged_in?
     @comment = current_customer.tickets.first.comments.build if customer_logged_in?
@@ -16,29 +16,24 @@ class CustomersController < ApplicationController
   end
   
   def show_info
-    @customer = Customer.find(params[:id])
+    @customer = Customer.search_by_id(params[:id])
     @tickets = @customer.tickets.paginate(page: params[:page])
-
-    customer_id = params[:customer_id]
-    if !customer_id.nil?
-      @customer = Customer.find(customer_id)
-    end
     @employee = current_employee
     @ticket = @tickets.build if employee_logged_in?
     @catagories = TicketCatagory.all
   end
   
+  # Add selection area for search type (last name, ID, etc) and pass this selection
+  # over as a hidden param ... then check that value here and call corresponding functions
   def index
     if params[:search] == ''  #checks if search field contains anything. This is usefull, when user searches for something then deletes the search
       @customers = Customer.all.paginate(page: params[:page])
     elsif params[:search]
-      first_name = params[:search]
-      @customers = Customer.where("lower(first_name) = ?", first_name.downcase).paginate(page: params[:page])
+      @customers = Customer.search_by_first_name(params[:search]).paginate(page: params[:page])
     else
       @customers = Customer.all.paginate(page: params[:page])
     end
   end
-  
   
   def create
     @customer = Customer.new(customer_params)       # Not the final implementation!

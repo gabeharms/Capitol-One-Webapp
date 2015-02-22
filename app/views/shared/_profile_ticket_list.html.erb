@@ -1,31 +1,7 @@
 <ol class="ticket-list">
-  
-  <% TicketStatus.all.each do |status| %>
-    <h3><%=status.status%></h3>
-      <%= params[:order_select] %>
-      <% tickets.where(ticket_status_id: status.id).reorder("tickets.created_at ASC").each do |ticket| %>
-      <li>
-        <div class="ticket-info">
-          <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
-          <p class="timestamp">
-            <%= time_ago_in_words(ticket.created_at).capitalize %> ago
-          </p>
-        </div>
-        <div class="div-align-right">
-          <div class="float-right">
-            <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-          </div>
-          <div class="float-right margin-right">
-            <% if ticket.ticket_status_id == 1 %>
-                <%= button_to "resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-primary' %>
-            <% elsif ticket.ticket_status_id == 2 %>
-                <%= button_to "reopen", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
-            <% end %>
-          </div>
-        </div>
-        <div class="clear-float"></div>
-      </li>
-    <% end %>
+
+  <% all_tickets.each do |tickets| %>
+    <h3><%= @statuses.find_by( id: tickets.first.ticket_status_id ).status %></h3>
+      <%= render 'shared/show_ticket_by_status', :ticket_list => tickets %>
   <% end %>
 </ol>
-<%= will_paginate tickets %>

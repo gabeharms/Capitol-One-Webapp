@@ -6,6 +6,11 @@ class EmployeesControllerTest < ActionController::TestCase
     @employee = employees(:michael)
     @other_user = employees(:archer)
   end
+
+  def teardown
+    @employee = nil
+    @other_user = nil
+  end
   
   test "should get new" do
     get :new
