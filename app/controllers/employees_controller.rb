@@ -15,26 +15,14 @@ class EmployeesController < ApplicationController
     @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
     @customer = Customer.search_by_id(params[:customer_id])
-    
-    @all_tickets ||= []
-    
     order = params[:order_select]
 
-    @statuses.each do |status|
-      if order == 'Most_Recent' || order.nil?
-        @all_tickets.push( current_employee.tickets.search_by_status(status.id).order_by_desc)
-      elsif order == 'Least_Recent'
-        @all_tickets.push( current_employee.tickets.search_by_status(status.id).order_by_asc)
-      end
-    end
-    
     if order == 'Most_Recent' || order.nil?
       @tickets = current_employee.tickets.ticket_order_most_recent(params[:filter], params[:status], params[:category]).order_by_desc.paginate(page: params[:page])
-      
     elsif order == 'Least_Recent'
       @tickets = current_employee.tickets.ticket_order_least_recent(params[:filter], params[:status], params[:category]).order_by_asc.paginate(page: params[:page])
     end
-    
+  
      respond_to do |format|
       format.html { }
       format.js 
