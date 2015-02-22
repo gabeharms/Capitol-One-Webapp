@@ -7,6 +7,10 @@ class CustomersProfileTest < ActionDispatch::IntegrationTest
     @customer = customers(:michael)
   end
 
+  def teardown
+    @customer = nil
+  end
+
   test "profile display" do
     customer_log_in_as(@customer)
     get customer_path(@customer)

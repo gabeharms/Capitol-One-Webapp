@@ -7,6 +7,12 @@ class CustomersControllerTest < ActionController::TestCase
     @other_user = customers(:archer)
     @employee = employees(:michael)
   end
+
+  def teardown
+    @customer = nil
+    @other_user = nil
+    @employee = nil
+  end
   
   test "should get new" do
     get :new

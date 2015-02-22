@@ -2,7 +2,6 @@ require 'test_helper'
 
 class CustomerSignupTest < ActionDispatch::IntegrationTest
   
-  
   test "invalid signup information" do
     get customer_signup_path
     assert_no_difference 'Customer.count' do

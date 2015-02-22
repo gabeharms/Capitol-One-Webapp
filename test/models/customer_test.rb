@@ -2,10 +2,13 @@ require 'test_helper'
 
 class CustomerTest < ActiveSupport::TestCase
   
-  
   def setup
     @customer = Customer.new(first_name: "Example", last_name: "User", email: "user@example.com",
                                 password: "foobar", password_confirmation: "foobar")
+  end
+
+  def teardown
+    @customer = nil
   end
 
   test "should be valid" do

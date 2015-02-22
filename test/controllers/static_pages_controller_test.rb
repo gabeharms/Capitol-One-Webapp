@@ -5,6 +5,10 @@ class StaticPagesControllerTest < ActionController::TestCase
   def setup
     @base_title = "Capital One Web Application"
   end
+
+  def teardown
+    @base_title = nil
+  end
   
   test "should get home" do
     get :home

@@ -11,3 +11,10 @@ archer:
   last_name: Archer
   email: duchess@example.gov
   password_digest: <%= Employee.digest('password') %>
+
+john:
+  id: 12345678
+  first_name: John
+  last_name: Sustersic
+  email: classis@canceled.com
+  password_digest: <%= Employee.digest('password') %>
