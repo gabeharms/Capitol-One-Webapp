@@ -18,26 +18,48 @@ class EmployeesController < ApplicationController
     filter = params[:filter]
     category = params[:category]
     status = params[:status]
-    if filter.nil? && status.nil?
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Most_Recent'
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Least_Recent'
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
-    elsif filter == 'All'
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
-    elsif !status.nil?
-      @tickets = current_employee.tickets.where(ticket_status_id: status).paginate(page: params[:page])
-
+    order = params[:order_select]
+    
+    if order ==  'Most_Recent' || order.nil? 
+      if filter.nil? && status.nil?
+        @tickets =  current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
+      elsif filter == 'All'
+        @tickets =  current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
+      elsif !status.nil?
+        @tickets =  current_employee.tickets.where(ticket_status_id: status).reorder("tickets.created_at DESC").paginate(page: params[:page])
+      end
+      
+      if !category.nil?
+        @tickets =current_employee.tickets.where(ticket_category_id: category, employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
+      end
+      
+      if !customer_id.nil?
+        @customer = Customer.find(customer_id)
+      end
+      
+    elsif order == 'Least_Recent'
+     if filter.nil? && status.nil?
+        @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
+     elsif filter == 'All'
+        @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
+     elsif !status.nil?
+        @tickets = current_employee.tickets.where(ticket_status_id: status).reorder("tickets.created_at ASC").paginate(page: params[:page])
+     end
+     
+      if !category.nil?
+        @tickets = current_employee.tickets.where(ticket_category_id: category, employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
+      end
+      
+      if !customer_id.nil?
+        @customer = Customer.find(customer_id)
+      end
     end
-
-    if !category.nil?
-      @tickets = current_employee.tickets.where(ticket_category_id: category, employee_id: current_employee).paginate(page: params[:page])
+  
+     respond_to do |format|
+      format.html { }
+      format.js 
     end
     
-    if !customer_id.nil?
-      @customer = Customer.find(customer_id)
-    end
   end
   
   def display_tickets
@@ -51,9 +73,6 @@ class EmployeesController < ApplicationController
     filter = params[:filter]
     category = params[:category]
     status = params[:status]
-    
-  
-    
     order = params[:order_select]
     
 

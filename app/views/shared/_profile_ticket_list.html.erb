@@ -2,7 +2,8 @@
   
   <% TicketStatus.all.each do |status| %>
     <h3><%=status.status%></h3>
-      <% @tickets.where(ticket_status_id: status.id).each do |ticket| %>
+      <%= params[:order_select] %>
+      <% tickets.where(ticket_status_id: status.id).reorder("tickets.created_at ASC").each do |ticket| %>
       <li>
         <div class="ticket-info">
           <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
@@ -27,4 +28,4 @@
     <% end %>
   <% end %>
 </ol>
-<%= will_paginate @tickets %>
+<%= will_paginate tickets %>

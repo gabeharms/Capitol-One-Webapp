@@ -16,6 +16,7 @@
       });
     });
 </script>
+
 <div class="pop-up-container" id="pop-up-toggle">
   <div class="pop-up">
     <h3>Create Ticket</h3>
@@ -40,8 +41,9 @@
       %>
     
       <div id = "all_tickets" >
-      <%= render 'shared/all_tickets_list', :tickets => @tickets %>
+        <%= render 'shared/all_tickets_list', :tickets => @tickets %>
       </div>
+     
     </div>
   </div>
 </div>
