@@ -1,5 +1,7 @@
 class Employee < ActiveRecord::Base
   
+  # Associations/Relations
+
   has_many :tickets
   
   before_save { email.downcase! }
@@ -15,6 +17,9 @@ class Employee < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true        
   has_secure_password
   
+  # Named Scopes and Logic Functions
+  
+
   
    # Returns the hash digest of the given string.
   def Employee.digest(string)
