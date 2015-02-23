@@ -1,7 +1,9 @@
 <ol class="ticket-list">
 
   <% all_tickets.each do |tickets| %>
-    <h3><%= @statuses.find_by( id: tickets.first.ticket_status_id ).status %></h3>
-      <%= render 'shared/show_ticket_by_status', :ticket_list => tickets %>
+    <% if tickets.count != 0 %>
+      <h3><%= @statuses.find_by( id: tickets.first.ticket_status_id ).status %></h3>
+        <%= render 'shared/show_ticket_by_status', :ticket_list => tickets %>
+    <% end %>
   <% end %>
 </ol>
