@@ -37,8 +37,10 @@
       
       <% @options = { :Descending => 'Most_Recent', :Ascending => 'Least_Recent' } %>
       <%= 
-      select_tag :order_select,  options_for_select(@options), :'data-remote' => 'true', :'data-url' => url_for(:controller => 'employees', :action => 'display_tickets', :filter => params[:filter], :status => params[:status], :category => params[:category]) # we get the data from here!
+      select_tag :order_select,  options_for_select(@options), class: 'btn btn-default order-drop', :'data-remote' => 'true', :'data-url' => url_for(:controller => 'employees', :action => 'display_tickets', :filter => params[:filter], :status => params[:status], :category => params[:category]) # we get the data from here!
       %>
+
+      <div class="clear-float"></div>
     
       <div id = "all_tickets" >
         <%= render 'shared/all_tickets_list', :tickets => @tickets %>
