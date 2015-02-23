@@ -1,5 +1,6 @@
+
 <ol class="ticket-list">
-  <% @tickets.each do |ticket| %>
+  <% tickets.each do |ticket| %>
     <li>
       <div class="ticket-info">
         <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
@@ -20,5 +21,6 @@
       <div class="clear-float"></div>
     </li>
   <% end %>
+
 </ol>
-<%= will_paginate @tickets %>
+  <%= will_paginate tickets %>

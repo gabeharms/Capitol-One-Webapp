@@ -2,74 +2,54 @@ class EmployeesController < ApplicationController
   before_action :logged_in_employee, only: [:edit, :update, :display_tickets, :show]
   before_action :correct_employee,   only: [:edit, :update, :show]
   
+  
   def new
     @employee = Employee.new
   end
 
   def show
+    
     @employee = Employee.find(params[:id])
     @tickets = current_employee.tickets.paginate(page: params[:page])
     @ticket = @tickets.build if employee_logged_in?
-    @category = TicketCatagory.all
-    @catagories = @category
+    @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
-    customer_id = params[:customer_id]
-    filter = params[:filter]
-    category = params[:category]
-    status = params[:status]
-    if filter.nil? && status.nil?
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Most_Recent'
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Least_Recent'
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
-    elsif filter == 'All'
-      @tickets = current_employee.tickets.where(employee_id: current_employee).reorder("tickets.created_at ASC").paginate(page: params[:page])
-    elsif !status.nil?
-      @tickets = current_employee.tickets.where(ticket_status_id: status).paginate(page: params[:page])
+    @customer = Customer.search_by_id(params[:customer_id])
+    order = params[:order_select]
 
+    if order == 'Most_Recent' || order.nil?
+      @tickets = current_employee.tickets.ticket_order_most_recent(params[:filter], params[:status], params[:category]).order_by_desc.paginate(page: params[:page])
+    elsif order == 'Least_Recent'
+      @tickets = current_employee.tickets.ticket_order_least_recent(params[:filter], params[:status], params[:category]).order_by_asc.paginate(page: params[:page])
+    end
+  
+     respond_to do |format|
+      format.html { }
+      format.js 
     end
 
-    if !category.nil?
-      @tickets = current_employee.tickets.where(ticket_category_id: category, employee_id: current_employee).paginate(page: params[:page])
-    end
-    
-    if !customer_id.nil?
-      @customer = Customer.find(customer_id)
-    end
   end
   
   def display_tickets
+    
     @employee = current_employee
-    @category = TicketCatagory.all
     @tickets = Ticket.paginate(page: params[:page])
     @ticket = @tickets.build if employee_logged_in?
     @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
-    customer_id = params[:customer_id]
-    filter = params[:filter]
-    category = params[:category]
-    status = params[:status]
-    if filter.nil? && status.nil?
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Most_Recent'
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif filter == 'Least_Recent'
-      @tickets = Ticket.reorder("tickets.created_at ASC").paginate(page: params[:page])
-    elsif filter == 'All'
-      @tickets = Ticket.reorder("tickets.created_at DESC").paginate(page: params[:page])
-    elsif !status.nil?
-      @tickets = Ticket.where(ticket_status_id: status).paginate(page: params[:page])
-    end
-
-    if !category.nil?
-      @tickets = Ticket.where(ticket_category_id: category).paginate(page: params[:page])
+    @customer = Customer.search_by_id(params[:customer_id])
+   
+    order = params[:order_select]
+    if order == 'Most_Recent' || order.nil?
+      @tickets = Ticket.ticket_order_most_recent(params[:filter], params[:status], params[:category]).order_by_desc.paginate(page: params[:page])
+    elsif order == 'Least_Recent'
+      @tickets = Ticket.ticket_order_least_recent(params[:filter], params[:status], params[:category]).order_by_asc.paginate(page: params[:page])
     end
     
-    if !customer_id.nil?
-      @customer = Customer.find(customer_id)
+     respond_to do |format|
+      format.html { }
+      format.js 
     end
-    
   end
 
   def display_statistics
@@ -77,8 +57,6 @@ class EmployeesController < ApplicationController
     @tickets = Ticket.all
   end
 
-
-  
   def create
     @employee = Employee.new(employee_params)    # Not the final implementation!
     if @employee.save

@@ -1,8 +1,13 @@
 require 'test_helper'
 
 class EmployeeLoginTest < ActionDispatch::IntegrationTest
+
   def setup
     @employee = employees(:michael)
+  end
+
+  def teardown
+    @employee = nil
   end
   
   test "login with invalid information" do

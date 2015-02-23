@@ -1,11 +1,17 @@
 require 'test_helper'
 
 class TicketTest < ActiveSupport::TestCase
+  
   def setup
     @customer = customers(:michael)
     @ticket = @customer.tickets.build(title:"Can't login")
     # Adding Employee tests in the future. Just trying to feel out customer
     # end right now
+  end
+
+  def teardown
+    @customer = nil
+    @ticket = nil
   end
 
   test "should be valid" do

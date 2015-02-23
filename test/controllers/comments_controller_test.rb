@@ -2,10 +2,18 @@ require 'test_helper'
 
 class CommentsControllerTest < ActionController::TestCase
   
+  # called before every test
   def setup
-    @comment= comments(:example)
+    @comment = comments(:example)
     @customer = customers(:michael)
     @employee = employees(:archer)
+  end
+
+  # called after every test
+  def teardown
+    @comment = nil
+    @customer = nil
+    @employee = nil
   end
 
   test "should redirect create when customer or employee not logged in" do

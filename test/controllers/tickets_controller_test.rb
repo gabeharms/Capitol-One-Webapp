@@ -4,7 +4,10 @@ class TicketsControllerTest < ActionController::TestCase
  
   def setup
     @ticket = tickets(:orange)
-  
+  end
+
+  def teardown
+    @ticket = nil
   end
 
   test "should redirect create when not logged in" do

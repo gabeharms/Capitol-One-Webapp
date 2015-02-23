@@ -2,12 +2,6 @@
   <div class="create-ticket-e">Create Ticket</div>
 </a>
 <div class="refine-label">Refine by</div>
-<%= link_to({:filter => 'Most_Recent'}) do %>
-  <div class="item">Most Recent</div>
-<% end %>
-<%= link_to({:filter => 'Least_Recent'}) do %>
-  <div class="item">Least Recent</div>
-<% end %>
 <%= link_to({:filter => 'All'}) do %>
   <div class="item">All</div>
 <% end %>
@@ -26,7 +20,7 @@
 <div class="item">search box...</div>
 <div class="refine-label">Categories</div>
 
-<% @category.each do |category| %> 
+<% @catagories.each do |category| %> 
   <%= link_to({:action => 'display_tickets', :category => category.id}) do %>  
     <div class="item"><%= category.name %></div>
   <% end %>

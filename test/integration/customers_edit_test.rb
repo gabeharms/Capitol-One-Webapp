@@ -6,6 +6,10 @@ class CustomersEditTest < ActionDispatch::IntegrationTest
     @customer = customers(:michael)
   end
 
+  def teardown
+    @customer = nil
+  end
+
   test "unsuccessful edit" do
     customer_log_in_as(@customer)
     get edit_customer_path(@customer)

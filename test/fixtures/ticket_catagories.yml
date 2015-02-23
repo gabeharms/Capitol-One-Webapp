@@ -1,7 +1,25 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: "Checking Account"
+  id: 1
 
 two:
-  name: MyString
+  name: "Savings Account"
+  id: 2
+
+three:
+  name: "Credit Card"
+  id: 3
+
+four:
+  name: "Customer Settings"
+  id: 4
+
+five:
+  name: "Lost Password"
+  id: 5
+
+six:
+  name: "Issue with Website"
+  id: 6

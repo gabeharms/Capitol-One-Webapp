@@ -16,6 +16,7 @@
       });
     });
 </script>
+
 <div class="pop-up-container" id="pop-up-toggle">
   <div class="pop-up">
     <h3>Create Ticket</h3>
@@ -33,7 +34,16 @@
       <%= render 'shared/filter_column' %>
     </div>
     <div class="col-md-10" id="ten-eight">
-      <%= render 'shared/all_tickets_list' %>
+      
+      <% @options = { :Descending => 'Most_Recent', :Ascending => 'Least_Recent' } %>
+      <%= 
+      select_tag :order_select,  options_for_select(@options), :'data-remote' => 'true', :'data-url' => url_for(:controller => 'employees', :action => 'display_tickets', :filter => params[:filter], :status => params[:status], :category => params[:category]) # we get the data from here!
+      %>
+    
+      <div id = "all_tickets" >
+        <%= render 'shared/all_tickets_list', :tickets => @tickets %>
+      </div>
+     
     </div>
   </div>
 </div>
