@@ -13,6 +13,13 @@ class CustomersController < ApplicationController
     @ticket = current_customer.tickets.build if customer_logged_in?
     @comment = current_customer.tickets.first.comments.build if customer_logged_in?
     @catagories = TicketCatagory.all
+    @statuses = TicketStatus.all
+
+    @all_tickets ||= []
+    @statuses.each do |status|
+      @all_tickets.push( current_customer.tickets.search_by_status(status.id).order_by_desc)
+    end
+    
   end
   
   def show_info
@@ -21,6 +28,13 @@ class CustomersController < ApplicationController
     @employee = current_employee
     @ticket = @tickets.build if employee_logged_in?
     @catagories = TicketCatagory.all
+    @statuses = TicketStatus.all
+
+    
+    @all_tickets ||= []
+    @statuses.each do |status|
+      @all_tickets.push( @tickets.search_by_status(status.id).order_by_desc)
+    end
   end
   
   # Add selection area for search type (last name, ID, etc) and pass this selection

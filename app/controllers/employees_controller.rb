@@ -2,6 +2,7 @@ class EmployeesController < ApplicationController
   before_action :logged_in_employee, only: [:edit, :update, :display_tickets, :show]
   before_action :correct_employee,   only: [:edit, :update, :show]
   
+  
   def new
     @employee = Employee.new
   end
@@ -13,8 +14,19 @@ class EmployeesController < ApplicationController
     @ticket = @tickets.build if employee_logged_in?
     @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
-    @tickets = current_employee.tickets.ticket_order(params[:filter], params[:status], params[:category]).paginate(page: params[:page])
     @customer = Customer.search_by_id(params[:customer_id])
+    order = params[:order_select]
+
+    if order == 'Most_Recent' || order.nil?
+      @tickets = current_employee.tickets.ticket_order_most_recent(params[:filter], params[:status], params[:category]).order_by_desc.paginate(page: params[:page])
+    elsif order == 'Least_Recent'
+      @tickets = current_employee.tickets.ticket_order_least_recent(params[:filter], params[:status], params[:category]).order_by_asc.paginate(page: params[:page])
+    end
+  
+     respond_to do |format|
+      format.html { }
+      format.js 
+    end
 
   end
   
@@ -25,9 +37,19 @@ class EmployeesController < ApplicationController
     @ticket = @tickets.build if employee_logged_in?
     @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
-    @tickets = Ticket.ticket_order(params[:filter], params[:status], params[:category]).paginate(page: params[:page])
     @customer = Customer.search_by_id(params[:customer_id])
+   
+    order = params[:order_select]
+    if order == 'Most_Recent' || order.nil?
+      @tickets = Ticket.ticket_order_most_recent(params[:filter], params[:status], params[:category]).order_by_desc.paginate(page: params[:page])
+    elsif order == 'Least_Recent'
+      @tickets = Ticket.ticket_order_least_recent(params[:filter], params[:status], params[:category]).order_by_asc.paginate(page: params[:page])
+    end
     
+     respond_to do |format|
+      format.html { }
+      format.js 
+    end
   end
 
   def display_statistics

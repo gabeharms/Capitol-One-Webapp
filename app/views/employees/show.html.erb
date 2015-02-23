@@ -34,7 +34,15 @@
       <%= render 'shared/filter_column' %>
     </div>
     <div class="col-md-10" id="ten-eight">
-      <%= render 'shared/profile_ticket_list' %>
+      
+       <% @options = { :Descending => 'Most_Recent', :Ascending => 'Least_Recent' } %>
+      <%= 
+      select_tag :order_select,  options_for_select(@options), :'data-remote' => 'true', :'data-url' => url_for(:controller => 'employees', :action => 'show', :filter => params[:filter], :status => params[:status], :category => params[:category]) # we get the data from here!
+      %>
+      
+       <div id = "profile_tickets" >
+            <%= render 'shared/all_tickets_list', :tickets => @tickets %>
+      </div>
     </div>
   </div>
 </div>
