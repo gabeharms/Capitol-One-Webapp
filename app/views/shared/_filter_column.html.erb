@@ -21,7 +21,7 @@
 <div class="refine-label">Categories</div>
 
 <% @catagories.each do |category| %> 
-  <%= link_to({:action => 'display_tickets', :category => category.id}) do %>  
+  <%= link_to({:category => category.id}) do %>  
     <div class="item"><%= category.name %></div>
   <% end %>
 <% end %>

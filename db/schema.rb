@@ -68,11 +68,11 @@ ActiveRecord::Schema.define(version: 20150212153208) do
     t.integer  "employee_id"
     t.integer  "ticket_category_id"
     t.integer  "ticket_status_id"
-    t.boolean  "visible",                        default: true
+    t.boolean  "visible",             default: true
     t.boolean  "created_by_customer"
-    t.string   "title",               limit: 50
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.string   "title"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "tickets", ["created_at"], name: "index_tickets_on_created_at"

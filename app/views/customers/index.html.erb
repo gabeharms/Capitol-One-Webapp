@@ -20,6 +20,7 @@
 	  		<br><%= customer.email %>
   		</div>
   		<div class="div-align-right">
+  		      <p><%= pluralize(customer.tickets.count, "Ticket") %></p>
             <%= button_to "delete", customer, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
         </div>
         <div class="clear-float"></div>
