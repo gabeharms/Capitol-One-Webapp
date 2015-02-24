@@ -27,7 +27,7 @@
       <% if @ticket.created_by_customer == false %>
         This ticket was created by a Capital One Agent<br>
       <% elsif @ticket.created_by_customer == true  %>
-        This ticket was created by you.<br> 
+        This ticket was created by <%= @ticket.customer.first_name %>  <%= @ticket.customer.last_name %><br> 
       <% end %>
       <% if !@ticket.employee.nil? && customer_logged_in? %>
         Your current Capital One service representative is <%= @ticket.employee.first_name %><br>
