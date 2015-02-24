@@ -6,13 +6,12 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+require "populator"
 
-Faker::Config.locale = :en
-
-99.times do |n|
+100.times do |n|
   first_name  = Faker::Name.first_name
   last_name = Faker::Name.last_name
-  email = "customer-#{n+1}@railstutorial.org"
+  email = "customer-#{n+1}@seniorproject.org"
   password = "password"
   Customer.create!(first_name:  first_name,
                last_name: last_name,
@@ -23,10 +22,10 @@ Faker::Config.locale = :en
 
 end
 
-99.times do |n|
+400.times do |n|
   first_name  = Faker::Name.first_name
   last_name = Faker::Name.last_name
-  email = "employee-#{n+1}@railstutorial.org"
+  email = "employee-#{n+1}@seniorproject.org"
   password = "password"
   Employee.create!(first_name:  first_name,
                last_name: last_name,
@@ -35,11 +34,8 @@ end
                password_confirmation: password)
 end
 
-customers = Customer.order(:created_at).take(6)
-50.times do
-  title = Faker::Lorem.sentence(word_count = 4)
-  customers.each { |customer| customer.tickets.create!(title: title, ticket_status_id: 1)}
-end
+
+
 
 catagories = ['Checking Account', 'Savings Account', 'Credit Card', 'Customer Settings', 'Lost Password', 'Issue with Website']
 catagories.each do |i|
@@ -47,8 +43,44 @@ catagories.each do |i|
   TicketCatagory.create(name: name)
 end
 
-statuses = ['In Progess','Resolved']
+statuses = ['Active','Resolved']
 statuses.each do |s|
   TicketStatus.create(status: s)
 end
+
+
+titles = ['How do I find my account balance', 'Can someone help me get new checks', 'I dont know how to change my password', 
+            'The website isnt working, and I need to access my account', 'Am I eligible for a credit card', 'I want to create an account for my son',
+            'Im lost how can I pay my credit card', 'I would like to close my account', 'How can I apply for a loan', 'Is it possible to combine my saving/checking account with my credit card account',
+            'What are the differences between all of your credit cards', 'My credit card rewards points arent showing up', 'There is a charge on my statement that I didnt make',
+            'I lost my debit card. What should I do', 'I believe that my account has been hacked. I would like to reset my password', 'Who should I contact about identity theft',
+            'Does capital one provide cash advances', 'How do I set up a link to another bank account to transfer funds?', 'Where can I find my bank account routing number?', 'Do I have to come in to the bank to deposit a check?',
+            'I lost my check book. What should I do?', 'Is this the fastest way to get in touch with Capital One?', 'I would like to open another account. What is the best way to do that?',
+            'How do I use the rewards that I have collected so far?', 'What is my credit limit?', 'Why do vendors ask me for my ID when I pay with my credit card?', 'Is there a new security chip in my credit card?',
+            'When I take a picture of a check to deposit it, is the picture saved in my account?', 'Can I use the card overseas?', 'Are there any international charges on withdrawing funds?',
+            'Can I open an account for my kid under my account?', 'What are the benefits of the Venture Card?', 'What is the different between the Venture and Quicksilver cards?', 'Is the Sparks card better than the Venture card?',
+            'Can you help me? I am having trouble navagating my online account page', 'I have a question about credit line increases', 'How would I apply for an auto loan?', 'What are the IRS forms 1089 and 1099?',
+            'What are todays mortgage rates?', 'How often do my interest rates change?', 'What is a fixed rate mortgage?', 'How do I know what loan is best for me?', 'Do I need a down payment on refinancing?']
+
+status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
+
+300.times do
+  title = titles.sample
+  visible = true
+  
+  if rand(1..2) == 1
+    created_by = false
+    employee_id = Employee.order("RANDOM()").first.id
+  else
+    employee_id = nil
+    created_by = true
+  end
+  
+  Customer.order("RANDOM()").first.tickets.create!(title: title, employee_id: employee_id, ticket_status_id: status_id.sample, ticket_category_id: rand(1..catagories.count), created_by_customer: created_by, visible: visible, created_at: Time.at((7.days.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
+end
+
+def rand_in_range(from, to)
+  rand * (to - from) + from
+end
+
 

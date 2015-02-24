@@ -5,7 +5,7 @@ class Ticket < ActiveRecord::Base
   has_many :comments
   
  # validates :customer_id
-  validates :title, presence: true, length: { maximum: 140 }
+  validates :title, presence: true, length: { maximum: 400 }
   
   default_scope -> { order(created_at: :desc) }
   
