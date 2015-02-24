@@ -53,7 +53,7 @@ class CustomersController < ApplicationController
     @customer = Customer.new(customer_params)       # Not the final implementation!
     if @customer.save
       customer_log_in @customer
-      flash[:success] = "Welcome to the Sample App!"
+      flash[:success] = "You have successfully created an account!"
       redirect_to @customer
     else
       render 'new'
