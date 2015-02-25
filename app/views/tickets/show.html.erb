@@ -40,58 +40,9 @@
       <% end %>
       <ol class="ticket-list">
         <!-- if comment.initiator is true then color it for employee -->
-        <% @comments.each do |comment| %>
-          <% if customer_comment? (comment.initiator) %>
-            <li class="customer-comment-li">
-              <div class="ticket-info">
-              <p class="comment-name"><%= @ticket.customer.first_name %></p>
-          <% else %>
-            <li class="employee-comment-li">
-              <div class="ticket-info">
-              <p class="comment-name">Employee (<%= comment.employee.first_name %>)</p>
-          <% end %>
-                <%= comment.message %>
-                <% if comment.picture? %>
-                  <p class="comment-attachment">Attachments:</p>
-                  <%= image_tag comment.picture.url if comment.picture? %>
-                <% end %>
-                <p class="timestamp">
-                  <%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %>
-                </p>
-              </div>
-              <% if employee_logged_in? %>
-                <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
-                                  method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
-                <div class="clear-float"></div>
-              <% elsif current_customer?(@ticket.customer) %>
-                <% if customer_comment? (comment.initiator) %>
-                  <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
-                                  method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
-                <%end%>
-                <div class="clear-float"></div>
-              <% end %>              
-            </li>
-        <% end %>
+         <ol class="ticket-list">
+           <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => @ticket } %>
+           <%= render :partial => 'shared/comment_box', locals: { :ticket => @ticket } %>
       </ol>
-      <div class="comment-box">
-        <%= form_for(@comment, html: { multipart: true }) do |f| %>
-          <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
-          <%= f.hidden_field :id, :value => @ticket.id %>
-          <% if customer_logged_in? %>
-            <span class="picture">
-              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
-            </span>
-          <% end %>
-          <%= f.submit "Post", class: "btn btn-primary post-comment" %>
-        <% end %>
-        <script type="text/javascript">
-          $('#ticket_picture').bind('change', function() {
-            size_in_megabytes = this.files[0].size/1024/1024;
-            if (size_in_megabytes > 5) {
-              alert('Maximum file size is 5MB. Please choose a smaller file.');
-            }
-          });
-        </script>
-      </div>
   </div>
 </div>
