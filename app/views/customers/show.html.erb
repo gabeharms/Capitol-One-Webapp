@@ -1,6 +1,6 @@
 <% provide(:title, @customer.first_name) %>
 <script>
-    $(document).ready(function(){
+ /*   $(document).ready(function(){
       $("#toggler").hide();
 
       $("#create-toggle").click(function(){
@@ -8,10 +8,11 @@
         return false;
       });
     });
+  */
 </script>
 <div class="row">
   <div class="col-md-12">
-    <a href="#" id="create-toggle"><div class="create-ticket">Create Ticket</div></a>
+   <!-- </-> <a href="#" id="create-toggle"><div class="create-ticket">Create Ticket</div></a> --> 
     <h3 class="title-left">Tickets (<%= @customer.tickets.count %>)</h3>
     <div class="clear-float"></div>
   </div>
@@ -19,16 +20,15 @@
       <div id="toggler">
         <div class="spacer20"></div>
         <hr>
-        <h3>What's your Question?</h3>
         <section class="micropost_form">
-          <%= render 'shared/ticket_form' %>
+          <%= render 'shared/customer_ticket_form' %>
         </section>
       </div>
   </aside>
   <div class="col-md-12">
     <% if @customer.tickets.any? %>  
         <div id = "profile_tickets" >
-            <%= render 'shared/profile_ticket_list', :all_tickets => @all_tickets %>
+            <%= render 'customer_ticket_list' %>
         </div>
     <% end %>
   </div>

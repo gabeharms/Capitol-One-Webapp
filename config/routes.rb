@@ -44,9 +44,13 @@ Rails.application.routes.draw do
   get 'statistics' => 'employees#display_statistics'
 #  get 'signup'  => 'users#new'
   
+  get    'customer_show_info'   => 'customers#show_info'
+
+  
 #  get    'login'   => 'sessions#new'
 #  post   'login'   => 'sessions#create'
 #  delete 'logout'  => 'sessions#destroy'
+  
   
    resources :customers #do                                   # Automatically ensures that our Rails application responds to the RESTful URLs
    resources :employees
