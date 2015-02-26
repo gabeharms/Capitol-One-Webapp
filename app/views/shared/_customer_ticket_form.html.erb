@@ -1,0 +1,12 @@
+<%= form_for(@ticket) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div>
+    <% if (customer_logged_in?) %>
+    	<div class="spacer20"></div>
+        <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Tell us how we can help..." %>  
+      </div>
+    <%= f.submit "Post", class: "btn btn-primary form-group" %>	
+    <% end %>
+    
+    
+<% end %>
