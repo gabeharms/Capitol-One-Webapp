@@ -17,10 +17,10 @@
   		<div class="div-align-left">
 	  		<%= link_to({:controller => 'customers', :action => 'show_info', :id => customer.id}) do %>
 	  			<%= customer.first_name %> <%= customer.last_name %><% end %> <!-- DO NOT move this 'end' to the next line as it will add a space char in the link -->
-	  		<br><%= customer.email %>
+	  		 (<%= pluralize(customer.tickets.count, "Ticket") %>)
+        <br><%= customer.email %>
   		</div>
   		<div class="div-align-right">
-  		      <p><%= pluralize(customer.tickets.count, "Ticket") %></p>
             <%= button_to "delete", customer, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
         </div>
         <div class="clear-float"></div>
