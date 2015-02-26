@@ -26,9 +26,11 @@ class Ticket < ActiveRecord::Base
       if filter.nil? && status.nil? && category.nil?
         order_by_desc
       elsif filter == 'All'
-       order_by_desc
+        order_by_desc
       elsif !status.nil?
         where(ticket_status_id: status)
+      elsif category == "0"
+        where(ticket_category_id: nil)
       elsif !category.nil?
         where(ticket_category_id: category)
       end
@@ -45,6 +47,8 @@ class Ticket < ActiveRecord::Base
        order_by_asc
       elsif !status.nil?
         where(ticket_status_id: status)
+      elsif category == "0"
+        where(ticket_category_id: nil)
       elsif !category.nil?
         where(ticket_category_id: category)
       end
