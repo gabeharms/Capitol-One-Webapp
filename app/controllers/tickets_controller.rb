@@ -9,6 +9,7 @@ class TicketsController < ApplicationController
       @ticket = current_customer.tickets.build(ticket_params)
       
       @ticket.ticket_status_id = 1
+      @ticket.ticket_category_id = nil
       @ticket.created_by_customer = true
       @ticket.visible = true
       
