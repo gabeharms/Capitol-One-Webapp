@@ -1,25 +1,13 @@
 <% provide(:title, @customer.first_name) %>
-<script>
- /*   $(document).ready(function(){
-      $("#toggler").hide();
-
-      $("#create-toggle").click(function(){
-        $("#toggler").toggle('slide');
-        return false;
-      });
-    });
-  */
-</script>
 <div class="row">
   <div class="col-md-12">
    <!-- </-> <a href="#" id="create-toggle"><div class="create-ticket">Create Ticket</div></a> --> 
-    <h3 class="title-left">Tickets (<%= @customer.tickets.count %>)</h3>
+    <h3 class="title-left">Welcome <%= @customer.first_name %>&nbsp;<%= @customer.last_name %> (<%= @customer.tickets.count %>)</h3>
     <div class="clear-float"></div>
   </div>
   <aside class="col-md-12">
-      <div id="toggler">
+      <div>
         <div class="spacer20"></div>
-        <hr>
         <section class="micropost_form">
           <%= render 'shared/customer_ticket_form' %>
         </section>

@@ -38,9 +38,7 @@
       <% if @ticket.ticket_category_id != nil %>  
         Category: <%= @category.name %>
       <% end %>
-      <ol class="ticket-list">
-        <!-- if comment.initiator is true then color it for employee -->
-         <ol class="ticket-list">
+      <ol class="comment-list">
            <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => @ticket } %>
            <%= render :partial => 'shared/comment_box', locals: { :ticket => @ticket } %>
       </ol>
