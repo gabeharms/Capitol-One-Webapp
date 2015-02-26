@@ -24,8 +24,8 @@ class Customer < ActiveRecord::Base
     end
   end
   
-  def self.search_by_first_name(first_name)
-    where("lower(first_name) = ?", first_name.downcase)
+  def self.search_by_all(search_field)
+    where("lower(first_name) = ? OR lower(last_name) = ? OR lower(email) = ? OR id = ?" , search_field.downcase, search_field.downcase, search_field.downcase, search_field.downcase)
   end
   
    # Returns the hash digest of the given string.
