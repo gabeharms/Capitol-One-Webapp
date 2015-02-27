@@ -29,7 +29,7 @@
             <% if ticket.ticket_status_id == 1 %>
                 <%= button_to "resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-primary' %>
             <% elsif ticket.ticket_status_id == 2 %>
-                <%= button_to "reopen", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
+                <%= image_tag("checkmark.png", :alt => "resolved", size: "40x40") %>
             <% end %>
           </div>
         </div>
