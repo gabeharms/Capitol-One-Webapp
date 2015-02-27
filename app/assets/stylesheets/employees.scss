@@ -53,10 +53,16 @@
 	.pop-up{
 		position: relative;
 		margin: auto;
-		padding: 20px;
+		padding: 0 20px 20px 20px;
 		border: 1px solid #e8e8e8;
 		border-radius: 10px;
 		background: #FFFFFF;
+	}
+	.close-x{
+		float: right;
+		position: absolute;
+		top: 20px;
+		right: 20px;
 	}
 }
 

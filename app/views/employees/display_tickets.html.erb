@@ -20,7 +20,7 @@
 <div class="pop-up-container" id="pop-up-toggle">
   <div class="pop-up">
     <h3>Create Ticket</h3>
-    <a href="#" id="hide-popup">Close</a>
+    <div class="close-x"><a href="#" id="hide-popup"><%= image_tag("close-x.png", :alt => "close", size: "20x20") %></a></div>
     <div class="spacer20"></div>
     <section class="micropost_form">
       <%= render 'shared/employee_ticket_form' %>
