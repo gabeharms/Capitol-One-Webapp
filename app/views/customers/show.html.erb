@@ -1,6 +1,5 @@
 <% provide(:title, @customer.first_name) %>
 <div class="row">
-  <p><%= params[:ticket_id] %></p>
   <div class="col-md-12"> 
     <h3 class="title-left">Welcome <%= @customer.first_name %>&nbsp;<%= @customer.last_name %> (<%= @customer.tickets.count %>)</h3>
     <div class="clear-float"></div>

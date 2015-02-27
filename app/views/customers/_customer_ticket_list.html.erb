@@ -5,14 +5,16 @@
       <script>
          $(document).ready(function(){
             $("#toggler<%= ticket.id %>").hide();
-
+            <% if(params[:ticket_id] != nil) %>
+              $("#toggler<%= params[:ticket_id] %>").slideDown();
+            <% end %>
             $("#toggle-commander<%= ticket.id %>").click(function(){
               $("#toggler<%= ticket.id %>").slideToggle();
               return false;
             });
           });
       </script>
-      <li>
+      <li id="jumpTo<%= ticket.id %>">
         <div class="ticket-info">
           <a href="#" id="toggle-commander<%= ticket.id %>"><%= ticket.title %></a>
           <p class="timestamp">

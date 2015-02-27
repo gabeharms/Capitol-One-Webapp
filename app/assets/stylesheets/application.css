@@ -16,3 +16,9 @@
 body{
 	background: #e9eaed;
 }
+/*
+*.alert-message{
+*	position: fixed;
+*	z-index: 99;
+*	right: 0;
+}*/
