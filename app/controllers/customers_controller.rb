@@ -28,13 +28,11 @@ class CustomersController < ApplicationController
 
   end
   
-  # Add selection area for search type (last name, ID, etc) and pass this selection
-  # over as a hidden param ... then check that value here and call corresponding functions
   def index
-    if params[:search] == ''  #checks if search field contains anything. This is usefull, when user searches for something then deletes the search
+    if params[:search] == ''  #This is useful when user searches for something then deletes the search
       @customers = Customer.all.paginate(page: params[:page])
     elsif params[:search]
-      @customers = Customer.search_by_first_name(params[:search]).paginate(page: params[:page])
+      @customers = Customer.search_by_all(params[:search]).paginate(page: params[:page])
     else
       @customers = Customer.all.paginate(page: params[:page])
     end
