@@ -1,46 +1,51 @@
 <% provide(:title, @ticket.title) %>
 <div class="row">
-  <div>
-      <h3>Issue: <%= @ticket.title %></h3>
-      <% if employee_logged_in? %>
-        <div class="float-right margin-right">
-          <% if @ticket.employee_id == current_employee.id %>
+  <h3><%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %></h3>
+  <div class="employee-ticket-show">
+        <h4 class="ticket-padding title-left font-white"><%= @ticket.title %></h4>
+        <% if employee_logged_in? %>
+          <div class="float-right margin-right element-bottom-padding">
+            <% if @ticket.employee_id == current_employee.id %>
+              <% if @ticket.ticket_status_id == 1 %>
+                  <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
+              <% elsif @ticket.ticket_status_id == 2 %>
+                  <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+              <% end %>
+            <% elsif @ticket.employee_id == nil %>
+              <%= button_to "claim", update_employee_on_ticket_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+            <% end %>
+          </div>
+
+        <% end %>
+        <% if customer_logged_in? %>
+          <div class="float-right margin-right">
             <% if @ticket.ticket_status_id == 1 %>
                 <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
             <% elsif @ticket.ticket_status_id == 2 %>
                 <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
             <% end %>
-          <% elsif @ticket.employee_id == nil %>
-            <%= button_to "claim", update_employee_on_ticket_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
+          </div>
+        <% end %>
+        <div class="clear-float"></div>
+        <!--
+        <div class="ticket-padding"> 
+          <% if @ticket.created_by_customer == false %>
+            This ticket was created by a Capital One Agent<br>
+          <% elsif @ticket.created_by_customer == true  %>
+            This ticket was created by <%= @ticket.customer.first_name %>  <%= @ticket.customer.last_name %><br> 
+          <% end %>
+          <% if !@ticket.employee.nil? && customer_logged_in? %>
+            Your current Capital One service representative is <%= @ticket.employee.first_name %><br>
+          <% end %>
+          <% if @ticket.ticket_category_id != nil %>  
+            Category: <%= @category.name %>
           <% end %>
         </div>
-      <% end %>
-      <% if customer_logged_in? %>
-        <div class="float-right margin-right">
-          <% if @ticket.ticket_status_id == 1 %>
-              <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
-          <% elsif @ticket.ticket_status_id == 2 %>
-              <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if @ticket.created_by_customer == false %>
-        This ticket was created by a Capital One Agent<br>
-      <% elsif @ticket.created_by_customer == true  %>
-        This ticket was created by <%= @ticket.customer.first_name %>  <%= @ticket.customer.last_name %><br> 
-      <% end %>
-      <% if !@ticket.employee.nil? && customer_logged_in? %>
-        Your current Capital One service representative is <%= @ticket.employee.first_name %><br>
-      <% end %>
-      <% if employee_logged_in? && @ticket.customer_id != nil %>
-        This ticket belongs to customer: <%= @customer.first_name %> <%= @customer.last_name %><br>  
-      <% end %>
-      <% if @ticket.ticket_category_id != nil %>  
-        Category: <%= @category.name %>
-      <% end %>
+      -->
       <ol class="comment-list">
            <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => @ticket } %>
-           <%= render :partial => 'shared/comment_box', locals: { :ticket => @ticket } %>
+           <div class="spacer20"></div>
+           <div class="ticket-padding element-bottom-padding"><%= render :partial => 'shared/comment_box', locals: { :ticket => @ticket } %></div>
       </ol>
   </div>
 </div>

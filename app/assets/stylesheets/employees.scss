@@ -75,3 +75,17 @@
 .order-drop:hover{
 	background: #FFFFFF;
 }
+
+.employee-ticket-show{
+    border-radius: 2px;
+    background:#00346e;
+    border: 1px solid #dfe0e4;
+	padding: 10px 0;
+	.ticket-padding{
+		display: block;
+		margin: 0 10px;
+	}
+	.element-bottom-padding{
+		margin-bottom: 10px;
+	}
+}
