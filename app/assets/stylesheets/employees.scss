@@ -19,7 +19,7 @@
 	}
 	.item:hover{
 		color:#002e5a;
-		background-color: #e8e8e8;
+		background-color: #fafafa;
 	}
 	a:hover{
 		text-decoration: none;
@@ -62,7 +62,10 @@
 
 .order-drop{
 	width: 120px;
-	height: 30px;
+	height: 33px;
 	float: right;
 	margin: 0 20px 0 0;
+}
+.order-drop:hover{
+	background: #FFFFFF;
 }

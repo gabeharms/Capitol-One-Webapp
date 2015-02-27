@@ -16,7 +16,7 @@
       </script>
       <li id="jumpTo<%= ticket.id %>">
         <div class="ticket-info">
-          <a href="#" id="toggle-commander<%= ticket.id %>"><%= ticket.title %></a>
+          <a href="#" class="ticket-title" id="toggle-commander<%= ticket.id %>"><%= ticket.title %></a>
           <p class="timestamp">
             <%= time_ago_in_words(ticket.created_at).capitalize %> ago
           </p>

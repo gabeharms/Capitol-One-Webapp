@@ -3,10 +3,11 @@
     <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
     <%= f.submit "Post", class: "btn btn-primary post-comment" %>
     <%= f.hidden_field :id, :value => ticket.id %>
+    <div class="clear-float"></div>
     <% if customer_logged_in? %>
-      <span class="picture">
+      <div class="attach-file">
         <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
-      </span>
+      </div>
     <% end %>
   <% end %>
   <script type="text/javascript">

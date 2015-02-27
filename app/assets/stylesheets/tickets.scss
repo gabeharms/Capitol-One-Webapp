@@ -34,6 +34,22 @@
     display: block;
     width: 70%;
     margin: 0 20px 5px 20px;
+    .timestamp {
+      color: #9d9d9d;
+      font-size: 1em;
+      display: block;
+      padding:0;
+      margin: 0;
+      width: 70%;
+    }
+    .ticket-title{
+      font-size: 1.2em;
+      color: #00346e;
+      text-decoration: none;
+    }
+    .ticket-title:hover{
+      font-weight:500;
+    }
   }
   .user {
     margin-top: 5em;
@@ -46,13 +62,6 @@
       display: block;
       padding: 5px 0;
     }
-  }
-  .timestamp {
-    color: #9d9d9d;
-    display: block;
-    padding:0;
-    margin: 0;
-    width: 70%;
   }
 }
 
