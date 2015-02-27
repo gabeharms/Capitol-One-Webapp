@@ -13,31 +13,81 @@
 }
 
 .new-comment-field{
-	-webkit-border-radius: 5px; 
-    -moz-border-radius: 5px; 
-    border-radius: 5px; 
+	-webkit-border-radius: 2px; 
+    -moz-border-radius: 2px; 
+    border-radius: 2px; 
     border: 1px solid #848484; 
     outline:0; 
     text-wrap: normal;
-    min-height:100px;
+    max-height:33px;
+    width: 90%;
+    float: left;
 }
 
 .comment-box{
-	margin: 0 20px;
+	margin: 0 0;
 }
 
 .customer-comment-li{
-	background: #cce1fe !important;
-	border: 1px solid #a4b6d0;
+	background: #f6f7f8 !important;
+	padding: 5px 20px !important;
+    margin: 0px !important;
+    border-radius: 0px !important;
+    border: 0px !important;
 }
 
 .employee-comment-li{
-	background: #f4f4f4 !important;
-	border: 1px solid #b5b5b5;
+	background: #f6f7f8 !important;
+	padding: 5px 20px !important;
+    margin: 0px !important;
+    border-radius: 0px !important;
+    border: 0px !important;
 }
 
-.comment-name{
+.comment-name-employee{
 	padding: 0;
 	margin: 0;
 	font-weight: bold;
+	float: left;
+}
+
+.comment-name-customer{
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+  float: left;
+  color: #105fc3;
+}
+
+.comment-time{
+	float: right;
+	color: #9d9d9d;
+    padding:0;
+    margin: 0;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  .user {
+    margin-top: 5em;
+    padding-top: 0;
+  }
+  .comment-container{
+  	width: 100%;
+  	padding: 0;
+  	margin: 0;
+  }
+  .comment-content {
+    float: left;
+    padding: 0;
+    margin: 0;
+  }
+  .timestamp {
+    color: #9d9d9d;
+    padding:0;
+    margin: 0;
+    float: right;
+  }
 }

@@ -19,7 +19,7 @@
 	}
 	.item:hover{
 		color:#002e5a;
-		background-color: #e8e8e8;
+		background-color: #fafafa;
 	}
 	a:hover{
 		text-decoration: none;
@@ -53,16 +53,39 @@
 	.pop-up{
 		position: relative;
 		margin: auto;
-		padding: 20px;
+		padding: 0 20px 20px 20px;
 		border: 1px solid #e8e8e8;
 		border-radius: 10px;
 		background: #FFFFFF;
+	}
+	.close-x{
+		float: right;
+		position: absolute;
+		top: 20px;
+		right: 20px;
 	}
 }
 
 .order-drop{
 	width: 120px;
-	height: 30px;
+	height: 33px;
 	float: right;
 	margin: 0 20px 0 0;
+}
+.order-drop:hover{
+	background: #FFFFFF;
+}
+
+.employee-ticket-show{
+    border-radius: 2px;
+    background:#00346e;
+    border: 1px solid #dfe0e4;
+	padding: 10px 0;
+	.ticket-padding{
+		display: block;
+		margin: 0 10px;
+	}
+	.element-bottom-padding{
+		margin-bottom: 10px;
+	}
 }

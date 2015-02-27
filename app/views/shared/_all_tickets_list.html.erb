@@ -3,7 +3,7 @@
   <% tickets.each do |ticket| %>
     <li>
       <div class="ticket-info">
-        <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
+        <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}, class: 'ticket-title') %>
         <p class="timestamp">
           <%= time_ago_in_words(ticket.created_at).capitalize %> ago
         </p>

@@ -42,7 +42,7 @@
 	<div class="col-md-12">
     <% if @customer.tickets.any? %>  
         <div id = "profile_tickets" >
-            <%= render 'customers/customer_ticket_list' %>
+            <%= render 'shared/all_tickets_list', :tickets => @tickets %>
         </div>
     <% end %>
   </div>

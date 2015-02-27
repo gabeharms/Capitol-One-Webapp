@@ -258,8 +258,9 @@ aside {
   }
 }
 
-span.picture {
+.attach-file {
   margin-top: 10px;
+  width: 300px;
   input {
     border: 0;
   }
@@ -294,4 +295,8 @@ span.picture {
 .title-right{
   float: right;
   padding-right: 20px;
+}
+
+.font-white{
+  color: #FFFFFF;
 }
