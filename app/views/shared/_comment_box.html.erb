@@ -1,28 +1,20 @@
  <div class="comment-box">
-        <% if params[:controller] == 'tickets' %>
-            <% redirect_location = 'tickets' %>
-        <% else %>
-            <% redirect_location = 'show_info' %>
-        <% end %>
-        
-        <%= form_for(@comment, html: { multipart: true }) do |f| %>
-          <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
-          <%= f.hidden_field :id, :value => ticket.id %>
-          <%= f.hidden_field :redirect_location, :value => redirect_location %>
-          <% if customer_logged_in? %>
-            <span class="picture">
-              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
-            </span>
-          <% end %>
-          <%= f.submit "Post", class: "btn btn-primary post-comment" %>
-        <% end %>
-        <script type="text/javascript">
-          $('#ticket_picture').bind('change', function() {
-            size_in_megabytes = this.files[0].size/1024/1024;
-            if (size_in_megabytes > 5) {
-              alert('Maximum file size is 5MB. Please choose a smaller file.');
-            }
-          });
-        </script>
-        <h1> <%= ticket.customer.id %></h1>
-      </div>
+  <%= form_for(@comment, html: { multipart: true }) do |f| %>
+    <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
+    <%= f.submit "Post", class: "btn btn-primary post-comment" %>
+    <%= f.hidden_field :id, :value => ticket.id %>
+    <% if customer_logged_in? %>
+      <span class="picture">
+        <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+      </span>
+    <% end %>
+  <% end %>
+  <script type="text/javascript">
+    $('#ticket_picture').bind('change', function() {
+      size_in_megabytes = this.files[0].size/1024/1024;
+      if (size_in_megabytes > 5) {
+        alert('Maximum file size is 5MB. Please choose a smaller file.');
+      }
+    });
+  </script>
+</div>

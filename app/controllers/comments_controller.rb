@@ -15,16 +15,9 @@ class CommentsController < ApplicationController
       @comment.employee = current_employee
       @comment.initiator = true
      
-      if params[:comment][:redirect_location] == 'show_info'
-        redirect_location = customer_show_info_path(id: @ticket.customer.id) 
-      else
-        redirect_location = @ticket
-      end
-      
     else
       @comment.employee = nil 
       @comment.initiator = false
-      redirect_location = current_customer
     end
 
     if @comment.save && @ticket.save
@@ -32,8 +25,12 @@ class CommentsController < ApplicationController
     else
       flash[:danger]  = "Invalid Comment. Please tell us what your issue is."
     end
-      
-    redirect_to redirect_location   # This changes once the Ticket Conversation page has been created0
+    
+    if( employee_logged_in? )
+      redirect_to @ticket
+    else  
+      redirect_to :controller => 'customers', :action => 'show', :id => @ticket.customer.id, :ticket_id => @ticket.id   # This changes once the Ticket Conversation page has been created0
+    end
   end
  
   # Further Implemented once the ticket pages can be viewed

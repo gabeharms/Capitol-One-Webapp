@@ -1,10 +1,22 @@
-<ol class="ticket-list">
 
+<ol class="ticket-list">
     <% if @tickets.count != 0 %>
        <%  @tickets.each do |ticket| %>
-      <li>
+      <script>
+         $(document).ready(function(){
+            $("#toggler<%= ticket.id %>").hide();
+            <% if(params[:ticket_id] != nil) %>
+              $("#toggler<%= params[:ticket_id] %>").slideDown();
+            <% end %>
+            $("#toggle-commander<%= ticket.id %>").click(function(){
+              $("#toggler<%= ticket.id %>").slideToggle();
+              return false;
+            });
+          });
+      </script>
+      <li id="jumpTo<%= ticket.id %>">
         <div class="ticket-info">
-          <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}) %>
+          <a href="#" id="toggle-commander<%= ticket.id %>"><%= ticket.title %></a>
           <p class="timestamp">
             <%= time_ago_in_words(ticket.created_at).capitalize %> ago
           </p>
@@ -22,13 +34,15 @@
           </div>
         </div>
         <div class="clear-float"></div>
+      
+        <div id="toggler<%= ticket.id %>">
+          <ol class="comment-list">
+            <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => ticket } %>
+            <div class="comment-box-padding"><%= render :partial => 'shared/comment_box', locals: { :ticket => ticket } %></div>
+            <div class="clear-float"></div>
+          </ol>
+        </div>
       </li>
-      
-      <ol class="ticket-list">
-        <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => ticket } %>
-        <%= render :partial => 'shared/comment_box', locals: { :ticket => ticket } %>
-      </ol>
-      
     <% end %>
   <% end %>
 </ol>

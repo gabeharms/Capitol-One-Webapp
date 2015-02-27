@@ -1,33 +1,26 @@
 <% ticket.comments.each do |comment| %>
-          <% if customer_comment? (comment.initiator) %>
-            <li class="customer-comment-li">
-              <div class="ticket-info">
-              <p class="comment-name"><%= ticket.customer.first_name %></p>
-          <% else %>
-            <li class="employee-comment-li">
-              <div class="ticket-info">
-              <p class="comment-name">Employee (<%= comment.employee.first_name %>)</p>
-          <% end %>
-                <%= comment.message %>
-                <% if comment.picture? %>
-                  <p class="comment-attachment">Attachments:</p>
-                  <%= image_tag comment.picture.url if comment.picture? %>
-                <% end %>
-                <p class="timestamp">
-                  <%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %>
-                </p>
-              </div>
-              <% if employee_logged_in? %>
-                <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
-                                  method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
-                <div class="clear-float"></div>
-              <% elsif current_customer?(@ticket.customer) %>
-                <% if customer_comment? (comment.initiator) %>
-                  <%= button_to "Delete", { action: "destroy", :controller => "comments", id: comment.ticket.id, comment_id: comment.id },
-                                  method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger delete-comment-button' %> 
-                <%end%>
-                <div class="clear-float"></div>
-              <% end %>              
-            </li>
-            </li>
+  <% if customer_comment? (comment.initiator) %>
+    <li class="customer-comment-li">
+      <div class="comment-container">
+      <p class="comment-name-customer"><%= ticket.customer.first_name %></p>
+  <% else %>
+    <li class="employee-comment-li">
+      <div class="comment-container">
+      <p class="comment-name-employee">Employee (<%= comment.employee.first_name %>)</p>
+  <% end %>
+      <div class="comment-time"><%= comment.created_at.strftime('%b %d, %Y at %I:%M %p') %></div>
+      <div class="clear-float"></div>
+      <div class="comment-content">
+        <%= comment.message %>
+        <% if comment.picture? %>
+          <p class="comment-attachment">Attachments:</p>
+          <%= image_tag comment.picture.url if comment.picture? %>
         <% end %>
+      </div>
+      <!--<div class="timestamp">
+        
+      </div>-->
+    </div>
+      <div class="clear-float"></div>
+  </li>
+<% end %>
