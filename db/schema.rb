@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20150212153208) do
     t.boolean  "visible",             default: true
     t.boolean  "created_by_customer"
     t.string   "title"
+    t.text     "note"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
   end
