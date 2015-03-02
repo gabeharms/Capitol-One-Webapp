@@ -4,10 +4,10 @@ class TicketsController < ApplicationController
   before_action :correct_user, only: [:show, :destroy]
   
   def create
-    
     if(customer_logged_in?)
       @ticket = current_customer.tickets.build(ticket_params)
       
+      @ticket.note = nil
       @ticket.ticket_status_id = 1
       @ticket.ticket_category_id = nil
       @ticket.created_by_customer = true
@@ -24,6 +24,7 @@ class TicketsController < ApplicationController
     elsif(employee_logged_in?)
       @ticket = Ticket.new(ticket_params)
      
+      @ticket.note = nil
       @ticket.employee = current_employee
       @ticket.ticket_status_id = 1
       @ticket.created_by_customer = false
@@ -58,6 +59,17 @@ class TicketsController < ApplicationController
     @employee = Employee.find_by(id: @ticket.employee_id)
     @customer = Customer.find_by(id: @ticket.customer_id)
     @category = TicketCatagory.find_by(id: @ticket.ticket_category_id)
+  end
+
+  def update
+    @ticket = Ticket.find(params[:id])
+    if(params[:ticket][:note_update] != nil)
+      @ticket.note = params[:ticket][:note]
+      @ticket.save
+      flash[:success] = "Note updated!"
+    end
+
+    redirect_to @ticket
   end
   
   def update_status

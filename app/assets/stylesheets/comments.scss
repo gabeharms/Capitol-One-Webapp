@@ -4,7 +4,7 @@
 
 .post-comment{
 	float: right;
-	width: 100px;
+	width: 12%;
 }
 
 .delete-comment-button{
@@ -13,14 +13,14 @@
 }
 
 .new-comment-field{
-	-webkit-border-radius: 2px; 
+	  -webkit-border-radius: 2px; 
     -moz-border-radius: 2px; 
     border-radius: 2px; 
     border: 1px solid #848484; 
     outline:0; 
     text-wrap: normal;
     max-height:33px;
-    width: 90%;
+    max-width: 86%;
     float: left;
 }
 
