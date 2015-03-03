@@ -1,7 +1,10 @@
 class Employee < ActiveRecord::Base
+  require 'action_view'
+  include ActionView::Helpers::NumberHelper
+  
   
   # Associations/Relations
-
+    
   has_many :tickets
   
   before_save { email.downcase! }
@@ -39,7 +42,7 @@ class Employee < ActiveRecord::Base
      if self.num_of_ratings == 0
         0
      else
-      self.total_stars/self.num_of_ratings
+      number_with_precision( (self.total_stars.to_f/self.num_of_ratings.to_f), :precision => 2 )
      end
      
   end
