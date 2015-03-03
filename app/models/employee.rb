@@ -1,7 +1,10 @@
 class Employee < ActiveRecord::Base
+  require 'action_view'
+  include ActionView::Helpers::NumberHelper
+  
   
   # Associations/Relations
-
+    
   has_many :tickets
   
   before_save { email.downcase! }
@@ -26,6 +29,22 @@ class Employee < ActiveRecord::Base
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
+  end
+  
+  def update_rating(stars)
+      self.num_of_ratings = self.num_of_ratings + 1
+      self.total_stars = self.total_stars + stars
+      
+      self.save
+  end
+  
+  def avg_rating
+     if self.num_of_ratings == 0
+        0
+     else
+      number_with_precision( (self.total_stars.to_f/self.num_of_ratings.to_f), :precision => 2 )
+     end
+     
   end
   
 end

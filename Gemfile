@@ -18,6 +18,7 @@ gem 'turbolinks',           '2.3.0'
 gem 'jbuilder',             '2.2.3'
 gem 'unicorn'
 gem 'sdoc',                 '0.4.0', group: :doc
+gem 'ratyrate'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'
