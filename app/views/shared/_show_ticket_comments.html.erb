@@ -1,4 +1,11 @@
-<% ticket.comments.each do |comment| %>
+<% if params[:show_more] == "false" || params[:show_more].nil? %>
+  <% comments = ticket.comments.last(5) %>
+<% elsif params[:show_more].to_f == ticket.id  %>
+  <% comments = ticket.comments.all %>
+<% else %>
+  <% comments = ticket.comments.last(5) %>
+<% end %>
+<% comments.each do |comment| %>
   <% if customer_comment? (comment.initiator) %>
     <li class="customer-comment-li">
       <div class="comment-container">

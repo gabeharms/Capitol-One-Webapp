@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   get 'statistics' => 'employees#display_statistics'
 #  get 'signup'  => 'users#new'
   
+  post 'customer_show'   => 'customers#show'
+  
   get    'customer_show_info'   => 'customers#show_info'
 
   
