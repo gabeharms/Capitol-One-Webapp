@@ -1,9 +1,14 @@
-<% if params[:show_more] == "false" || params[:show_more].nil? %>
-  <% comments = ticket.comments.last(5) %>
-<% elsif params[:show_more].to_f == ticket.id  %>
-  <% comments = ticket.comments.all %>
+
+<% if customer_logged_in? %>
+  <% if params[:show_more] == "false" || params[:show_more].nil? %>
+    <% comments = ticket.comments.last(5) %>
+  <% elsif params[:show_more].to_f == ticket.id  %>
+    <% comments = ticket.comments.all %>
+  <% else %>
+    <% comments = ticket.comments.last(5) %>
+  <% end %>
 <% else %>
-  <% comments = ticket.comments.last(5) %>
+  <% comments = ticket.comments.all %>
 <% end %>
 <% comments.each do |comment| %>
   <% if customer_comment? (comment.initiator) %>
