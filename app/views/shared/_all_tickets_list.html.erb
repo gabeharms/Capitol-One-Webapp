@@ -3,13 +3,18 @@
   <% tickets.each do |ticket| %>
     <li>
       <div class="ticket-info">
-        <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}, class: 'ticket-title') %>
+        <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}, remote: false, class: 'ticket-title') %>
         <p class="timestamp">
           <%= time_ago_in_words(ticket.created_at).capitalize %> ago
         </p>
       </div>
       <div class="div-align-right">
           <div class="float-right">
+            <% if ticket.ticket_status_id == 2 %>
+                <% if !Rate.find_by(rateable_id: ticket.id).nil? %>
+                  <p>Experience : <%=  rating_for ticket, "experience", :star => 5 %></p>
+                <% end %>
+            <% end %>
             <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
           </div>
           <div class="float-right margin-right">

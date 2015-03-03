@@ -4,6 +4,8 @@ class Ticket < ActiveRecord::Base
 
   has_many :comments
   
+  ratyrate_rateable "experience"
+  
  # validates :customer_id
   validates :title, presence: true, length: { maximum: 400 }
   

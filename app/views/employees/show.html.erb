@@ -29,7 +29,7 @@
 <div class=".container-fluid" id="container">
   <div class="row">
     <div class="title-left"><h3 class="page-title"><%=@employee.last_name%>, <%=@employee.first_name%><br></h3><h4 class="page-title">Employee ID: <%=@employee.id%></h4></div>
-    <div class="title-right"><h3 class="page-title"><%=@employee.email%></h3></div>
+    <div class="title-right"><h3 class="page-title"><%=@employee.email%></h3><br><h3>Average Rating: <%= @employee.avg_rating %> / 5</h3></div>
     <div class="clear-float"></div>
 
     <div class="col-md-2 empl-filter-bar">

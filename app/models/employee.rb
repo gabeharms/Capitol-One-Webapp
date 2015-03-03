@@ -28,4 +28,20 @@ class Employee < ActiveRecord::Base
     BCrypt::Password.create(string, cost: cost)
   end
   
+  def update_rating(stars)
+      self.num_of_ratings = self.num_of_ratings + 1
+      self.total_stars = self.total_stars + stars
+      
+      self.save
+  end
+  
+  def avg_rating
+     if self.num_of_ratings == 0
+        0
+     else
+      self.total_stars/self.num_of_ratings
+     end
+     
+  end
+  
 end

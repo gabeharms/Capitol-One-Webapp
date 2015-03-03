@@ -9,6 +9,9 @@
             <% if @ticket.ticket_status_id == 1 %>
                 <%= button_to "resolve", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-primary' %>
             <% elsif @ticket.ticket_status_id == 2 %>
+                <% if !Rate.find_by(rateable_id: @ticket.id).nil? %>
+                  <p>Experience : <%=  rating_for @ticket, "experience", :star => 5 %></p>
+                <% end %>
                 <%= button_to "reopen", update_status_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
             <% end %>
           <% elsif @ticket.employee_id == nil %>
