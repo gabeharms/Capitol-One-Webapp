@@ -14,6 +14,8 @@
 # Ignore picture uploads
 /public/uploads
 
+config/secrets.yml
+
 # Ignore all logfiles and tempfiles.
 /log/*
 !/log/.keep
