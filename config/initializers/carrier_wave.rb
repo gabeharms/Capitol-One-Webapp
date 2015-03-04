@@ -5,7 +5,7 @@ if Rails.env.production?
       # Configuration for Amazon S3
       :provider              => 'AWS',
       :aws_access_key_id      => Rails.application.secrets.S3_ACCESS_KEY,                        # required
-      :aws_secret_access_key  => Rails.application.secrets.S3_SECRET_KEY, 
+      :aws_secret_access_key  => Rails.application.secrets.S3_SECRET_KEY 
     }
     config.fog_directory     =  ENV['sampleproject']
   end
