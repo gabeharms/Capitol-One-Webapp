@@ -12,7 +12,7 @@
           <div class="float-right">
             <% if ticket.ticket_status_id == 2 %>
                 <% if !Rate.find_by(rateable_id: ticket.id).nil? %>
-                  <p>Experience : <%=  rating_for ticket, "experience", :star => 5 %></p>
+                  <p>Experience : <%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate'  %></p>
                 <% end %>
             <% end %>
             <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
