@@ -19,6 +19,7 @@ gem 'jbuilder',             '2.2.3'
 gem 'unicorn'
 gem 'sdoc',                 '0.4.0', group: :doc
 gem 'ratyrate'
+gem 'figaro'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'
