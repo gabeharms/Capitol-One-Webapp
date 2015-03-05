@@ -20,6 +20,8 @@ gem 'unicorn'
 gem 'sdoc',                 '0.4.0', group: :doc
 gem 'ratyrate'
 gem 'figaro'
+gem 'ahoy_matey'
+gem 'activeuuid', '>= 0.5.0'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'

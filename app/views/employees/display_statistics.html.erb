@@ -1,6 +1,58 @@
 <% provide(:title, "Statistics") %>
+
 <h1>Statistics</h1>
-    <% @categories.each do |category| %> 
-    	<h3><div class="category"><%= category.name %></h3>
-    	<div class="ticket"><%= @tickets.where(ticket_category_id: category.id).count %>  / <%= @tickets.count %>
+  <% @categories.each do |category| %> 
+    <h3>
+      <div class="category">
+        <%= category.name %>
+      </div>
+    </h3>
+    <div class="ticket">
+      <%= @tickets.where(ticket_category_id: category.id).count %>  / <%= @tickets.count %>
+    </div>
 	<% end %>
+	<!-- Commenting out until this can be applied better
+	<% Visit.all.each do |visit| %>
+	  <div>
+        <h3> Vist ID: <%= visit.id %></h3>
+          <p> Referrer: <%= visit.referrer %></p>
+          <p> Landing Page: <%= visit.landing_page %></p>
+          <p> IP Address: <%= visit.ip %></p>
+          <p> Referring Domain: <%= visit.referring_domain %></p>
+          <p> Browser: <%= visit.browser %></p>
+          <p> Operating System: <%= visit.os %></p>
+          <p> Device Type: <%= visit.device_type %></p>
+          <p> Country: <%= visit.country %></p>
+          <p> Region: <%= visit.region %></p>
+          <p> City: <%= visit.city %></p>
+          <p> Visit Time: <%= visit.started_at %></p>
+    <% end %>
+    <% ::Ahoy::Event.all.each do |event| %>
+	  <div>
+        <h3> Event ID: <%= event.id %></h3>
+          <p> Type: <%= event.name %></p>
+          <p> Page: <%= event.properties["page"] %></p>
+          <% if !event.properties["title"].nil? %>
+            <p> Page Title: <%= event.properties["title"] %></p>
+          <% end %>
+          <% if !event.properties["tag"].nil? %>
+            <p> Tag: <%= event.properties["tag"] %></p>
+          <% end %>
+          <% if !event.properties["id"].nil? %>
+            <p> Tag ID: <%= event.properties["id"] %></p>
+          <% end %>
+          <% if !event.properties["class"].nil? %>
+            <p> Tag Class: <%= event.properties["class"] %></p>
+          <% end %>
+          <% if !event.properties["text"].nil? %>
+            <p> Link Text: <%= event.properties["text"] %></p>
+          <% end %>
+          <% if !event.properties["href"].nil? %>
+            <p> Link Target: <%= event.properties["href"] %></p>
+          <% end %>
+          <p> Time: <%= event.time %></p>
+    <% end %>
+	  </div>
+	  -->
+	  
+	
