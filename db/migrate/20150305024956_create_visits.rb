@@ -14,7 +14,6 @@ class CreateVisits < ActiveRecord::Migration
       t.text :landing_page
 
       # user
-      t.integer :user_id
       # add t.string :user_type if polymorphic
 
       # traffic source
@@ -48,6 +47,5 @@ class CreateVisits < ActiveRecord::Migration
       t.timestamp :started_at
     end
 
-    add_index :visits, [:user_id]
   end
 end

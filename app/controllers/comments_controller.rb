@@ -58,12 +58,12 @@ class CommentsController < ApplicationController
                                                         #implemented once employees have tickets
     
     def correct_customer
-      @customer = Ticket.find_by(params[:comment][:id]).customer
+      @customer = Ticket.find_by(id: params[:comment][:id]).customer
       redirect_to root_url if @customer.nil? || @customer != current_customer
     end
     
     def correct_employee
-      @employee = Ticket.find_by(params[:comment][:id]).employee
+      @employee = Ticket.find_by(id: params[:comment][:id]).employee
       redirect_to root_url if @employee.nil? || @employee != current_employee
     end
     
