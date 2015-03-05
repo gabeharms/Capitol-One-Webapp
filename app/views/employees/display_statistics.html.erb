@@ -11,7 +11,12 @@
       <%= @tickets.where(ticket_category_id: category.id).count %>  / <%= @tickets.count %>
     </div>
 	<% end %>
-	<!-- Commenting out until this can be applied better
+	
+	<!-- Commenting out all of this stuff till it can actually be applied
+	<% if 1 == 0 %>
+	
+	<%=  high_chart("my_id", @chart) %>
+
 	<% Visit.all.each do |visit| %>
 	  <div>
         <h3> Vist ID: <%= visit.id %></h3>
@@ -53,6 +58,7 @@
           <p> Time: <%= event.time %></p>
     <% end %>
 	  </div>
-	  -->
+	 <% end %>
+	 -->
 	  
 	

@@ -22,6 +22,7 @@ gem 'ratyrate'
 gem 'figaro'
 gem 'ahoy_matey'
 gem 'activeuuid', '>= 0.5.0'
+gem 'lazy_high_charts'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'
@@ -29,6 +30,7 @@ group :development, :test do
   gem 'web-console', '2.0.0.beta3'
   gem 'spring',      '1.1.3'
   gem 'brakeman', :require => false
+  gem "rails-erd"
 end
 
 group :test do
