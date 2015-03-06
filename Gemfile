@@ -31,6 +31,8 @@ group :development, :test do
   gem 'spring',      '1.1.3'
   gem 'brakeman', :require => false
   gem "rails-erd"
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :test do
