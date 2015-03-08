@@ -13,8 +13,17 @@
  *= require_tree .
  *= require_self
  */
-body{
+.logged-in{
 	background: #e9eaed;
+}
+
+.home-page{
+	background: #FFFFFF;
+}
+
+body{
+	padding: 0;
+	margin: 0;
 }
 
 /*

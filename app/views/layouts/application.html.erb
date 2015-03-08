@@ -8,17 +8,28 @@
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
   </head>
-  <body>
-    <%= render 'layouts/header' %>
-    <div class="container">
-      <!--<div class="alert-message">-->
-        <% flash.each do |message_type, message| %>
-          <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>      <% end %>
-      <!--</div>-->
-        <%= yield %>
-      
-      <%= render 'layouts/footer' %>
-      <%= debug(params) if Rails.env.development? %>
-    </div>
-  </body>
+  <% if customer_logged_in? || employee_logged_in? %>
+    <body class="logged-in">
+      <%= render 'layouts/header' %>
+      <div class="container">
+        <div class="spacer20"></div>
+        <div class="spacer20"></div>
+        <div class="spacer20"></div>
+        <!--<div class="alert-message">-->
+          <% flash.each do |message_type, message| %>
+            <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>      <% end %>
+        <!--</div>-->
+          <%= yield %>
+        
+        <%= render 'layouts/footer' %>
+        <%= debug(params) if Rails.env.development? %>
+      </div>
+    </body>
+  <% else %>
+    <body>
+      <% flash.each do |message_type, message| %>
+            <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>      <% end %>
+      <%= yield %>
+    </body>
+  <% end %>
 </html>

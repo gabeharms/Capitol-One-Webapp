@@ -29,8 +29,8 @@
             <% if ticket.ticket_status_id == 1 %>
                 <%= button_to "Resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
             <% elsif ticket.ticket_status_id == 2 %>
-                <p>Experience : <%=  rating_for ticket, "experience", :star => 5 %></p>
-                <%= image_tag("checkmark.png", :alt => "resolved", size: "40x40") %>
+                <p><%=  rating_for ticket, "experience", :star => 5 %></p>
+                <!--<%= image_tag("checkmark.png", :alt => "resolved", size: "40x40") %>-->
             <% end %>
           </div>
         </div>

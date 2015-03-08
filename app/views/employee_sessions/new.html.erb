@@ -1,19 +1,27 @@
 <% provide(:title, 'Employee Sign up') %>
-<h1>Employee Log In</h1>
+<%= render 'layouts/header' %>
+<div class="container">
+  <div class="spacer20"></div>
+  <div class="spacer20"></div>
+  <div class="spacer20"></div>
+  <h1>Employee Log In</h1>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <%= form_for(:session, url: employee_login_path) do |f| %>
+        
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control form-group', placeholder: 'Email Address' %>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(:session, url: employee_login_path) do |f| %>
-      
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control form-group', placeholder: 'Email Address' %>
+        <%= f.label :password %>
+        <%= f.password_field :password, class: 'form-control form-group', placeholder: 'Password' %>
 
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control form-group', placeholder: 'Password' %>
+        <%= f.submit "Log in", class: "btn btn-primary form-group" %>
+      <% end %>
 
-      <%= f.submit "Log in", class: "btn btn-primary form-group" %>
-    <% end %>
-
-    <p>New user? <%= link_to "Sign up now!", employee_signup_path %></p>
+      <p>New user? <%= link_to "Sign up now!", employee_signup_path %></p>
+    </div>
   </div>
+  
+  <%= render 'layouts/footer' %>
+  <%= debug(params) if Rails.env.development? %>
 </div>

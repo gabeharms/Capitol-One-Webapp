@@ -1,0 +1,38 @@
+// Place all the styles related to the Customer_Sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.home-container{
+	width: 100%;
+}
+
+.home-header{
+	background: #002e5a;
+	width: 100%;
+	height: 200px;
+}
+
+.home-footer{
+	background: #002e5a;
+	width: 100%;
+	height: 100px;
+}
+
+.c-login-fields{
+	padding: 10px;
+	border-radius: 3px;
+	border: 1px solid #b3b3b3;
+	background: #FFFFFF;
+}
+
+.home-login{
+	width: 100%;
+	min-height: 600px;
+	padding: 20px;
+	background: url('tempBG.jpg');
+}
+
+.home-logo{
+	width: 100%;
+	padding-top: 50px;
+}
