@@ -20,12 +20,17 @@ gem 'unicorn'
 gem 'sdoc',                 '0.4.0', group: :doc
 gem 'ratyrate'
 gem 'figaro'
+gem 'ahoy_matey'
+gem 'activeuuid', '>= 0.5.0'
+gem 'lazy_high_charts'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'
   gem 'byebug',      '3.4.0'
   gem 'web-console', '2.0.0.beta3'
   gem 'spring',      '1.1.3'
+  gem 'brakeman', :require => false
+  gem "rails-erd"
 end
 
 group :test do

@@ -15,3 +15,8 @@
 //= require bootstrap
 //= require turbolinks
 //= require_tree .
+//= require ahoy
+
+$( document ).ready(function() {
+    ahoy.trackAll();
+});
