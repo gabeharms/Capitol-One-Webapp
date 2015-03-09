@@ -14,6 +14,7 @@
 # Ignore picture uploads
 /public/uploads
 
+
 # Ignore all logfiles and tempfiles.
 /log/*
 !/log/.keep
@@ -25,3 +26,6 @@
 # Ignore bullshit
 /.c9/metadata/tab0
 /.c9/metadata/tab7
+
+# Ignore application configuration
+/config/application.yml
