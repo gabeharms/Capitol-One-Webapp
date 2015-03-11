@@ -26,6 +26,10 @@ body{
 	margin: 0;
 }
 
+.customer-home{
+	background: #002e5a;
+}
+
 /*
 *.alert-message{
 *	position: fixed;
