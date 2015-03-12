@@ -7,7 +7,24 @@
     </div>
   </div>
   <div class="home-login">
-    <div class="col-md-1"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-3 c-login-fields">
+      <%= image_tag("person-placeholder.png", :alt => "resolved", size: "100x100") %>
+      <h4>Sign in to your account</h4>
+      <div class="spacer20"></div>
+      <%= form_for(:session, url: customer_login_path) do |f| %>
+
+        <% f.label :email %>
+        <%= f.email_field :email, class: 'form-control form-group', placeholder: 'Email Address' %>
+
+        <% f.label :password %>
+        <%= f.password_field :password, class: 'form-control form-group', placeholder: 'Password' %>
+
+        <%= f.submit "Log in", class: "btn login-button form-group" %>
+      <% end %>
+
+      <p></p><p>or</p><p><%= link_to "Sign up now!", customer_signup_path %></p>
+    </div>
     <div class="col-md-6">
       <div class="home-content">
         <div class="ad-box">
@@ -39,24 +56,9 @@
         <div class="clear-float"></div>
       </div>
     </div>
-    <div class="col-md-3 c-login-fields">
-      <%= image_tag("person-placeholder.png", :alt => "resolved", size: "100x100") %>
-      <h4>Sign in to your account</h4>
-      <div class="spacer20"></div>
-      <%= form_for(:session, url: customer_login_path) do |f| %>
-
-        <% f.label :email %>
-        <%= f.email_field :email, class: 'form-control form-group', placeholder: 'Email Address' %>
-
-        <% f.label :password %>
-        <%= f.password_field :password, class: 'form-control form-group', placeholder: 'Password' %>
-
-        <%= f.submit "Log in", class: "btn login-button form-group" %>
-      <% end %>
-
-      <p></p><p>or</p><p><%= link_to "Sign up now!", customer_signup_path %></p>
-    </div>
-    <div class="col-md-2"></div>
+    
+    <div class="col-md-1"></div>
+        <div class="clear-float"></div>
   </div>
   <div class="home-footer">
       <div class="col-md-2"></div>

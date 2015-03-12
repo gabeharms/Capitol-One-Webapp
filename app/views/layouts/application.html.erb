@@ -26,7 +26,7 @@
       </div>
     </body>
   <% else %>
-    <body>
+    <body class="customer-home">
       <% flash.each do |message_type, message| %>
             <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>      <% end %>
       <!-- just the above 2 lines are for the error message i think..-->
