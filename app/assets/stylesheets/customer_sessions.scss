@@ -59,13 +59,19 @@
 	.ad-box{
 		float: left;
 		width: 200px;
-		margin: 10px 0 10px 50px;
+		margin: 10px 0 10px 0px;
 		text-align: center;
 		p{
 			text-align: center;
 			font-weight: 500;
 			line-height: 1.2em;
 		}
+	}
+	.space-icons{
+		float: left;
+		width: 50px;
+		display: block;
+		height: 1px;
 	}
 }
 
@@ -75,5 +81,4 @@
 	&:hover{
 		background: #b12818;
 	}
-	
 }

@@ -39,12 +39,12 @@
         <div id="toggler<%= ticket.id %>">
           <ol class="comment-list">
             <% if (params[:show_more].nil? ||  params[:show_more] == "false") %>
-              <%= link_to "Show More", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'show_more_button' %> 
+              <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
             <% else %>
                 <% if params[:show_more].to_f == ticket.id %> 
-                  <%= link_to "Show Less", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false} , :method=>:get,  class: 'show_more_button' %> 
+                  <%= link_to "Show Less Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false} , :method=>:get,  class: 'showMoreLess-button' %> 
                 <% else %>
-                  <%= link_to "Show More", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'show_more_button' %> 
+                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
               <% end %>
             <% end %>
             <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => ticket } %>
