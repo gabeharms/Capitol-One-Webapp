@@ -9,20 +9,23 @@
         </p>
       </div>
       <div class="div-align-right">
-          <div class="float-right">
-            <% if ticket.ticket_status_id == 2 %>
-                <% if !Rate.find_by(rateable_id: ticket.id).nil? %>
-                  <p>Experience : <%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate'  %></p>
-                <% end %>
-            <% end %>
-            <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-          </div>
-          <div class="float-right margin-right">
-            <% if employee_logged_in? && ticket.employee_id == nil %>
-                <%= button_to "claim", update_employee_on_ticket_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
-            <% end %>
-          </div>
+        <div class="float-right">
+          
+          <%= button_to "delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
         </div>
+        <div class="float-right margin-right">
+          <% if employee_logged_in? && ticket.employee_id == nil %>
+              <%= button_to "claim", update_employee_on_ticket_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
+          <% end %>
+        </div>
+        <div class="float-right margin-right">
+          <% if ticket.ticket_status_id == 2 %>
+              <% if !Rate.find_by(rateable_id: ticket.id).nil? %>
+                <p><%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate'  %></p>
+              <% end %>
+          <% end %>
+        </div>
+      </div>
       <div class="clear-float"></div>
     </li>
   <% end %>
