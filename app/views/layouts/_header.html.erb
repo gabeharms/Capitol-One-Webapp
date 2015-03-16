@@ -3,7 +3,6 @@
     <div class="nav-logo"><%= link_to image_tag("capitalone-logo-white.png", alt: "Capital One Logo", size: "85x32"), root_path, id: "logo" %></div>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home", root_path %></li>
         <li><%= link_to "Help", help_path %></li>
         <% if customer_logged_in? %>
           <li><%= link_to "Tickets", current_customer %></li>
@@ -37,7 +36,6 @@
             </ul>
           </li>
         <% else %>
-          <li><%= link_to "Customer Log in", customer_login_path %></li>
           <li><%= link_to "Employee Log in", employee_login_path %></li>
         <% end %>
       </ul>
