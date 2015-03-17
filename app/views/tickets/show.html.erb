@@ -16,12 +16,12 @@
             <% end %>
           <% elsif @ticket.employee_id == nil %>
                 <% if !Rate.find_by(rateable_id: @ticket.id).nil? %>
-                  <p><%=  rating_for @ticket, "experience", :star => 5 %></p>
+                  <p><%=  rating_for @ticket, "experience", :star => 5, star_path: '/images/ratyrate' %></p>
                 <% end %>
             <%= button_to "claim", update_employee_on_ticket_path(:ticket_id => @ticket.id), class: 'btn btn-default' %>
           <% else %>
              <% if !Rate.find_by(rateable_id: @ticket.id).nil? %>
-                  <p><%=  rating_for @ticket, "experience", :star => 5 %></p>
+                  <p><%=  rating_for @ticket, "experience", :star => 5, star_path: '/images/ratyrate' %></p>
              <% end %>
             <br> <!-- this BR is to render the bg, it is important-->
           <% end %>
