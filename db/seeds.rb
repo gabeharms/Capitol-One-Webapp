@@ -18,7 +18,6 @@
                password:              password,
                password_confirmation: password)
                
-
 end
 
 400.times do |n|
@@ -82,4 +81,60 @@ def rand_in_range(from, to)
   rand * (to - from) + from
 end
 
+############################################
+# Create Accounts for zach and wesley
+############################################
+first_name  = "Zach"
+last_name =  "Employee"
+email = "zach-employee@seniorproject.org"
+password = "baseball"
+zachEmployee = Employee.create!(first_name:  first_name,
+             last_name: last_name,
+             email: email,
+             password:              password,
+             password_confirmation: password)
 
+first_name  = "Wesley"
+last_name =  "Employee"
+email = "wesley-employee@seniorproject.org"
+password = "football"
+wesleyEmployee = Employee.create!(first_name:  first_name,
+             last_name: last_name,
+             email: email,
+             password:              password,
+             password_confirmation: password)
+             
+first_name  = "Zach"
+last_name =  "Customer"
+email = "zach-customer@seniorproject.org"
+password = "baseball"
+Customer.create!(first_name:  first_name,
+             last_name: last_name,
+             email: email,
+             password:              password,
+             password_confirmation: password)
+             
+first_name  = "Wesley"
+last_name =  "Customer"
+email = "wesley-customer@seniorproject.org"
+password = "football"
+Customer.create!(first_name:  first_name,
+             last_name: last_name,
+             email: email,
+             password:              password,
+             password_confirmation: password)
+             
+15.times do
+  title = titles.sample
+  visible = true
+  
+  if rand(1..2) == 1
+    created_by = false
+    employee_id = zachEmployee.id
+  else
+    employee_id = wesleyEmployee.id
+    created_by = false
+  end
+  
+  Customer.order("RANDOM()").first.tickets.create!(title: title, employee_id: employee_id, ticket_status_id: status_id.sample, ticket_category_id: rand(1..catagories.count), created_by_customer: created_by, visible: visible, created_at: Time.at((7.days.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
+end
