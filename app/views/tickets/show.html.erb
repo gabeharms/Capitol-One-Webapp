@@ -1,7 +1,9 @@
 <% provide(:title, @ticket.title) %>
 <div class="row">
-  <h3>Customer: <%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %></h3>
-  <div class="col-md-10 employee-ticket-show">
+  
+  <div class="col-md-10">
+    <h3>Customer: <%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %></h3>
+    <div class="employee-ticket-show">
       <h4 class="ticket-padding title-left font-white"><%= @ticket.title %></h4>
       <% if employee_logged_in? %>
         <div class="float-right margin-right element-bottom-padding">
@@ -44,15 +46,16 @@
            <div class="ticket-padding element-bottom-padding"><%= render :partial => 'shared/comment_box', locals: { :ticket => @ticket } %></div>
       </ol>
   </div>
+</div>
   <div class="col-md-2">
     <%= form_for(@ticket) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
       <% if (employee_logged_in?) %>
           <div>
-            <h4>Notes</h4>
+            <h4 class="notesTitle-padding">Notes</h4>
             <%= f.text_area :note, class: "notes-text-field form-group", value: @ticket.note, placeholder: "Notes..." %> 
             <%= f.hidden_field :note_update, :value => "true" %>
-            <div class="float-right"><%= f.submit "Save", class: "btn btn-primary new-customer-post-button" %></div>
+            <%= f.submit "Save", class: "btn btn-primary noteSave-btn" %>
             <div class="clear-float"></div>
             <div class="spacer20"></div>
           </div>
