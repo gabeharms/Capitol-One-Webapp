@@ -11,6 +11,8 @@
     <div class="col-md-4"></div>
     <div class="col-md-4">
       <h1>Employee Log In</h1>
+      <% flash.each do |message_type, message| %>
+            <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>      <% end %>
       <%= form_for(:session, url: employee_login_path) do |f| %>
         
         <%= f.label :email %>

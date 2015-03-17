@@ -10,7 +10,10 @@
     <div class="col-md-2"></div>
     <div class="col-md-3 c-login-fields">
       <%= image_tag("person-placeholder.png", :alt => "resolved", size: "100x100") %>
+
       <h4>Sign in to your account</h4>
+      <% flash.each do |message_type, message| %>
+            <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>      <% end %>
       <div class="spacer20"></div>
       <%= form_for(:session, url: customer_login_path) do |f| %>
 
@@ -49,8 +52,8 @@
         </div>
         <div class="clear-float"></div>
         <div class="ad-box">
-          <%= image_tag("home-privacy.png", :alt => "resolved", size: "100x100") %>
-          <p>Communicate with privacy and security</p>
+          <%= image_tag("home-attach.png", :alt => "resolved", size: "100x100") %>
+          <p>Conveniently upload files</p>
         </div>
         <div class="space-icons"></div>
         <div class="ad-box">
