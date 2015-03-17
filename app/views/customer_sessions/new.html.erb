@@ -1,19 +1,72 @@
 <% provide(:title, "Customer Log in") %>
-<h1>Customer Log In</h1>
+<div class="home-container customer-home">
+  <div class="home-header">
+    <div class="home-logo">
+      <%= image_tag("capitalone-logo-white.png", alt: "Capital One Logo", size: "255x96") %>
+      <div class="clear-float"></div>
+    </div>
+  </div>
+  <div class="home-login">
+    <div class="col-md-2"></div>
+    <div class="col-md-3 c-login-fields">
+      <%= image_tag("person-placeholder.png", :alt => "resolved", size: "100x100") %>
+      <h4>Sign in to your account</h4>
+      <div class="spacer20"></div>
+      <%= form_for(:session, url: customer_login_path) do |f| %>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(:session, url: customer_login_path) do |f| %>
+        <% f.label :email %>
+        <%= f.email_field :email, class: 'form-control form-group', placeholder: 'Email Address' %>
 
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control form-group', placeholder: 'Email Address' %>
+        <% f.label :password %>
+        <%= f.password_field :password, class: 'form-control form-group', placeholder: 'Password' %>
 
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control form-group', placeholder: 'Password' %>
+        <%= f.submit "Log in", class: "btn login-button form-group" %>
+      <% end %>
 
-      <%= f.submit "Log in", class: "btn btn-primary form-group" %>
-    <% end %>
-
-    <p>New user? <%= link_to "Sign up now!", customer_signup_path %></p>
+      <p></p><p>or</p><p><%= link_to "Sign up now!", customer_signup_path %></p>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+      <div class="home-content">
+        <div class="ad-box">
+          <%= image_tag("home-timer.png", :alt => "resolved", size: "100x100") %>
+          <p>Get your questions answered quickly</p>
+        </div>
+        <div class="space-icons"></div>
+        <div class="ad-box">
+          <%= image_tag("home-mobile.png", :alt => "resolved", size: "100x100") %>
+          <p>Communicate from anywhere</p>
+        </div>
+        <div class="clear-float"></div>
+        <div class="ad-box">
+          <%= image_tag("home-people.png", :alt => "resolved", size: "100x100") %>
+          <p>Seamlessly connect with employees</p>
+        </div>
+        <div class="space-icons"></div>
+        <div class="ad-box">
+          <%= image_tag("home-privacy.png", :alt => "resolved", size: "100x100") %>
+          <p>Private and secure communication</p>
+        </div>
+        <div class="clear-float"></div>
+        <div class="ad-box">
+          <%= image_tag("home-privacy.png", :alt => "resolved", size: "100x100") %>
+          <p>Communicate with privacy and security</p>
+        </div>
+        <div class="space-icons"></div>
+        <div class="ad-box">
+          <%= image_tag("home-notification.png", :alt => "resolved", size: "100x100") %>
+          <p>Get notified immediately</p>
+        </div>
+        <div class="clear-float"></div>
+      </div>
+    </div>
+    <div class="clear-float"></div>
+  </div>
+  <div class="home-footer">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <p><%= link_to "Employee Log in", employee_login_path %></p>
+      </div>
+      <div class="col-md-2"></div>
   </div>
 </div>

@@ -29,7 +29,8 @@
             <% if ticket.ticket_status_id == 1 %>
                 <%= button_to "Resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
             <% elsif ticket.ticket_status_id == 2 %>
-                <p>Experience : <%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %></p>
+                <p><%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate', cancel_hint: 'Cancel this vote!', disable_after_rate: false %></p>
+            <% elsif ticket.ticket_status_id == 3 %><!-- discuss on whether to remove this check mark... -->
                 <%= image_tag("checkmark.png", :alt => "resolved", size: "40x40") %>
             <% end %>
           </div>
@@ -39,12 +40,12 @@
         <div id="toggler<%= ticket.id %>">
           <ol class="comment-list">
             <% if (params[:show_more].nil? ||  params[:show_more] == "false") %>
-              <%= link_to "Show More", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'show_more_button' %> 
+              <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
             <% else %>
                 <% if params[:show_more].to_f == ticket.id %> 
-                  <%= link_to "Show Less", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false} , :method=>:get,  class: 'show_more_button' %> 
+                  <%= link_to "Show Less Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false} , :method=>:get,  class: 'showMoreLess-button' %> 
                 <% else %>
-                  <%= link_to "Show More", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'show_more_button' %> 
+                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
               <% end %>
             <% end %>
             <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => ticket } %>
