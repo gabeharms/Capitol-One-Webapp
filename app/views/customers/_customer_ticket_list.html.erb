@@ -18,7 +18,7 @@
         <div class="ticket-info">
           <a href="#" class="ticket-title" id="toggle-commander<%= ticket.id %>"><%= ticket.title %></a>
           <p class="timestamp">
-            <%= time_ago_in_words(ticket.created_at).capitalize %> ago
+            <%= time_ago_in_words(ticket.updated_at).capitalize %> ago
           </p>
         </div>
         <div class="div-align-right">
