@@ -22,6 +22,9 @@
         <div class="ticket-info">
           <% tempParams = params[:open_ticket] %>
           <% tempParams2 = params[:temp_id] %>
+          <% if ticket.unread %>
+            <div class="unread-circle"></div>
+          <% end %>
           <%= link_to({:ticket_toggle => ticket.id, :open_ticket => tempParams, :temp_id => tempParams2}) do %>
             <div class="ticket-title"><%= ticket.title %></div>
           <% end %>

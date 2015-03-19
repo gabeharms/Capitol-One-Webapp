@@ -20,6 +20,9 @@ class CustomersController < ApplicationController
     openID = params[:open_ticket]
     tempID = params[:temp_id]
     if(toggleID != nil)
+      read = Ticket.find_by(id: toggleID)
+      read.unread = false
+      read.save
       openID = tempID
       tempID = toggleID
     end
