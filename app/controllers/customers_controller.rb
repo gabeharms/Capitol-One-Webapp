@@ -11,7 +11,7 @@ class CustomersController < ApplicationController
     @customer = Customer.search_by_id(params[:id])
     @tickets = @customer.tickets.order_by_desc.paginate(page: params[:page])
     @ticket = current_customer.tickets.build if customer_logged_in?
-    
+    @unreadCount = current_customer.tickets.where(unread: true).count
     @comment = current_customer.tickets.first.comments.build if customer_logged_in? # take this out?
     @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
