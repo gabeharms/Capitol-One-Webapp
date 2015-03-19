@@ -15,7 +15,20 @@ class CustomersController < ApplicationController
     @comment = current_customer.tickets.first.comments.build if customer_logged_in? # take this out?
     @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
-    
+
+    toggleID = params[:ticket_toggle]
+    openID = params[:open_ticket]
+    tempID = params[:temp_id]
+    if(toggleID != nil)
+      openID = tempID
+      tempID = toggleID
+    end
+
+    if (toggleID == openID)
+      tempID = nil
+    end
+    params[:open_ticket] = openID
+    params[:temp_id] = tempID
   end
   
   def show_info

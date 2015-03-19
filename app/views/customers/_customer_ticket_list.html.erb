@@ -1,4 +1,3 @@
-
 <ol class="ticket-list">
     <% if @tickets.count != 0 %>
        <%  @tickets.each do |ticket| %>
@@ -7,16 +6,26 @@
             $("#toggler<%= ticket.id %>").hide();
             <% if(params[:ticket_id] != nil) %>
               $("#toggler<%= params[:ticket_id] %>").slideDown();
+            <% elsif(params[:open_ticket] == nil && ticket.id.to_f == params[:ticket_toggle].to_f) %>
+                $("#toggler<%= ticket.id %>").slideDown();
+            <% elsif(params[:open_ticket].to_f == ticket.id.to_f && ticket.id.to_f == params[:ticket_toggle].to_f) %>
+                $("#toggler<%= ticket.id %>").show();
+                $("#toggler<%= ticket.id %>").slideUp();
+            <% elsif(params[:open_ticket].to_f != ticket.id.to_f && ticket.id.to_f == params[:ticket_toggle].to_f) %>
+                $("#toggler<%= ticket.id %>").slideDown();
+            <% else %>
+                $("#toggler<%= ticket.id %>").slideUp();
             <% end %>
-            $("#toggle-commander<%= ticket.id %>").click(function(){
-              $("#toggler<%= ticket.id %>").slideToggle();
-              return false;
-            });
           });
       </script>
       <li id="jumpTo<%= ticket.id %>">
         <div class="ticket-info">
-          <a href="#" class="ticket-title" id="toggle-commander<%= ticket.id %>"><%= ticket.title %></a>
+          <% tempParams = params[:open_ticket] %>
+          <% tempParams2 = params[:temp_id] %>
+          <%= link_to({:ticket_toggle => ticket.id, :open_ticket => tempParams, :temp_id => tempParams2}) do %>
+            <div class="ticket-title"><%= ticket.title %></div>
+          <% end %>
+          
           <p class="timestamp">
             <%= time_ago_in_words(ticket.updated_at).capitalize %> ago
           </p>

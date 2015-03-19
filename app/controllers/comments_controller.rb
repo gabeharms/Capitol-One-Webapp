@@ -8,6 +8,7 @@ class CommentsController < ApplicationController
     @ticket = Ticket.find_by(id: params[:comment][:id])
     @ticket.ticket_status_id = 1
     @ticket.updated_at = Time.now
+    @ticket.unread = true
     @comment = Ticket.find_by(id: params[:comment][:id]).comments.build(message: params[:comment][:message], picture: params[:comment][:picture])
 
     if ( employee_logged_in? )

@@ -127,8 +127,9 @@ ActiveRecord::Schema.define(version: 20150305024957) do
     t.boolean  "created_by_customer"
     t.string   "title"
     t.text     "note"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.boolean  "unread",              default: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   add_index "tickets", ["created_at"], name: "index_tickets_on_created_at"
