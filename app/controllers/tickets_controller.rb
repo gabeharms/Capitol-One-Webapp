@@ -91,10 +91,15 @@ class TicketsController < ApplicationController
     ticket = params[:ticket_id]
     if !ticket.nil?
       ticket = Ticket.find(ticket)
-      ticket.employee = current_employee
-      ticket.save
+      if ticket.employee.nil?
+        ticket.employee = current_employee
+        ticket.save
+        redirect_to :controller => 'tickets', :action =>'show', :id => ticket.id
+      else
+        flash[:danger]  = "Sorry, this ticket has already been claimed."
+        redirect_to request.referrer
+      end
     end
-    redirect_to request.referrer
   end
 
   private
