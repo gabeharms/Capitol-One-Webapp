@@ -59,6 +59,12 @@ class TicketsController < ApplicationController
     @employee = Employee.find_by(id: @ticket.employee_id)
     @customer = Customer.find_by(id: @ticket.customer_id)
     @category = TicketCatagory.find_by(id: @ticket.ticket_category_id)
+    @categories = TicketCatagory.all
+    
+    if params[:category_select] != nil
+      @ticket.update_column(:ticket_category_id, params[:category_select])
+    end
+    
   end
 
   def update

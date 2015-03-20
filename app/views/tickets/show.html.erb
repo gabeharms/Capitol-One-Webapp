@@ -3,6 +3,9 @@
   
   <div class="col-md-10">
     <h3>Customer: <%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %></h3>
+    <% @options =  @categories.map { |c| [ c.name, c.id ] } %>
+    <%= select_tag :category_select, options_for_select(@options, @ticket.ticket_category_id),  class: 'btn btn-default order-drop', :'data-remote' => 'true', :'data-url' => url_for(:controller => 'tickets', :action => 'show', :ticket_id => @ticket.id ) %> 
+ 
     <div class="employee-ticket-show">
       <h4 class="ticket-padding title-left font-white"><%= @ticket.title %></h4>
       <% if employee_logged_in? %>
@@ -61,5 +64,5 @@
           </div>
       <% end %>
     <% end %>
-  </div>
+ </div>
 </div>
