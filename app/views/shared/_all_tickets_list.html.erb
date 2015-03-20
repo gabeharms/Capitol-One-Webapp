@@ -5,7 +5,7 @@
       <div class="ticket-info">
         <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}, remote: false, class: 'ticket-title') %>
         <p class="timestamp">
-          <%= time_ago_in_words(ticket.created_at).capitalize %> ago
+          <%= time_ago_in_words(ticket.updated_at).capitalize %> ago
         </p>
       </div>
       <div class="div-align-right">

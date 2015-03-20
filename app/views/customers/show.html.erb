@@ -1,7 +1,7 @@
 <% provide(:title, @customer.first_name) %>
 <div class="row">
   <div class="col-md-12"> 
-    <h3 class="title-left">Welcome <%= @customer.first_name %>&nbsp;<%= @customer.last_name %> (<%= @customer.tickets.count %>)</h3>
+    <h3 class="title-left">Welcome <%= @customer.first_name %>&nbsp;<%= @customer.last_name %> (<%= @unreadCount %>)</h3>
     <div class="clear-float"></div>
   </div>
   <aside class="col-md-12">

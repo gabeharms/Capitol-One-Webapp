@@ -8,7 +8,8 @@ class CreateTickets < ActiveRecord::Migration
       t.boolean "visible", :default => true 
       t.boolean "created_by_customer"
       t.string  "title"
-      t.text  "note"   
+      t.text  "note"
+      t.boolean "unread", :default => false  
 
       t.timestamps null: false
     end
