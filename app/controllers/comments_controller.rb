@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
     
     if( employee_logged_in? )
       redirect_to @ticket
-    else  
+    else  #might be able to take out :ticket_id here since we are not reopening the comments on page load
       redirect_to :controller => 'customers', :action => 'show', :id => @ticket.customer.id, :ticket_id => @ticket.id   # This changes once the Ticket Conversation page has been created0
     end
   end
