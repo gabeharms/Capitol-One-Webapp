@@ -2,7 +2,7 @@
 <div class="row">
   
   <div class="col-md-10">
-    <h3>Customer: <%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %></h3>
+    <h3 class="cust-name">Customer: <%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %></h3>
     <% @options =  @categories.map { |c| [ c.name, c.id ] } %>
     <% if @ticket.ticket_category_id == nil %>
       <% @options[@options.count] = ["Please Select", TicketCatagory.all.count] %>
@@ -10,7 +10,9 @@
     <% else %>
       <% default = @ticket.ticket_category_id %>
     <% end %>
-    <%= select_tag :category_select, options_for_select(@options, default),  class: 'btn btn-default order-drop', :'data-remote' => 'true', :'data-url' => url_for(:controller => 'tickets', :action => 'show', :ticket_id => @ticket.id ) %> 
+    <%= select_tag :category_select, options_for_select(@options, default),  class: 'btn btn-default category-drop', :'data-remote' => 'true', :'data-url' => url_for(:controller => 'tickets', :action => 'show', :ticket_id => @ticket.id ) %>
+
+    <div class="clear-float"></div> 
  
     <div class="employee-ticket-show">
       <h4 class="ticket-padding title-left font-white"><%= @ticket.title %></h4>
