@@ -4,15 +4,15 @@
       <script>
          $(document).ready(function(){
             $("#toggler<%= ticket.id %>").hide();
-            <% if(params[:ticket_id] != nil) %>
-              $("#toggler<%= params[:ticket_id] %>").slideDown();
-            <% elsif(params[:open_ticket] == nil && ticket.id.to_f == params[:ticket_toggle].to_f) %>
+            <% if(params[:open_ticket] == nil && ticket.id.to_f == params[:ticket_toggle].to_f) %>
                 $("#toggler<%= ticket.id %>").slideDown();
             <% elsif(params[:open_ticket].to_f == ticket.id.to_f && ticket.id.to_f == params[:ticket_toggle].to_f) %>
                 $("#toggler<%= ticket.id %>").show();
                 $("#toggler<%= ticket.id %>").slideUp();
             <% elsif(params[:open_ticket].to_f != ticket.id.to_f && ticket.id.to_f == params[:ticket_toggle].to_f) %>
                 $("#toggler<%= ticket.id %>").slideDown();
+            <% elsif(params[:show_more] != nil && params[:open_ticket] != nil) %>
+                $("#toggler<%= params[:ticket_id] %>").slideDown();
             <% else %>
                 $("#toggler<%= ticket.id %>").slideUp();
             <% end %>
@@ -54,12 +54,14 @@
           <div class="center-showMoreLess">
             <% if ticket.comments.count > 5 %>
               <% if (params[:show_more].nil? ||  params[:show_more] == "false") %>
-                <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
+                <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id,  
+                  :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button' %> 
               <% else %>
                 <% if params[:show_more].to_f == ticket.id %> 
-                  <%= link_to "Show Less Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false} , :method=>:get,  class: 'showMoreLess-button' %> 
+                  <%= link_to "Show Less Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false,  
+                    :ticket_toggle => ticket.id, :open_ticket => tempParams2, :temp_id => nil} , :method=>:get,  class: 'showMoreLess-button' %> 
                 <% else %>
-                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
+                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id, :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button' %> 
                 <% end %>
               <% end %>
             <% end %>
