@@ -16,7 +16,8 @@
             <% else %>
                 $("#toggler<%= ticket.id %>").slideUp();
             <% end %>
-          });
+         });
+          
       </script>
       <li id="jumpTo<%= ticket.id %>">
         <div class="ticket-info">
@@ -26,7 +27,7 @@
             <div class="unread-circle"></div>
           <% end %>
           <%= link_to({:ticket_toggle => ticket.id, :open_ticket => tempParams, :temp_id => tempParams2}) do %>
-            <div class="ticket-title"><%= ticket.title %></div>
+            <div class="ticket-title link-class"><%= ticket.title %></div>
           <% end %>
           
           <p class="timestamp">
@@ -55,13 +56,13 @@
             <% if ticket.comments.count > 5 %>
               <% if (params[:show_more].nil? ||  params[:show_more] == "false") %>
                 <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id,  
-                  :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button' %> 
+                  :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button link-class' %> 
               <% else %>
                 <% if params[:show_more].to_f == ticket.id %> 
                   <%= link_to "Show Less Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false,  
-                    :ticket_toggle => ticket.id, :open_ticket => tempParams2, :temp_id => nil} , :method=>:get,  class: 'showMoreLess-button' %> 
+                    :ticket_toggle => ticket.id, :open_ticket => tempParams2, :temp_id => nil} , :method=>:get,  class: 'showMoreLess-button link-class' %> 
                 <% else %>
-                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id, :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button' %> 
+                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id, :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button link-class' %> 
                 <% end %>
               <% end %>
             <% end %>
