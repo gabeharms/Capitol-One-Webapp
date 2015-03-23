@@ -1,6 +1,7 @@
 <header class="navbar navbar-fixed-top navbar-inverse navbar-bg">
   <div class="container">
-    <div class="nav-logo"><%= link_to image_tag("capitalone-logo-white.png", alt: "Capital One Logo", size: "85x32"), "#" , id: "logo" %></div>
+    <% link_path = (current_customer != nil) ? current_customer : current_employee %>
+    <div class="nav-logo"><%= link_to image_tag("capitalone-logo-white.png", alt: "Capital One Logo", size: "85x32"), link_path , id: "logo" %></div>
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Help", help_path %></li>
