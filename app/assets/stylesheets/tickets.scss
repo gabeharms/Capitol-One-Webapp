@@ -113,3 +113,20 @@ hr{
 .noteSave-btn{
   width: 100%;
 }
+
+.cust-name{
+  float: left;
+  a{
+    color: #b93e36;
+    text-decoration: none;
+  }
+  a:hover{
+    color: #b93e36;
+  }
+}
+
+.category-drop{
+  float: right;
+  width: 200px;
+  margin-top: 25px;
+}

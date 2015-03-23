@@ -10,17 +10,33 @@ class CustomersController < ApplicationController
   
   def show
     @customer = Customer.search_by_id(params[:id])
-    @tickets = @customer.tickets.paginate(page: params[:page])
+    @tickets = @customer.tickets.order_by_desc.paginate(page: params[:page])
     @ticket = current_customer.tickets.build if customer_logged_in?
-    @comment = current_customer.tickets.first.comments.build if customer_logged_in?
+    @unreadCount = current_customer.tickets.where(unread: true).count
+    @comment = current_customer.tickets.first.comments.build if customer_logged_in? # take this out?
     @catagories = TicketCatagory.all
     @statuses = TicketStatus.all
-    
+
+    toggleID = params[:ticket_toggle]
+    openID = params[:open_ticket]
+    tempID = params[:temp_id]
+    if(toggleID != nil)
+      read = Ticket.find_by(id: toggleID)
+      read.update_column(:unread, false)
+      openID = tempID
+      tempID = toggleID
+    end
+
+    if (toggleID == openID)
+      tempID = nil
+    end
+    params[:open_ticket] = openID
+    params[:temp_id] = tempID
   end
   
   def show_info
     @customer = Customer.search_by_id(params[:id])
-    @tickets = @customer.tickets.paginate(page: params[:page])
+    @tickets = @customer.tickets.order_by_desc.paginate(page: params[:page])
     @employee = current_employee
     @ticket = @tickets.build if employee_logged_in?
     @catagories = TicketCatagory.all

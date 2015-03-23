@@ -1,7 +1,7 @@
  <div class="comment-box">
   <%= form_for(@comment, html: { multipart: true }) do |f| %>
     <%= f.text_area :message, placeholder: "Post your reply here...", class: 'new-comment-field' %>
-    <%= f.submit "Post", class: "btn btn-primary post-comment" %>
+    <%= f.submit "Post", class: "btn btn-primary post-comment", data: { disable_with: "Posting..." } %>
     <%= f.hidden_field :id, :value => ticket.id %>
     <div class="clear-float"></div>
     <% if customer_logged_in? %>

@@ -4,7 +4,7 @@
         <div class="new-customer-post-container">
         	<h4 class="font-white">Tell us how we can help...</h4>
 	        <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Write your question here..." %> 
-	    	<div class="float-right"><%= f.submit "Post", class: "btn btn-default new-customer-post-button" %></div>
+	    	<div class="float-right"><%= f.submit "Post", class: "btn btn-default new-customer-post-button", data: { disable_with: "Posting..." } %></div>
 	    	<div class="clear-float"></div>
 	    	<div class="spacer20"></div>
     	</div>

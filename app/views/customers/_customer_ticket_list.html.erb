@@ -1,24 +1,37 @@
-
 <ol class="ticket-list">
     <% if @tickets.count != 0 %>
        <%  @tickets.each do |ticket| %>
       <script>
          $(document).ready(function(){
             $("#toggler<%= ticket.id %>").hide();
-            <% if(params[:ticket_id] != nil) %>
-              $("#toggler<%= params[:ticket_id] %>").slideDown();
+            <% if(params[:open_ticket] == nil && ticket.id.to_f == params[:ticket_toggle].to_f) %>
+                $("#toggler<%= ticket.id %>").slideDown();
+            <% elsif(params[:open_ticket].to_f == ticket.id.to_f && ticket.id.to_f == params[:ticket_toggle].to_f) %>
+                $("#toggler<%= ticket.id %>").show();
+                $("#toggler<%= ticket.id %>").slideUp();
+            <% elsif(params[:open_ticket].to_f != ticket.id.to_f && ticket.id.to_f == params[:ticket_toggle].to_f) %>
+                $("#toggler<%= ticket.id %>").slideDown();
+            <% elsif(params[:show_more] != nil && params[:open_ticket] != nil) %>
+                $("#toggler<%= params[:ticket_id] %>").slideDown();
+            <% else %>
+                $("#toggler<%= ticket.id %>").slideUp();
             <% end %>
-            $("#toggle-commander<%= ticket.id %>").click(function(){
-              $("#toggler<%= ticket.id %>").slideToggle();
-              return false;
-            });
-          });
+         });
+          
       </script>
       <li id="jumpTo<%= ticket.id %>">
         <div class="ticket-info">
-          <a href="#" class="ticket-title" id="toggle-commander<%= ticket.id %>"><%= ticket.title %></a>
+          <% tempParams = params[:open_ticket] %>
+          <% tempParams2 = params[:temp_id] %>
+          <% if ticket.unread %>
+            <div class="unread-circle"></div>
+          <% end %>
+          <%= link_to({:ticket_toggle => ticket.id, :open_ticket => tempParams, :temp_id => tempParams2}) do %>
+            <div class="ticket-title link-class"><%= ticket.title %></div>
+          <% end %>
+          
           <p class="timestamp">
-            <%= time_ago_in_words(ticket.created_at).capitalize %> ago
+            <%= time_ago_in_words(ticket.updated_at).capitalize %> ago
           </p>
         </div>
         <div class="div-align-right">
@@ -40,16 +53,20 @@
         <div id="toggler<%= ticket.id %>">
           <ol class="comment-list">
           <div class="center-showMoreLess">
-            <% if (params[:show_more].nil? ||  params[:show_more] == "false") %>
-              <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
-            <% else %>
+            <% if ticket.comments.count > 5 %>
+              <% if (params[:show_more].nil? ||  params[:show_more] == "false") %>
+                <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id,  
+                  :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button link-class' %> 
+              <% else %>
                 <% if params[:show_more].to_f == ticket.id %> 
-                  <%= link_to "Show Less Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false} , :method=>:get,  class: 'showMoreLess-button' %> 
+                  <%= link_to "Show Less Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => false,  
+                    :ticket_toggle => ticket.id, :open_ticket => tempParams2, :temp_id => nil} , :method=>:get,  class: 'showMoreLess-button link-class' %> 
                 <% else %>
-                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id} , :method=>:get,  class: 'showMoreLess-button' %> 
+                  <%= link_to "Show More Comments", {:controller => "customers", :action => "show", :ticket_id => ticket.id, :show_more => ticket.id, :ticket_toggle => ticket.id, :temp_id => nil, :open_ticket => tempParams2} , :method=>:get,  class: 'showMoreLess-button link-class' %> 
+                <% end %>
               <% end %>
-            </div>
             <% end %>
+            </div>
             <%= render :partial => 'shared/show_ticket_comments', locals: { :ticket => ticket } %>
             <div class="comment-box-padding"><%= render :partial => 'shared/comment_box', locals: { :ticket => ticket } %></div>
             <div class="clear-float"></div>

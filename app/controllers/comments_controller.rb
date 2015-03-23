@@ -7,9 +7,12 @@ class CommentsController < ApplicationController
     
     @ticket = Ticket.find_by(id: params[:comment][:id])
     @ticket.ticket_status_id = 1
+    @ticket.updated_at = Time.now
+    
     @comment = Ticket.find_by(id: params[:comment][:id]).comments.build(message: params[:comment][:message], picture: params[:comment][:picture])
 
     if ( employee_logged_in? )
+      @ticket.unread = true
       @ticket.employee = current_employee
       
       @comment.employee = current_employee
@@ -28,7 +31,7 @@ class CommentsController < ApplicationController
     
     if( employee_logged_in? )
       redirect_to @ticket
-    else  
+    else  #might be able to take out :ticket_id here since we are not reopening the comments on page load
       redirect_to :controller => 'customers', :action => 'show', :id => @ticket.customer.id, :ticket_id => @ticket.id   # This changes once the Ticket Conversation page has been created0
     end
   end

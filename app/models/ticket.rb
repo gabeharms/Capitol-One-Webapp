@@ -13,8 +13,8 @@ class Ticket < ActiveRecord::Base
   
   # Named Scopes and Logic Functions
   
-  scope :order_by_desc, lambda {reorder("tickets.created_at DESC") }
-  scope :order_by_asc, lambda {reorder("tickets.created_at ASC") }
+  scope :order_by_desc, lambda {reorder("tickets.updated_at DESC") }
+  scope :order_by_asc, lambda {reorder("tickets.updated_at ASC") }
 
   def self.search_by_status( status )
     where(ticket_status_id: status)
