@@ -2,7 +2,10 @@
 <div class="row">
   
   <div class="col-md-10">
-    <h3 class="cust-name">Customer: <%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %></h3>
+    <h3 class="cust-name">Customer: 
+      <%= link_to({:controller => 'customers', :action => 'show_info', :id => @ticket.customer.id}, class: 'cust-link') do %><%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %><% end %>
+
+    </h3>
     <% @options =  @categories.map { |c| [ c.name, c.id ] } %>
     <% if @ticket.ticket_category_id == nil %>
       <% @options[@options.count] = ["Please Select", TicketCatagory.all.count] %>
