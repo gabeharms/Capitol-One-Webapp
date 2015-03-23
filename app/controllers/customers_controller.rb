@@ -65,17 +65,38 @@ class CustomersController < ApplicationController
     end
   end
   
-  def edit
-    @customer = Customer.find(params[:id])
+  def edit_info
+    @customer = current_customer
+  end
+  
+  def edit_password
+    @customer = current_customer
   end
   
   def update
-    @customer = Customer.find(params[:id])
-    if @customer.update_attributes(customer_params)
-      flash[:success] = "Profile updated"
-      redirect_to @customer
-    else
-      render 'edit'
+    @customer = current_customer
+    
+    if !params[:customer][:first_name].nil? && !params[:customer][:last_name].nil? && !params[:customer][:email].nil?
+      if @customer.update_attributes(account_info_params)
+        flash[:success] = "Profile updated"
+        render 'edit_info'
+      else
+        render 'edit_info'
+      end
+    elsif !params[:customer][:password].nil? && !params[:customer][:password_confirmation].nil?
+      if @customer.authenticate(params[:customer][:old_password])
+        if @customer.update_attributes(new_password_params)
+          flash[:success] = "Profile updated"
+          render 'edit_password'
+        else
+          render 'edit_password'
+        end
+      else
+          flash.now[:danger]= "The current password you have entered is invalid"
+          render 'edit_password'
+      end
+    else    
+          render 'edit_info'
     end
   end
   
@@ -89,8 +110,16 @@ class CustomersController < ApplicationController
   private
 
     def customer_params
-      params.require(:customer).permit(:first_name, :last_name, :email, :password,
-                                   :password_confirmation)
+      params.require(:customer).permit(:first_name, :last_name, :email, :old_password,
+                                   :password, :password_confirmation)
+    end
+    
+    def new_password_params
+      params.require(:customer).permit(:password, :password_confirmation)
+    end
+    
+    def account_info_params
+      params.require(:customer).permit(:first_name, :last_name, :email)
     end
   
     # Confirms a logged-in user.
