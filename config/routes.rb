@@ -48,6 +48,12 @@ Rails.application.routes.draw do
   post 'customer_show'   => 'customers#show'
   
   get    'customer_show_info'   => 'customers#show_info'
+  
+  get    'customer_edit_info'     => 'customers#edit_info'
+  get    'customer_edit_password' => 'customers#edit_password'
+
+  get    'employee_edit_info'     => 'employees#edit_info'
+  get    'employee_edit_password' => 'employees#edit_password'
 
   
 #  get    'login'   => 'sessions#new'

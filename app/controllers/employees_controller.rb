@@ -69,24 +69,53 @@ class EmployeesController < ApplicationController
     end
   end
   
-  def edit
-    @employee = Employee.find(params[:id])
+  def edit_info
+    @employee = current_employee
+  end
+  
+  def edit_password
+    @employee = current_employee
   end
   
   def update
-    @employee = Employee.find(params[:id])
-    if @employee.update_attributes(employee_params)
-      flash[:success] = "Profile updated"
-      redirect_to @employee
-    else
-      render 'edit'
+    @employee = current_employee
+    
+    if !params[:employee][:first_name].nil? && !params[:employee][:last_name].nil? && !params[:employee][:email].nil?
+      if @employee.update_attributes(account_info_params)
+        flash[:success] = "Profile updated"
+        render 'edit_info'
+      else
+        render 'edit_info'
+      end
+    elsif !params[:employee][:password].nil? && !params[:employee][:password_confirmation].nil?
+      if @employee.authenticate(params[:employee][:old_password])
+        if @employee.update_attributes(new_password_params)
+          flash[:success] = "Profile updated"
+          render 'edit_password'
+        else
+          render 'edit_password'
+        end
+      else
+          flash.now[:danger]= "The current password you have entered is invalid"
+          render 'edit_password'
+      end
+    else    
+          render 'edit_info'
     end
   end
   private
 
     def employee_params
-      params.require(:employee).permit(:first_name, :last_name, :email, :password,
-                                   :password_confirmation)
+      params.require(:employee).permit(:first_name, :last_name, :email, :old_password,
+                                   :password, :password_confirmation)
+    end
+    
+    def new_password_params
+      params.require(:employee).permit(:password, :password_confirmation)
+    end
+    
+    def account_info_params
+      params.require(:employee).permit(:first_name, :last_name, :email)
     end
     
     # Before Filters
