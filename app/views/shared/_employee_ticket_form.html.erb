@@ -14,7 +14,7 @@
       	Please describe the issue below
         <%= f.text_area :title, class: "new-ticket-field form-group", placeholder: "Enter post title..." %>  
       </div>
-    <%= f.submit "Post", class: "btn btn-primary form-group" %>	
+    <%= f.submit "Post", class: "btn btn-primary form-group", data: { disable_with: "Posting..." } %>	
     <% end %>
     
     
