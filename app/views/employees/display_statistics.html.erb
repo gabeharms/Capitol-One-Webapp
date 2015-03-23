@@ -1,22 +1,48 @@
 <% provide(:title, "Statistics") %>
 
 <h1>Statistics</h1>
-  <% @categories.each do |category| %> 
-    <h3>
-      <div class="category">
-        <%= category.name %>
-      </div>
-    </h3>
-    <div class="ticket">
-      <%= @tickets.where(ticket_category_id: category.id).count %>  / <%= @tickets.count %>
-    </div>
-	<% end %>
+
+  <div class="col-md-2 empl-filter-bar" id="two-four">
+      <%= render 'statistics_filter' %>
+  </div>
+
+	<%
+      category_names = []
+      num_of_tickets = []
+
+      @categories.each do |c|
+        category_names << c.name
+        num_of_tickets << @tickets.where(ticket_category_id: c.id).count
+      end
 	
+     @chart = LazyHighCharts::HighChart.new('graph', :style=>"height:75%", :style=>"width:75%") do |f|
+      f.title({ :text=>"Tickets Per Category"})
+      f.xAxis(:categories => category_names)
+      f.series(:type=> 'column',:name=> 'Number of Tickets',:data=> num_of_tickets)
+      end
+	%>
+	
+	<%=  high_chart("my_id", @chart) %>
+	
+	<h3>Your Rating</h3>
+	You have <%= @employee.num_of_ratings %> rating <br>
+	Your average score is <%= (@employee.total_stars.to_f /  @employee.num_of_ratings.to_f).round(2) %> out of 5 <br>
+	
+	
+	<% 
+	stars = 0
+	ratings = 0
+	@employees.each do |e|
+	  stars += e.total_stars
+	  ratings += e.num_of_ratings
+	end 
+	%>
+	
+  The employee average score is <%=(stars.to_f / ratings.to_f).round(2) %> out of 5
+  
 	<!-- Commenting out all of this stuff till it can actually be applied
 	<% if 1 == 0 %>
 	
-	<%=  high_chart("my_id", @chart) %>
-
 	<% Visit.all.each do |visit| %>
 	  <div>
         <h3> Vist ID: <%= visit.id %></h3>

@@ -5,6 +5,7 @@ class CustomersController < ApplicationController
  
   def new
     @customer = Customer.new
+    @notification = NotificationType.new
   end
   
   def show
@@ -40,9 +41,11 @@ class CustomersController < ApplicationController
   
   def create
     @customer = Customer.new(customer_params)       # Not the final implementation!
+    #notification_ids = params[:tag_ids]
+        
     if @customer.save
       customer_log_in @customer
-      flash[:success] = "You have successfully created an account!"
+      flash[:success] = "You have successfully created an account!" # with peference type #{notification_ids}!"
       redirect_to @customer
     else
       render 'new'

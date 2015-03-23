@@ -28,6 +28,18 @@
 
         <%= f.label :password_confirmation, "Password Confirmation" %>
         <%= f.password_field :password_confirmation, class: 'form-control form-group' %>
+        
+        <%= f.label :notification_type %>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="tag_ids[]" value="2" /> Email
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="tag_ids[]" value="3" /> Text
+          </label>
+        </div>
 
         <%= f.submit "Create my account", class: "btn btn-primary" %>
       <% end %>

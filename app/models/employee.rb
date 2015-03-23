@@ -21,7 +21,7 @@ class Employee < ActiveRecord::Base
   has_secure_password
   
   # Named Scopes and Logic Functions
-  
+
 
   
    # Returns the hash digest of the given string.
