@@ -3,7 +3,7 @@
   
   <div class="col-md-10">
     <h3 class="cust-name">Customer: 
-      <%= link_to({:controller => 'customers', :action => 'show_info', :id => @ticket.customer.id}, class: 'cust-link') do %><%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %><% end %>
+      <%= link_to({:controller => 'customers', :action => 'show_info', :id => @ticket.customer.id}) do %><%= @ticket.customer.first_name %> <%= @ticket.customer.last_name %><% end %>
 
     </h3>
     <% @options =  @categories.map { |c| [ c.name, c.id ] } %>
