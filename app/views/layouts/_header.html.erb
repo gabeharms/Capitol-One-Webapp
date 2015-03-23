@@ -28,7 +28,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><%= link_to "My Tickets", current_employee %></li>
-              <li><%= link_to "Profile", edit_employee_path(current_employee) %></li>
+              <li><%= link_to "Profile", :action => 'edit_info' %></li>
               <li class="divider"></li>
               <li>
                 <%= link_to "Log out", employee_logout_path, method: "delete" %>

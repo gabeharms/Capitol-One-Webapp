@@ -79,7 +79,7 @@ class CustomersController < ApplicationController
     if !params[:customer][:first_name].nil? && !params[:customer][:last_name].nil? && !params[:customer][:email].nil?
       if @customer.update_attributes(account_info_params)
         flash[:success] = "Profile updated"
-        redirect_to @customer
+        render 'edit_info'
       else
         render 'edit_info'
       end
@@ -87,7 +87,7 @@ class CustomersController < ApplicationController
       if @customer.authenticate(params[:customer][:old_password])
         if @customer.update_attributes(new_password_params)
           flash[:success] = "Profile updated"
-          redirect_to @customer
+          render 'edit_password'
         else
           render 'edit_password'
         end
