@@ -5,7 +5,6 @@ class CustomersController < ApplicationController
  
   def new
     @customer = Customer.new
-    @notification = NotificationType.new
   end
   
   def show
@@ -57,21 +56,9 @@ class CustomersController < ApplicationController
   
   def create
     @customer = Customer.new(customer_params)       # Not the final implementation!
-    notification_ids = params[:tag_ids]
     if @customer.save
       customer_log_in @customer
       flash[:success] = "You have successfully created an account!"
-      
-      if notification_ids.empty?
-        @customer.notification_type_id = 0
-      elsif notification_ids.count > 1
-        @customer.notification_type_id = 1
-      elsif notification_ids[0] == 2
-        @customer.notification_type_id = 2
-      else
-        @customer.notification_type_id = 3
-      end
-      @customer.save
       redirect_to @customer
     else
       render 'new'
@@ -124,7 +111,7 @@ class CustomersController < ApplicationController
 
     def customer_params
       params.require(:customer).permit(:first_name, :last_name, :email, :old_password,
-                                   :password, :password_confirmation)
+                                   :password, :password_confirmation, :send_email, :send_text)
     end
     
     def new_password_params
@@ -132,7 +119,7 @@ class CustomersController < ApplicationController
     end
     
     def account_info_params
-      params.require(:customer).permit(:first_name, :last_name, :email)
+      params.require(:customer).permit(:first_name, :last_name, :email, :send_email, :send_text)
     end
   
     # Confirms a logged-in user.

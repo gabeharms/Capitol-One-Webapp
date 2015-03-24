@@ -46,11 +46,6 @@ statuses.each do |s|
   TicketStatus.create(status: s)
 end
 
-notifications = ['None', 'All', 'Email', 'Text']
-notifications.each do |n|
-  NotificationType.create(notifications: n)
-end
-
 titles = ['How do I find my account balance', 'Can someone help me get new checks', 'I dont know how to change my password', 
             'The website isnt working, and I need to access my account', 'Am I eligible for a credit card', 'I want to create an account for my son',
             'Im lost how can I pay my credit card', 'I would like to close my account', 'How can I apply for a loan', 'Is it possible to combine my saving/checking account with my credit card account',

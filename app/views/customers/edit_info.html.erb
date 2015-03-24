@@ -22,7 +22,14 @@
   
         <%= f.label :email %>
         <%= f.email_field :email, class: 'form-control form-group' %>
-  
+        
+        <%= f.label "Notifications" %>
+        <div class="checkbox">
+          <%= f.check_box :send_email, {checked: @customer.send_email}  %> Email
+        </div>
+        <div class="checkbox">
+          <%= f.check_box :send_text, {checked: @customer.send_text} %> Text
+        </div>
         <%= f.submit "Save changes", class: "btn btn-primary" %>
       <% end %>
   </div>
