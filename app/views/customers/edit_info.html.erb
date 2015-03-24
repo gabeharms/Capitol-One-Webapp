@@ -15,6 +15,14 @@
         <%= f.label :email %>
         <%= f.email_field :email, class: 'form-control form-group' %>
         
+        <%= f.label "Notifications" %>
+        <div class="checkbox">
+          <%= f.check_box :send_email, {checked: @customer.send_email}  %> Email
+        </div>
+        <div class="checkbox">
+          <%= f.check_box :send_text, {checked: @customer.send_text} %> Text
+        </div>
+
         <div class="pwdStyle">
           <div class="pwdTitle">Password</div>
           <%= link_to({:action => 'edit_password'}) do %>  
