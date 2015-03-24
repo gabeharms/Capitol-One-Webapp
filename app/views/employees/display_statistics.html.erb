@@ -2,28 +2,28 @@
 
 <h1>Statistics</h1>
 
-  <div class="col-md-2 empl-filter-bar" id="two-four">
-      <%= render 'statistics_filter' %>
-  </div>
-
-	<%
-      category_names = []
-      num_of_tickets = []
-
-      @categories.each do |c|
-        category_names << c.name
-        num_of_tickets << @tickets.where(ticket_category_id: c.id).count
-      end
-	
-     @chart = LazyHighCharts::HighChart.new('graph', :style=>"height:75%", :style=>"width:75%") do |f|
-      f.title({ :text=>"Tickets Per Category"})
-      f.xAxis(:categories => category_names)
-      f.series(:type=> 'column',:name=> 'Number of Tickets',:data=> num_of_tickets)
-      end
-	%>
-	
-	<%=  high_chart("my_id", @chart) %>
-	
+<div class=".container-fluid" id="container">
+  <div class="row">
+    <div class="col-md-4 empl-filter-bar stat-filter stat-right" id="two-four">
+        <%= render 'statistics_types' %>
+    </div>
+    <div class="col-md-4 graph-area" id="ten-eight">
+      <div class="row">
+      <% if params[:type] == "employee_activity" %>
+      	<%=  high_chart("category_graph1", @chart) %>
+      	</div>
+      	<div class="row">
+      	 <%=  high_chart("category_graph2", @chart1) %>
+      	</div>
+      <% else %>
+    	  <%=  high_chart("category_graph", @chart) %>
+    	  </div>
+    	<% end %>
+    </div>
+    <div class="col-md-4 empl-filter-bar stat-filter stat-left" >
+        <%= render 'statistics_filter' %>
+    </div>
+	</div>
 	<h3>Your Rating</h3>
 	You have <%= @employee.num_of_ratings %> rating <br>
 	Your average score is <%= (@employee.total_stars.to_f /  @employee.num_of_ratings.to_f).round(2) %> out of 5 <br>
