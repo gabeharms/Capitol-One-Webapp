@@ -23,6 +23,7 @@ gem 'figaro'
 gem 'ahoy_matey'
 gem 'activeuuid', '>= 0.5.0'
 gem 'lazy_high_charts'
+gem 'dotiw'
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'

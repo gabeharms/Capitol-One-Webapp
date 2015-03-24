@@ -20,7 +20,7 @@
                
 end
 
-400.times do |n|
+200.times do |n|
   first_name  = Faker::Name.first_name
   last_name = Faker::Name.last_name
   email = "employee-#{n+1}@seniorproject.org"
@@ -66,7 +66,7 @@ titles = ['How do I find my account balance', 'Can someone help me get new check
 
 status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
 
-300.times do
+2000.times do
   title = titles.sample
   visible = true
   
@@ -78,7 +78,28 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
     created_by = true
   end
   
-  Customer.order("RANDOM()").first.tickets.create!(title: title, employee_id: employee_id, ticket_status_id: status_id.sample, ticket_category_id: rand(1..catagories.count), created_by_customer: created_by, visible: visible, created_at: Time.at((7.days.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
+  status = status_id.sample
+
+  new_ticket = Customer.order("RANDOM()").first.tickets.create!(title: title, employee_id: employee_id, ticket_status_id: status, ticket_category_id: rand(1..catagories.count), created_by_customer: created_by, visible: visible, created_at: Time.at((6.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
+  
+  if status == 2 
+    Rate.create!(rater_id: 1, rateable_id: new_ticket.id, stars: rand(1..5).to_f, rateable_type: "Ticket", dimension: "experience", created_at: Time.at((6.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
+  end
+
+  if employee_id == nil
+    choser = [0,1,1,1,1,2]
+  else
+    choser = [0,1,1,2,2,3,3,3,4,5]
+  end
+  upper_bound = choser.sample
+  
+  (0..upper_bound).each do
+    employee = (employee_id != nil && rand(1..2) == 1) ? employee_id : nil
+    initiator = (employee == nil) ? true : false
+    new_ticket.comments.create!(employee_id: employee, initiator: initiator, message: "auto populated comment", created_at: Time.at((6.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
+  end
+  
+
 end
 
 def rand_in_range(from, to)
