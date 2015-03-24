@@ -48,18 +48,18 @@ ActiveRecord::Schema.define(version: 20150305024957) do
   add_index "comments", ["ticket_id"], name: "index_comments_on_ticket_id"
 
   create_table "customers", force: :cascade do |t|
-    t.integer  "notification_type_id"
-    t.string   "first_name",           limit: 25
-    t.string   "last_name",            limit: 50
-    t.string   "email",                           default: "", null: false
+    t.string   "first_name",      limit: 25
+    t.string   "last_name",       limit: 50
+    t.string   "email",                      default: "",    null: false
     t.string   "password_digest"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.boolean  "send_email",                 default: false
+    t.boolean  "send_text",                  default: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   add_index "customers", ["email"], name: "index_customers_on_email"
   add_index "customers", ["last_name"], name: "index_customers_on_last_name"
-  add_index "customers", ["notification_type_id"], name: "index_customers_on_notification_type_id"
 
   create_table "employees", force: :cascade do |t|
     t.string   "first_name",      limit: 25
@@ -74,12 +74,6 @@ ActiveRecord::Schema.define(version: 20150305024957) do
 
   add_index "employees", ["email"], name: "index_employees_on_email"
   add_index "employees", ["last_name"], name: "index_employees_on_last_name"
-
-  create_table "notification_types", force: :cascade do |t|
-    t.string   "notifications", limit: 25
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
 
   create_table "overall_averages", force: :cascade do |t|
     t.integer  "rateable_id"

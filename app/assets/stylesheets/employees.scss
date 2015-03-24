@@ -90,6 +90,7 @@
 	}
 }
 
+<<<<<<< HEAD
 /* Statistics */
 .stat-filter {
 	width: 180px;
@@ -123,3 +124,25 @@
 	left: 60px;
 	width: 150px;
 }
+=======
+.pwdStyle{
+	margin-top: 20px;
+	padding: 7px;
+	background: #f6f6f6;
+	border-radius: 5px;
+	.pwdTitle{
+		font-weight: 600;
+		float: left;
+	}
+	.pwdLink{
+		float: right;
+		color: #b93e36;
+	}
+	.actLink{
+		float: left;
+		color: #b93e36;
+		text-align: center;
+		width: 100%;
+	}
+}
+>>>>>>> master
