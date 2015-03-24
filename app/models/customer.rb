@@ -1,6 +1,7 @@
 class Customer < ActiveRecord::Base
   
   has_many :tickets, dependent: :destroy
+  has_one :notification_type
   
   before_save { email.downcase! }
   

@@ -54,21 +54,9 @@ class EmployeesController < ApplicationController
 
   def display_statistics
     @categories = TicketCatagory.all
-    @tickets = Ticket.all
-    
-=begin
-    # copy and pasted this from https://github.com/michelson/lazy_high_charts
-     @chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title({ :text=>"Combination chart"})
-      f.options[:xAxis][:categories] = ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
-      f.labels(:items=>[:html=>"Total fruit consumption", :style=>{:left=>"40px", :top=>"8px", :color=>"black"} ])      
-      f.series(:type=> 'column',:name=> 'Jane',:data=> [3, 2, 1, 3, 4])
-      f.series(:type=> 'column',:name=> 'John',:data=> [2, 3, 5, 7, 6])
-      f.series(:type=> 'column', :name=> 'Joe',:data=> [4, 3, 3, 9, 0])
-      f.series(:type=> 'spline',:name=> 'Average', :data=> [3, 2.67, 3, 6.33, 3.33])
-      end
-=end
-
+    @tickets = Ticket.filter_by_time(params[:filter])
+    @employee = current_employee
+    @employees = Employee.all
   end
 
   def create

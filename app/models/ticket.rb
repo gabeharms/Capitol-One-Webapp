@@ -19,6 +19,24 @@ class Ticket < ActiveRecord::Base
   def self.search_by_status( status )
     where(ticket_status_id: status)
   end
+  
+  # Returns the correct way to filter statistics
+  def self.filter_by_time(filter)
+    if !filter.nil?
+      if filter == "0"
+        where(created_at:  (Time.now - 1.day)..Time.now)
+      elsif filter == "1"
+        where(created_at:  (Time.now - 7.day)..Time.now)
+      elsif filter == "2"
+        where(created_at:  (Time.now - 30.day)..Time.now)
+      elsif filter == "3"
+        all
+      end
+    else
+      all
+    end
+
+  end
     
   
   # Returns the correct way to sort the tickets based on filter and status params

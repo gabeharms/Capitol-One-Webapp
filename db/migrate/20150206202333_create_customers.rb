@@ -2,6 +2,7 @@ class CreateCustomers < ActiveRecord::Migration
   def change
     create_table :customers do |t|
       
+      t.references :notification_type, index: true
       t.string "first_name", :limit => 25
       t.string "last_name",  :limit => 50
       t.string "email",      :default => "", :null => false
