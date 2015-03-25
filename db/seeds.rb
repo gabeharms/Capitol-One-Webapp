@@ -95,7 +95,7 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   upper_bound = choser.sample
   
   (0..upper_bound).each do
-    employee = (employee_id != nil && rand(1..2) == 1) ? employee_id : nil
+    employee = (employee_id != nil && rand(1..3) == 1) ? employee_id : nil
     initiator = (employee == nil) ? false : true
     new_ticket.comments.create!(employee_id: employee, initiator: initiator, message: "auto populated comment", created_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
   end
