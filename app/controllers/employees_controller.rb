@@ -134,6 +134,7 @@ class EmployeesController < ApplicationController
           f.options[:xAxis][:categories] =  intervals
           f.series(:type=> 'spline',:name=> 'Average', :data=> y_Axis)
           f.yAxis [ {:title => {:text => "Stars ( Out of 5 )"} }]
+          f.yAxis(:min=> 0, :max=>5)
       end
     
     elsif ( params[:type] == "comment_postings")
@@ -255,17 +256,17 @@ class EmployeesController < ApplicationController
       end
      @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
       f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
-      f.title({ :text=>"Resolved vs In Progress Tickest"})
+      f.title({ :text=>"Ticket Statuses & Ticket Ratings"})
       f.options[:xAxis][:categories] =  x_Axis1
       series = {
                    :type=> 'pie',
-                   :name=> 'Browser share',
+                   :name=> 'Resolved vs In Progress',
                    :data=> combinedData,
                    :center=> [25,80],
                    :size => 150
           }
       f.series(series)
-      f.series(:type=> 'pie',:name=> 'Total consumption', 
+      f.series(:type=> 'pie',:name=> 'Employee Ratings', :title=> "heyy", 
         :data=> combinedData2,
         :center=> [400, 80], :size => 150, :showInLegend=> false)
       f.plot_options(:pie=>{
@@ -273,6 +274,7 @@ class EmployeesController < ApplicationController
             :cursor=>"pointer" , 
             :dataLabels=>{
               :enabled=>true,
+              :title => "hey",
               :data => x_Axis,
               :color=>"black",
               :style=>{
