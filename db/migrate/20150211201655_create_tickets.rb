@@ -10,7 +10,8 @@ class CreateTickets < ActiveRecord::Migration
       t.string  "title"
       t.text  "note"
       t.boolean "unread", :default => false  
-
+      t.datetime     :claimed_at
+      
       t.timestamps null: false
     end
     add_index("tickets", "created_at")

@@ -62,8 +62,10 @@ class EmployeesController < ApplicationController
 
     x_Axis = []
     x_Axis1 = []
+    x_Axis2 = []
     y_Axis = []
     y_Axis1 = []
+    y_Axis2 = []
     
     intervals = []
     intervals_in_int = []
@@ -131,6 +133,7 @@ class EmployeesController < ApplicationController
           f.title({ :text=>"Average Overall Employee Rating"})
           f.options[:xAxis][:categories] =  intervals
           f.series(:type=> 'spline',:name=> 'Average', :data=> y_Axis)
+          f.yAxis [ {:title => {:text => "Stars ( Out of 5 )"} }]
       end
     
     elsif ( params[:type] == "comment_postings")
@@ -152,6 +155,7 @@ class EmployeesController < ApplicationController
           f.series(:name=>'Customers',:data=> y_Axis1)     
           f.title({ :text=>"Ticket Creation by User"})
           f.options[:chart][:defaultSeriesType] = "column"
+          f.yAxis [ {:title => {:text => "Tickets"} }]
           #f.plot_options({:column=>{:stacking=>"percent"}})
         end
     
@@ -159,8 +163,8 @@ class EmployeesController < ApplicationController
         previous_time = Time.now
         intervals_in_int.reverse!
         intervals.reverse!.each_with_index do |time, index|
-          y_Axis  << Ticket.where("created_at <= ?", time).where.not('employee_id' => nil).where(ticket_status_id: 1).count.to_f / Employee.all.count.to_f
-          y_Axis1 << Comment.where("created_at <= ? AND initiator == ?", time, true).count.to_f / Employee.all.count.to_f
+          y_Axis  << (Ticket.where.not("employee_id" => nil).where("claimed_at > ?", time).where("created_at < ?", time).count.to_f + Ticket.where("claimed_at" => nil).where("created_at < ?", time).count ) / Employee.all.count.to_f
+          y_Axis1 << (Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at" => nil).references(:ticket).count.to_f + Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at > ?", time).references(:ticket).count.to_f) / Employee.all.count.to_f
           previous_time = time
         end
         intervals.each_with_index do |time, index|
@@ -171,34 +175,99 @@ class EmployeesController < ApplicationController
           f.title({ :text=>"Claimed Tickets per Employee"})
           f.options[:xAxis][:categories] =  intervals
           f.series(:name=> 'Average Tickets per Employee', :data=> y_Axis)
+          f.yAxis [ {:title => {:text => "Tickets per Employee"} }]
         end
         @chart1 = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
           f.title({ :text=>"Comments per Employee"})
           f.options[:xAxis][:categories] =  intervals
           f.series(:name=> 'Average Comments per Employee', :data=> y_Axis1)
+          f.yAxis [ {:title => {:text => "Comments per Employee"} }]
         end
-    elsif ( params[:type] == "ticket_statuses")     
-       filter_by = "0"
-      @tickets = Ticket.filter_by_time(filter_by)
-      @statuses.each do |c|
-        x_Axis << c.status
-        y_Axis << @tickets.where(ticket_status_id: c.id).count
+        
+    elsif ( params[:type] == "efficiency")     
+        previous_time = Time.now
+        intervals_in_int.reverse!
+        total_hours = 0
+        total_tickets = 0
+        
+        y_Axis2 = [0,0,0,0,0]
+        rating_labels = ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"]
+        
+        
+        intervals.reverse!.each_with_index do |time, index|
+          Ticket.where("created_at < ?", time).where.not("claimed_at" => nil).each do |ticket|
+             total_hours += (ticket.claimed_at - ticket.created_at) / 3600
+             total_tickets = total_tickets + 1
+          end
+          
+          if total_tickets == 0
+            y_Axis << 0
+          else
+            y_Axis  << total_hours/total_tickets 
+          end
+          
+      
+          previous_time = time
+        end
+        
+        Rate.where("created_at > ?", intervals[0]).each do |rating|
+          if rating.stars == 1
+            y_Axis2[0] = y_Axis2[0] + 1
+          elsif rating.stars == 2
+            y_Axis2[1] = y_Axis2[1] + 1
+          elsif rating.stars == 3
+            y_Axis2[2] = y_Axis2[2] + 1
+          elsif rating.stars == 4
+            y_Axis2[3] = y_Axis2[3] + 1
+          elsif rating.stars == 5
+            y_Axis2[4] = y_Axis2[4] + 1
+          end 
+        end
+            
+             filter_by = "0"
+        @tickets = Ticket.where("created_at > ?", intervals[0])
+       @statuses.each do |c|
+        x_Axis1 << c.status
+        y_Axis1 << @tickets.where(ticket_status_id: c.id).count
       end
-     
-     combinedData = []
-     x_Axis.each_with_index do |xData, index|
-       combinedData << [xData, y_Axis[index]]
-     end
+       
+        
+        
+        
+        intervals.each_with_index do |time, index|
+          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
+        end
+        intervals[intervals.count-1] = "Now"
+        @chart1 = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
+          f.title({ :text=>"Average Time to Claim a Ticket"})
+          f.options[:xAxis][:categories] =  intervals
+          f.series(:name=> 'Average Tickets per Employee', :data=> y_Axis)
+          f.yAxis [ {:title => {:text => "Hours"} }]
+        end
+       
+       combinedData = []
+     x_Axis1.each_with_index do |xData, index|
+       combinedData << [xData, y_Axis1[index]]
+      end
+      combinedData2 = []
+      rating_labels.each_with_index do |xData, index|
+       combinedData2 << [xData, y_Axis2[index]]
+      end
      @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
       f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
       f.title({ :text=>"Resolved vs In Progress Tickest"})
-      f.options[:xAxis][:categories] =  x_Axis
+      f.options[:xAxis][:categories] =  x_Axis1
       series = {
                    :type=> 'pie',
                    :name=> 'Browser share',
-                   :data=> combinedData
+                   :data=> combinedData,
+                   :center=> [25,80],
+                   :size => 150
           }
       f.series(series)
+      f.series(:type=> 'pie',:name=> 'Total consumption', 
+        :data=> combinedData2,
+        :center=> [400, 80], :size => 150, :showInLegend=> false)
       f.plot_options(:pie=>{
             :allowPointSelect=>true, 
             :cursor=>"pointer" , 
