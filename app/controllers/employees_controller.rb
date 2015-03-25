@@ -66,6 +66,8 @@ class EmployeesController < ApplicationController
     y_Axis = []
     y_Axis1 = []
     y_Axis2 = []
+    y_Axis3 = [] 
+    
     
     intervals = []
     intervals_in_int = []
@@ -99,12 +101,15 @@ class EmployeesController < ApplicationController
         max = "24 hours"
       end
     end
-     if ( params[:type] == "ticket_generation")
+     if ( params[:type] == "interaction_analysis")
         previous_time = Time.now
         intervals_in_int.reverse!
         intervals.reverse!.each do |time|
           y_Axis  << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, false).count
           y_Axis1 << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, true).count
+          
+          y_Axis2  << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, true).count
+          y_Axis3 << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, false).count
           previous_time = time
         end
         intervals.each_with_index do |time, index|
@@ -120,6 +125,17 @@ class EmployeesController < ApplicationController
           f.options[:chart][:defaultSeriesType] = "column"
           #f.plot_options({:column=>{:stacking=>"percent"}})
         end
+        
+        @chart1 = LazyHighCharts::HighChart.new('column') do |f|
+          f.options[:xAxis][:categories] = intervals
+          f.series(:name=>'Employees',:data=> y_Axis2)
+          f.series(:name=>'Customers',:data=> y_Axis3)     
+          f.title({ :text=>"Comment Creation by User"})
+          f.options[:chart][:defaultSeriesType] = "column"
+          f.yAxis [ {:title => {:text => "Tickets"} }]
+          #f.plot_options({:column=>{:stacking=>"percent"}})
+        end
+        
     elsif (params[:type] == "rating")
         previous_time = Time.now
         intervals_in_int.reverse!
@@ -139,7 +155,7 @@ class EmployeesController < ApplicationController
         @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
           f.title({ :text=>"Average Overall Employee Rating"})
           f.options[:xAxis][:categories] =  intervals
-          f.series(:type=> 'spline',:name=> 'Average', :data=> y_Axis)
+          f.series(:color=> "red", :type=> 'spline',:name=> 'Average', :data=> y_Axis)
           f.yAxis [ {:title => {:text => "Stars ( Out of 5 )"} }]
           f.yAxis(:min=> 0, :max=>5)
       end
@@ -190,7 +206,7 @@ class EmployeesController < ApplicationController
         @chart1 = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
           f.title({ :text=>"Comments per Employee"})
           f.options[:xAxis][:categories] =  intervals
-          f.series(:name=> 'Average Comments per Employee', :data=> y_Axis1)
+          f.series(:color=> "green",:name=> 'Average Comments per Employee', :data=> y_Axis1)
           f.yAxis [ {:title => {:text => "Comments per Employee"} }]
         end
         
@@ -252,7 +268,7 @@ class EmployeesController < ApplicationController
         @chart1 = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
           f.title({ :text=>"Average Time to Claim a Ticket"})
           f.options[:xAxis][:categories] =  intervals
-          f.series(:name=> 'Average Tickets per Employee', :data=> y_Axis)
+          f.series(:color=> "#A4A4A4", :name=> 'Average Tickets per Employee', :data=> y_Axis)
           f.yAxis [ {:title => {:text => "Hours"} }]
         end
        
@@ -271,13 +287,22 @@ class EmployeesController < ApplicationController
       series = {
                    :type=> 'pie',
                    :name=> 'Resolved vs In Progress',
-                   :data=> combinedData,
+                   :data=>  [
+                         {:name=> combinedData[0][0], :y=> combinedData[0][1], :color=> '#B43104'}, 
+                         {:name=> combinedData[1][0], :y=> combinedData[1][1], :color=> '#4B8A08'} 
+                         ],
                    :center=> [25,80],
                    :size => 150
           }
       f.series(series)
       f.series(:type=> 'pie',:name=> 'Employee Ratings', :title=> "heyy", 
-        :data=> combinedData2,
+        :data=> [
+          {:name=> combinedData2[0][0], :y=> combinedData2[0][1], :color=> '#B43104'}, 
+          {:name=> combinedData2[1][0], :y=> combinedData2[1][1], :color=> '#DBA901'}, 
+          {:name=> combinedData2[2][0], :y=> combinedData2[2][1], :color=> '#D7DF01'}, 
+          {:name=> combinedData2[3][0], :y=> combinedData2[3][1], :color=> '#86B404'}, 
+          {:name=> combinedData2[4][0], :y=> combinedData2[4][1], :color=> '#4B8A08'}, 
+          ],
         :center=> [400, 80], :size => 150, :showInLegend=> false)
       f.plot_options(:pie=>{
             :allowPointSelect=>true, 

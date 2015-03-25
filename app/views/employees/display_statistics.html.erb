@@ -9,7 +9,7 @@
     </div>
     <div class="col-md-4 graph-area" id="ten-eight">
       <div class="row">
-      <% if params[:type] == "employee_activity" || params[:type] == "efficiency" %>
+      <% if params[:type] == "employee_activity" || params[:type] == "efficiency" || params[:type] == "interaction_analysis" %>
       	<%=  high_chart("category_graph1", @chart) %>
       	</div>
       	<div class="row">
