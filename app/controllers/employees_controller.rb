@@ -70,18 +70,20 @@ class EmployeesController < ApplicationController
     intervals = []
     intervals_in_int = []
     units = ""
-
+    max = ""
     if params[:filter] == "1"
       (0..7).to_a.each do |num|
         intervals << num.days.ago
         intervals_in_int << num.days
         units = "days"
+        max = "7 days"
       end
     elsif params[:filter] == "2"
       (0..10).to_a.each do |num|
         intervals << (num*3).days.ago
         intervals_in_int << (3*num).days
         units = "days"
+        max = "30 days"
       end
     elsif params[:filter] == "3"
      (0..6).to_a.each do |num|
@@ -94,6 +96,7 @@ class EmployeesController < ApplicationController
         intervals << (num*3).hours.ago
         intervals_in_int << (3*num).hours
         units = "hours"
+        max = "24 hours"
       end
     end
      if ( params[:type] == "ticket_generation")
@@ -108,6 +111,7 @@ class EmployeesController < ApplicationController
           intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
         end
         intervals[intervals.count-1] = "Now"
+        intervals[0] = max
         @chart = LazyHighCharts::HighChart.new('column') do |f|
           f.options[:xAxis][:categories] = intervals
           f.series(:name=>'Employees',:data=> y_Axis)
@@ -125,10 +129,13 @@ class EmployeesController < ApplicationController
           previous_time = time
           
         end
+
         intervals.each_with_index do |time, index|
           intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
         end
+
         intervals[intervals.count-1] = "Now"
+        intervals[0] = max
         @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
           f.title({ :text=>"Average Overall Employee Rating"})
           f.options[:xAxis][:categories] =  intervals
@@ -150,6 +157,7 @@ class EmployeesController < ApplicationController
           intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
         end
         intervals[intervals.count-1] = "Now"
+        intervals[0] = max
         @chart = LazyHighCharts::HighChart.new('column') do |f|
           f.options[:xAxis][:categories] = intervals
           f.series(:name=>'Employees',:data=> y_Axis)
@@ -172,6 +180,7 @@ class EmployeesController < ApplicationController
           intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
         end
         intervals[intervals.count-1] = "Now"
+        intervals[0] = max
         @chart = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
           f.title({ :text=>"Claimed Tickets per Employee"})
           f.options[:xAxis][:categories] =  intervals
@@ -239,6 +248,7 @@ class EmployeesController < ApplicationController
           intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
         end
         intervals[intervals.count-1] = "Now"
+        intervals[0] = max
         @chart1 = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
           f.title({ :text=>"Average Time to Claim a Ticket"})
           f.options[:xAxis][:categories] =  intervals
