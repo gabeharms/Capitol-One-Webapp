@@ -1,38 +1,33 @@
-<% provide(:title, @customer.first_name) %>
 <script>
-  $(document).ready(function () {
+  $.cookies.get('myCookie')
+  $('html, body').animate({
+            scrollTop: $.cookies.get('myCookie')+ 'px'
+  }, 'fast');
+  
+  //unset cookie after setting scroll position
+  $.cookies.del('myCookie');
  
-    $.cookies.get('myCookie')
-  	$('html, body').animate({
-              scrollTop: $.cookies.get('myCookie')+ 'px'
-    }, 'fast');
-  	
-  	//unset cookie after setting scroll position
-  	$.cookies.del('myCookie');
-   
-  	//make this class objects keep page scroll position
-  	$('.link-class').each(function() {
-    	$(this).click(function() {
-  		  $.cookies.set('myCookie', getPageScroll());
-  	  });
+  //make this class objects keep page scroll position
+  $('.link-class').each(function() {
+    $(this).click(function() {
+      $.cookies.set('myCookie', getPageScroll());
     });
-
   });
  
   //this function simply gets the window scroll position, works in all browsers
   function getPageScroll() {
-  	var yScroll;
-  	if (self.pageYOffset) {
-  		yScroll = self.pageYOffset;
-  	} else if (document.documentElement && document.documentElement.scrollTop) {
-  		yScroll = document.documentElement.scrollTop;
-  	} else if (document.body) {
-  		yScroll = document.body.scrollTop;
-  	}
-  	return yScroll
+    var yScroll;
+    if (self.pageYOffset) {
+      yScroll = self.pageYOffset;
+    } else if (document.documentElement && document.documentElement.scrollTop) {
+      yScroll = document.documentElement.scrollTop;
+    } else if (document.body) {
+      yScroll = document.body.scrollTop;
+    }
+    return yScroll
   }
 </script>
-
+<% provide(:title, @customer.first_name) %>
 <div class="row">
   <div class="col-md-12"> 
     <h3 class="title-left">Welcome <%= @customer.first_name %>&nbsp;<%= @customer.last_name %> (<%= @unreadCount %>)</h3>
