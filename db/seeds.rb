@@ -64,14 +64,14 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
 7000.times do
   title = titles.sample
   visible = true
-  created_at = Time.at((6.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f)
+  created_at = Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f)
   
   
   
   if rand(1..2) == 1
     created_by = false
     employee_id = Employee.order("RANDOM()").first.id
-    claimed_at = Time.at((created_at.to_f - Time.now.to_f)*rand + Time.now.to_f)
+    claimed_at = created_at
   else
     employee_id = nil
     created_by = true
@@ -95,7 +95,7 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   upper_bound = choser.sample
   
   (0..upper_bound).each do
-    employee = (employee_id != nil && rand(1..3) == 1) ? employee_id : nil
+    employee = (employee_id != nil && rand(1..2) == 1) ? employee_id : nil
     initiator = (employee == nil) ? false : true
     new_ticket.comments.create!(employee_id: employee, initiator: initiator, message: "auto populated comment", created_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
   end
@@ -106,6 +106,17 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   end   
 
 end
+
+operatingSystem = ["Windows 7", "Windows 8.1", "Linux", "Mac OS X", "Android", "iOS"]
+deviceTypes = ["Desktop", "Tablet", "Mobile"]
+behavior = ["$click", "$click", "$view", "$view", "$change", "$submit"]
+states = ["New Jersey", "New Jersey","Pennsylvannia", "Pennsylvannia", "Pennsylvannia", "Pennsylvannia", "New York", "New York", "Maryland", "Virginia", "Virginia", "Virginia", "Florida", "California"]
+
+1000.times do
+  Visit.create!(os: operatingSystem.sample, device_type: deviceTypes.sample, region: states.sample, started_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
+  Ahoy::Event.create!(name: behavior.sample, time: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
+end
+
 
 def rand_in_range(from, to)
   rand * (to - from) + from

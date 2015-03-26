@@ -15,7 +15,16 @@
       	<div class="row">
       	 <%=  high_chart("category_graph2", @chart1) %>
       	</div>
-      <% else %>
+      <% elsif params[:type] == "website_analytics" %>
+        <%=  high_chart("website_graph1", @chart) %>
+      	</div>
+      	<div class="row">
+      	 <%=  high_chart("website_graph2", @chart1) %>
+      	</div>
+      	<div class="row">
+      	 <%=  high_chart("website_graph3", @chart2) %>
+      	</div>
+      <% else %> 
     	  <%=  high_chart("category_graph", @chart) %>
     	  </div>
     	<% end %>
