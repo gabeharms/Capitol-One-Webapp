@@ -204,153 +204,116 @@ class EmployeesController < ApplicationController
       redirect_to(root_url) unless @employee == current_employee
     end
     
+    def build_pie_graph( graph1, graph2, graph_title, has_two_graphs)
+
+      LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
+        f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
+        f.title({ :text=> graph_title })
+        f.series( graph1 )
+        if has_two_graphs
+          f.series( graph2 )
+        end
+        f.plot_options(:pie=> {:allowPointSelect=>true, :cursor=>"pointer", :dataLabels=> {:enabled=>true,:color=>"black",:style=> {:font=>"13px Trebuchet MS, Verdana, sans-serif"} } })
+      end
+    end
+    
+    def build_line_graph( xAxis, yAxis, graph_title, axis_title, color)
+
+      LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
+        f.title({ :text=> graph_title })
+        f.options[:xAxis][:categories] =  xAxis
+        f.series(:color=> color, :name=>graph_title, :data=> yAxis )
+        f.yAxis [ {:title => {:text => axis_title} }]
+      end
+    end
+    
     # Graphing Functions
     def build_category_graph(intervals, intervals_in_int, x_Axis, y_Axis)
       
       intervals.reverse!
+      combinedData = []
+      colors = []
       @tickets = Ticket.where("created_at > ?", intervals[0])
-      @categories.each do |c|
-        x_Axis << c.name
-        y_Axis << @tickets.where(ticket_category_id: c.id).count
+      
+      @categories.each_with_index do |category, index|
+        combinedData[index] = Hash.new
+        combinedData[index][:name]  = category.name
+        combinedData[index][:y]     = @tickets.where(ticket_category_id: category.id).count
+        colors[index].nil? ? "" : combinedData[index][:color] = colors[index]
       end
-     
-     combinedData = []
-     x_Axis.each_with_index do |xData, index|
-       combinedData << [xData, y_Axis[index]]
-     end
-     LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
-      f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
-      f.title({ :text=>"Tickets Per Category"})
-      f.options[:xAxis][:categories] =  x_Axis
-      series = {
-                   :type=> 'pie',
-                   :name=> 'Browser share',
-                   :data=> combinedData
-          }
-      f.series(series)
-      f.plot_options(:pie=>{
-            :allowPointSelect=>true, 
-            :cursor=>"pointer" , 
-            :dataLabels=>{
-              :enabled=>true,
-              :data => x_Axis,
-              :color=>"black",
-              :style=>{
-                :font=>"13px Trebuchet MS, Verdana, sans-serif"
-              }
-            }
-          })
-      end
-    
+  
+      graph1_params = Hash.new 
+        graph1_params[:type] = 'pie'
+        graph1_params[:name] ="Tickets per Category"
+        graph1_params[:data] = combinedData
+        
+      build_pie_graph(graph1_params, nil, "Tickets per Category", false )
     end
     
     def build_efficiency_graph1(x_Axis, x_Axis1, y_Axis1, x_Axis2, y_Axis2, intervals, units, max)
-               y_Axis2 = [0,0,0,0,0]
-        rating_labels = ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"]
-        intervals.reverse!
         
-        Rate.where("created_at > ?", intervals[0]).each do |rating|
-          if rating.stars == 1
-            y_Axis2[0] = y_Axis2[0] + 1
-          elsif rating.stars == 2
-            y_Axis2[1] = y_Axis2[1] + 1
-          elsif rating.stars == 3
-            y_Axis2[2] = y_Axis2[2] + 1
-          elsif rating.stars == 4
-            y_Axis2[3] = y_Axis2[3] + 1
-          elsif rating.stars == 5
-            y_Axis2[4] = y_Axis2[4] + 1
-          end 
-        end
-            
-             filter_by = "0"
+        intervals.reverse!
+        rating_labels = ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"]
+        colors = ['#B43104', '#DBA901', '#D7DF01', '#86B404', '#4B8A08']
+        combinedData = []
+        combinedData2 = []
+        @ratings = Rate.where("created_at > ?", intervals[0])
         @tickets = Ticket.where("created_at > ?", intervals[0])
-       @statuses.each do |c|
-        x_Axis1 << c.status
-        y_Axis1 << @tickets.where(ticket_status_id: c.id).count
-      end
-       
-       
-       combinedData = []
-     x_Axis1.each_with_index do |xData, index|
-       combinedData << [xData, y_Axis1[index]]
-      end
-      combinedData2 = []
-      rating_labels.each_with_index do |xData, index|
-       combinedData2 << [xData, y_Axis2[index]]
-      end
-     @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
-      f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
-      f.title({ :text=>"Ticket Statuses & Ticket Ratings"})
-      f.options[:xAxis][:categories] =  x_Axis1
-      series = {
-                   :type=> 'pie',
-                   :name=> 'Resolved vs In Progress',
-                   :data=>  [
-                         {:name=> combinedData[0][0], :y=> combinedData[0][1], :color=> '#B43104'}, 
-                         {:name=> combinedData[1][0], :y=> combinedData[1][1], :color=> '#4B8A08'} 
-                         ],
-                   :center=> [25,80],
-                   :size => 150
-          }
-      f.series(series)
-      f.series(:type=> 'pie',:name=> 'Employee Ratings', :title=> "heyy", 
-        :data=> [
-          {:name=> combinedData2[0][0], :y=> combinedData2[0][1], :color=> '#B43104'}, 
-          {:name=> combinedData2[1][0], :y=> combinedData2[1][1], :color=> '#DBA901'}, 
-          {:name=> combinedData2[2][0], :y=> combinedData2[2][1], :color=> '#D7DF01'}, 
-          {:name=> combinedData2[3][0], :y=> combinedData2[3][1], :color=> '#86B404'}, 
-          {:name=> combinedData2[4][0], :y=> combinedData2[4][1], :color=> '#4B8A08'}, 
-          ],
-        :center=> [400, 80], :size => 150, :showInLegend=> false)
-      f.plot_options(:pie=>{
-            :allowPointSelect=>true, 
-            :cursor=>"pointer" , 
-            :dataLabels=>{
-              :enabled=>true,
-              :title => "hey",
-              :data => x_Axis,
-              :color=>"black",
-              :style=>{
-                :font=>"13px Trebuchet MS, Verdana, sans-serif"
-              }
-            }
-          })
+        @statuses = TicketStatus.all
+        
+        (0..4).each do |index|
+          combinedData2[index] = Hash.new
+          combinedData2[index][:name] = rating_labels[index]
+          combinedData2[index][:y]    = @ratings.where(:stars => index+1).count
+          colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
+        end 
+        
+        colors = ['#B43104', '#4B8A08']
+        @statuses.each_with_index do |status, index|
+          combinedData[index] = Hash.new
+          combinedData[index][:name]  = status.status
+          combinedData[index][:y]     = @tickets.where(ticket_status_id: status.id).count
+          colors[index].nil? ? "" : combinedData[index][:color] = colors[index]
         end
-     end   
-         def build_efficiency_graph2(x_Axis, y_Axis, intervals, intervals_in_int, units, max)
+        
+        graph1_params = Hash.new 
+          graph1_params[:type] = 'pie'
+          graph1_params[:name] ="Resolved vs In Progress"
+          graph1_params[:data] = combinedData
+          graph1_params[:size] = 150
+          graph1_params[:center] = [25, 80]
+        graph2_params = Hash.new 
+          graph2_params[:type] = 'pie'
+          graph2_params[:name] ='Employee Ratings'
+          graph2_params[:data] = combinedData2
+          graph2_params[:size] = 150
+          graph2_params[:center] = [400, 80]
+          
+        build_pie_graph(graph1_params, graph2_params, "Ticket Statuses & Ticket Ratings", true )
+     end
+     
+     def build_efficiency_graph2(x_Axis, y_Axis, intervals, intervals_in_int, units, max)
    
         intervals_in_int.reverse!
-       
-               previous_time = Time.now
-
-        total_hours = 0
-        total_tickets = 0
+        previous_time = Time.now
+        
         intervals.reverse!.each_with_index do |time, index|
+          total_hours = 0
+          total_tickets = 0
           Ticket.where("created_at < ?", time).where.not("claimed_at" => nil).each do |ticket|
-             total_hours += (ticket.claimed_at - ticket.created_at) / 3600
+             total_hours = total_hours + ((ticket.claimed_at - ticket.created_at) / 3600)
              total_tickets = total_tickets + 1
           end
-          
-          if total_tickets == 0
-            y_Axis << 0
-          else
-            y_Axis  << total_hours/total_tickets 
-          end
+          (total_tickets == 0) ? y_Axis << 0 : y_Axis << total_hours/total_tickets
           previous_time = time
         end
-
         intervals.each_with_index do |time, index|
           intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
         end
         intervals[intervals.count-1] = "Now"
         intervals[0] = max
-        LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
-          f.title({ :text=>"Average Time to Claim a Ticket"})
-          f.options[:xAxis][:categories] =  intervals
-          f.series(:color=> "#A4A4A4", :name=> 'Average Time to Claim a Ticket', :data=> y_Axis)
-          f.yAxis [ {:title => {:text => "Hours"} }]
-        end
+
+        build_line_graph(intervals, y_Axis, 'Average Time to Claim a Ticket', "Hours", "#A4A4A4")   
       end
       
        def build_employee_activity_graph1(y_Axis, intervals, intervals_in_int, units, max)
@@ -366,12 +329,8 @@ class EmployeesController < ApplicationController
         end
         intervals[intervals.count-1] = "Now"
         intervals[0] = max
-        LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
-          f.title({ :text=>"Claimed Tickets per Employee"})
-          f.options[:xAxis][:categories] =  intervals
-          f.series(:name=> 'Average Tickets per Employee', :data=> y_Axis)
-          f.yAxis [ {:title => {:text => "Tickets per Employee"} }]
-        end
+        
+        build_line_graph(intervals, y_Axis, 'Claimed Tickets per Employee', "Tickets per Employee", "blue")   
       end
       
       def build_employee_activity_graph2(y_Axis1, intervals2, intervals_in_int2, units, max)
@@ -388,12 +347,8 @@ class EmployeesController < ApplicationController
         intervals2.reverse!
         intervals2[intervals2.count-1] = "Now"
         intervals2[0] = max
-        LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
-          f.title({ :text=>"Comments per Employee"})
-          f.options[:xAxis][:categories] =  intervals2
-          f.series(:color=> "green",:name=> 'Average Comments per Employee', :data=> y_Axis1)
-          f.yAxis [ {:title => {:text => "Comments per Employee"} }]
-        end
+        
+        build_line_graph(intervals2, y_Axis1, 'Average Comments per Employee', "Comments per Employee", "green")   
       end
      
     def build_rating_chart(y_Axis, intervals, intervals_in_int, units, max)
@@ -413,7 +368,7 @@ class EmployeesController < ApplicationController
 
         intervals[intervals.count-1] = "Now"
         intervals[0] = max
-        LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
+        LazyHighCharts::HighChart.new('spline', :style=>"height:100%", :style=>"width:100%") do |f|
           f.title({ :text=>"Average Overall Employee Rating"})
           f.options[:xAxis][:categories] =  intervals
           f.series(:color=> "red", :type=> 'spline',:name=> 'Average', :data=> y_Axis)
@@ -423,7 +378,7 @@ class EmployeesController < ApplicationController
     end
     
     def build_interaction_graph1(y_Axis, y_Axis1, intervals, intervals_in_int, units, max)
-          previous_time = intervals[intervals.count-1] - intervals_in_int[1]
+        previous_time = intervals[intervals.count-1] - intervals_in_int[1]
         intervals_in_int.reverse!
 
         intervals.reverse!.each do |time, index|
@@ -475,11 +430,18 @@ class EmployeesController < ApplicationController
       end
       
       def build_website_chart1(x_Axis1, y_Axis1, y_Axis2, intervals)
-          y_Axis2 = [0,0,0,0,0,0]
-          operatingSystem_labels = ["Windows 7", "Windows 8.1", "Linux", "Mac OS X", "Android", "iOS"]
           
+          operatingSystem_labels = ["Windows 7", "Windows 8.1", "Linux", "Mac OS X", "Android", "iOS"]
+          colors = []
+          combinedData = [] 
+          combinedData2 = []
+
+          @visits = Visit.where("started_at > ?", intervals[intervals.count-1])
           operatingSystem_labels.each_with_index do |os, index|
-              y_Axis2[index] = Visit.where("started_at > ?", intervals[intervals.count-1]).where(:os => os).count
+            combinedData2[index] = Hash.new
+            combinedData2[index][:name]  = os
+            combinedData2[index][:y]     =  @visits.where(:os => os).count
+            colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
           end
 
           y_Axis1 = Hash.new
@@ -493,110 +455,68 @@ class EmployeesController < ApplicationController
               end
           end
           
-          
-          combinedData = []
-          x_Axis1.each do |xData|
-              combinedData << [xData, y_Axis1[xData]]
+          x_Axis1.each_with_index do |xData, index|
+            combinedData[index] = Hash.new
+            combinedData[index][:name]  = xData
+            combinedData[index][:y]     = y_Axis1[xData]
+            colors[index].nil? ? "" : combinedData[index][:color] = colors[index]
           end
           
-          combinedData2 = []
-          operatingSystem_labels.each_with_index do |xData, index|
-              combinedData2 << [xData, y_Axis2[index]]
-          end
+          graph1_params = Hash.new 
+            graph1_params[:type] = 'pie'
+            graph1_params[:name] ="Traffic Origins"
+            graph1_params[:data] = combinedData
+            graph1_params[:size] = 125
+            graph1_params[:center] = [25, 60]
+          graph2_params = Hash.new 
+            graph2_params[:type] = 'pie'
+            graph2_params[:name] ='Operating Systems'
+            graph2_params[:data] = combinedData2
+            graph2_params[:size] = 125
+            graph2_params[:center] = [400, 60] 
           
-          @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
-              f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
-              f.title({ :text=>"Traffic Origins & Traffic Operating Systems"})
-              f.options[:xAxis][:categories] =  x_Axis1
-              series = {
-                 :type=> 'pie',
-                 :name=> 'Resolved vs In Progress',
-                 :data=>  combinedData,
-                 :center=> [25,60],
-                 :size => 125
-              }
-              f.series(series)
-              f.series(:type=> 'pie',:name=> 'Operating Systems', :title=> "heyy", 
-                  :data=> [
-                      {:name=> combinedData2[0][0], :y=> combinedData2[0][1], :color=> '#B43104'}, 
-                      {:name=> combinedData2[1][0], :y=> combinedData2[1][1], :color=> '#DBA901'}, 
-                      {:name=> combinedData2[2][0], :y=> combinedData2[2][1], :color=> '#D7DF01'}, 
-                      {:name=> combinedData2[3][0], :y=> combinedData2[3][1], :color=> '#86B404'}, 
-                      {:name=> combinedData2[4][0], :y=> combinedData2[4][1], :color=> '#4B8A08'}, 
-                  ],
-                  :center=> [400, 60], :size => 125, :showInLegend=> false)
-              f.plot_options(:pie=>{
-                  :allowPointSelect=>true, 
-                  :cursor=>"pointer" , 
-                  :dataLabels=>{
-                      :enabled=>true,
-                      :data => operatingSystem_labels,
-                      :color=>"black",
-                      :style=>{
-                      :font=>"13px Trebuchet MS, Verdana, sans-serif"
-                  }
-              }
-          })
-          end
+          build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
       end
       
       def build_website_chart2(y_Axis1, y_Axis2, intervals)
-          y_Axis2 = [0,0,0,0] 
           behaviors = ["$click","$view", "$change", "$submit"]
           behaviors_copy = ["click", "view", "change", "submit"]
-          behaviors.each_with_index do |behavior, index|
-              y_Axis2[index] = Ahoy::Event.where("time > ?", intervals[intervals.count-1]).where(:name => behavior).count
-          end
-          
-          y_Axis1 = [0,0,0,0] 
           deviceTypes =  ["Desktop", "Tablet", "Mobile"]
-          deviceTypes.each_with_index do |type, index|
-              y_Axis1[index] = Visit.where("started_at > ?", intervals[intervals.count-1]).where(:device_type => type).count
-          end
-          
           combinedData = []
-              deviceTypes.each_with_index do |xData, index|
-              combinedData << [xData, y_Axis1[index]]
-          end
           combinedData2 = []
-          behaviors.each_with_index do |xData, index|
-              combinedData2 << [xData, y_Axis2[index]]
+          colors = []
+          
+          @events = Ahoy::Event.where("time > ?", intervals[intervals.count-1])
+          @devices = Visit.where("started_at > ?", intervals[intervals.count-1])
+          
+          behaviors.each_with_index do |behavior, index|
+            combinedData2[index] = Hash.new
+            combinedData2[index][:name]  = behaviors_copy[index]
+            combinedData2[index][:y]     =  @events.where(:name => behavior).count
+            colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
           end
           
-          LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
-              f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
-              f.title({ :text=>"Devices & Website Activity"})
-              f.options[:xAxis][:categories] =  deviceTypes
-              series = {
-                  :type=> 'pie',
-                  :name=> 'Device Types',
-                  :data=>  combinedData,
-                  :center=> [25,60],
-                  :size => 125
-              }
-              f.series(series)
-              f.series(:type=> 'pie',:name=> 'Website Activity', 
-                  :data=> [
-                      {:name=> behaviors_copy[0], :y=> combinedData2[0][1], :color=> '#B43104'}, 
-                      {:name=> behaviors_copy[1], :y=> combinedData2[1][1], :color=> '#DBA901'}, 
-                      {:name=> behaviors_copy[2], :y=> combinedData2[2][1], :color=> '#D7DF01'}, 
-                      {:name=> behaviors_copy[3], :y=> combinedData2[3][1], :color=> '#86B404'}, 
-
-                  ],
-                  :center=> [400, 60], :size => 125, :showInLegend=> false)
-              f.plot_options(:pie=>{
-                  :allowPointSelect=>true, 
-                  :cursor=>"pointer" , 
-                  :dataLabels=>{
-                      :enabled=>true,
-                      :data => behaviors,
-                      :color=>"black",
-                      :style=>{
-                      :font=>"13px Trebuchet MS, Verdana, sans-serif"
-                  }
-              }
-              })
+          deviceTypes.each_with_index do |type, index|
+            combinedData[index] = Hash.new
+            combinedData[index][:name]  = type
+            combinedData[index][:y]     =  @devices.where(:device_type => type).count
+            colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
           end
+          
+          graph1_params = Hash.new 
+            graph1_params[:type] = 'pie'
+            graph1_params[:name] ="Traffic Origins"
+            graph1_params[:data] = combinedData
+            graph1_params[:size] = 125
+            graph1_params[:center] = [25, 60]
+          graph2_params = Hash.new 
+            graph2_params[:type] = 'pie'
+            graph2_params[:name] ='Operating Systems'
+            graph2_params[:data] = combinedData2
+            graph2_params[:size] = 125
+            graph2_params[:center] = [400, 60] 
+          
+          build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
       end
       
       def build_website_chart3(y_Axis, intervals, intervals_in_int, units, max)
@@ -615,12 +535,7 @@ class EmployeesController < ApplicationController
           intervals[intervals.count-1] = "Now"
           intervals[0] = max
           
-          LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
-              f.title({ :text=>"Number of Website Hits"})
-              f.options[:xAxis][:categories] =  intervals
-              f.series(:name=> 'Number of Website Hits', :data=> y_Axis)
-              f.yAxis [ {:title => {:text => "Number of Hits"} }]
-          end
+          build_line_graph(intervals, y_Axis, "Number of Website Hits", "Number of Hits", "green")   
       end
       
 end

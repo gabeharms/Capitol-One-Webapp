@@ -68,7 +68,7 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   
   
   
-  if rand(1..2) == 1
+  if rand(1..3) == 1
     created_by = false
     employee_id = Employee.order("RANDOM()").first.id
     claimed_at = created_at
@@ -103,6 +103,7 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   if new_ticket.employee_id == nil && rand(1..2) == 1
     new_ticket.employee_id = Employee.order("RANDOM()").first.id
     new_ticket.claimed_at = Time.at((created_at.to_f - (created_at.to_f + 3.days))*rand + Time.now.to_f)
+    new_ticket.save
   end   
 
 end
