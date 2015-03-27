@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 20150305024957) do
     t.string   "title"
     t.text     "note"
     t.boolean  "unread",              default: false
+    t.datetime "claimed_at"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
   end

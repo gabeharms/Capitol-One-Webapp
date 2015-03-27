@@ -62,191 +62,67 @@ class EmployeesController < ApplicationController
 
     x_Axis = []
     x_Axis1 = []
+    x_Axis2 = []
     y_Axis = []
     y_Axis1 = []
+    y_Axis2 = []
+    y_Axis3 = [] 
+    
     
     intervals = []
     intervals_in_int = []
     units = ""
-
+    max = ""
     if params[:filter] == "1"
       (0..7).to_a.each do |num|
         intervals << num.days.ago
         intervals_in_int << num.days
         units = "days"
+        max = "7 days"
       end
     elsif params[:filter] == "2"
       (0..10).to_a.each do |num|
         intervals << (num*3).days.ago
         intervals_in_int << (3*num).days
         units = "days"
+        max = "30 days"
       end
     elsif params[:filter] == "3"
      (0..6).to_a.each do |num|
        intervals << num.months.ago
         intervals_in_int << num.months
         units = "months"
+        max = "6 months"
      end
     else
      (0..8).to_a.each do |num|
         intervals << (num*3).hours.ago
         intervals_in_int << (3*num).hours
         units = "hours"
+        max = "24 hours"
       end
     end
-     if ( params[:type] == "ticket_generation")
-        previous_time = Time.now
-        intervals_in_int.reverse!
-        intervals.reverse!.each do |time|
-          y_Axis  << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, false).count
-          y_Axis1 << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, true).count
-          previous_time = time
-        end
-        intervals.each_with_index do |time, index|
-          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
-        end
-        intervals[intervals.count-1] = "Now"
-        @chart = LazyHighCharts::HighChart.new('column') do |f|
-          f.options[:xAxis][:categories] = intervals
-          f.series(:name=>'Employees',:data=> y_Axis)
-          f.series(:name=>'Customers',:data=> y_Axis1)     
-          f.title({ :text=>"Ticket Creation by User"})
-          f.options[:chart][:defaultSeriesType] = "column"
-          #f.plot_options({:column=>{:stacking=>"percent"}})
-        end
+     if ( params[:type] == "interaction_analysis")
+      intervals1 = intervals.deep_dup
+      intervals_in_int1 = intervals_in_int.deep_dup
+      @chart  = build_interaction_graph1(y_Axis, y_Axis1, intervals, intervals_in_int, units, max)
+      @chart1 = build_interaction_graph2(y_Axis2, y_Axis3, intervals1, intervals_in_int1, units, max)
     elsif (params[:type] == "rating")
-        previous_time = Time.now
-        intervals_in_int.reverse!
-        intervals.reverse!.each_with_index do |time, index|
-          y_Axis  << Rate.where("created_at <= ?", time).sum(:stars)/ Rate.where("created_at <= ?", time).count
-          y_Axis[index] = ( y_Axis[index].nan? ) ? 0 : y_Axis[index]
-          previous_time = time
-          
-        end
-        intervals.each_with_index do |time, index|
-          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
-        end
-        intervals[intervals.count-1] = "Now"
-        @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
-          f.title({ :text=>"Average Overall Employee Rating"})
-          f.options[:xAxis][:categories] =  intervals
-          f.series(:type=> 'spline',:name=> 'Average', :data=> y_Axis)
-      end
-    
-    elsif ( params[:type] == "comment_postings")
-        previous_time = Time.now
-        intervals_in_int.reverse!
-        intervals.reverse!.each do |time|
-          y_Axis  << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, true).count
-          y_Axis1 << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, false).count
-          previous_time = time
-        end
-
-        intervals.each_with_index do |time, index|
-          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
-        end
-        intervals[intervals.count-1] = "Now"
-        @chart = LazyHighCharts::HighChart.new('column') do |f|
-          f.options[:xAxis][:categories] = intervals
-          f.series(:name=>'Employees',:data=> y_Axis)
-          f.series(:name=>'Customers',:data=> y_Axis1)     
-          f.title({ :text=>"Ticket Creation by User"})
-          f.options[:chart][:defaultSeriesType] = "column"
-          #f.plot_options({:column=>{:stacking=>"percent"}})
-        end
-    
+      @chart = build_rating_chart(y_Axis, intervals, intervals_in_int, units, max)
     elsif ( params[:type] == "employee_activity") 
-        previous_time = Time.now
-        intervals_in_int.reverse!
-        intervals.reverse!.each_with_index do |time, index|
-          y_Axis  << Ticket.where("created_at <= ?", time).where.not('employee_id' => nil).where(ticket_status_id: 1).count.to_f / Employee.all.count.to_f
-          y_Axis1 << Comment.where("created_at <= ? AND initiator == ?", time, true).count.to_f / Employee.all.count.to_f
-          previous_time = time
-        end
-        intervals.each_with_index do |time, index|
-          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
-        end
-        intervals[intervals.count-1] = "Now"
-        @chart = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
-          f.title({ :text=>"Claimed Tickets per Employee"})
-          f.options[:xAxis][:categories] =  intervals
-          f.series(:name=> 'Average Tickets per Employee', :data=> y_Axis)
-        end
-        @chart1 = LazyHighCharts::HighChart.new('graph', :style=>"width:100% height:50%") do |f|
-          f.title({ :text=>"Comments per Employee"})
-          f.options[:xAxis][:categories] =  intervals
-          f.series(:name=> 'Average Comments per Employee', :data=> y_Axis1)
-        end
-    elsif ( params[:type] == "ticket_statuses")     
-       filter_by = "0"
-      @tickets = Ticket.filter_by_time(filter_by)
-      @statuses.each do |c|
-        x_Axis << c.status
-        y_Axis << @tickets.where(ticket_status_id: c.id).count
-      end
-     
-     combinedData = []
-     x_Axis.each_with_index do |xData, index|
-       combinedData << [xData, y_Axis[index]]
-     end
-     @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
-      f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
-      f.title({ :text=>"Resolved vs In Progress Tickest"})
-      f.options[:xAxis][:categories] =  x_Axis
-      series = {
-                   :type=> 'pie',
-                   :name=> 'Browser share',
-                   :data=> combinedData
-          }
-      f.series(series)
-      f.plot_options(:pie=>{
-            :allowPointSelect=>true, 
-            :cursor=>"pointer" , 
-            :dataLabels=>{
-              :enabled=>true,
-              :data => x_Axis,
-              :color=>"black",
-              :style=>{
-                :font=>"13px Trebuchet MS, Verdana, sans-serif"
-              }
-            }
-          })
-      end
+      intervals1 = intervals.deep_dup
+      @chart =  build_employee_activity_graph1(y_Axis, intervals, intervals_in_int, units, max)
+      @chart1 = build_employee_activity_graph2(y_Axis1, intervals1, intervals_in_int, units, max)
+    elsif ( params[:type] == "efficiency")     
+      @chart =  build_efficiency_graph1(x_Axis, x_Axis1, y_Axis1, x_Axis2, y_Axis2, intervals, units, max)
+      @chart1 = build_efficiency_graph2(x_Axis, y_Axis, intervals, intervals_in_int, units, max) 
+    elsif (params[:type] == "website_analytics")
+      @chart =  build_website_chart1(x_Axis1, y_Axis1, y_Axis2, intervals)
+      @chart1 = build_website_chart2(y_Axis1, y_Axis2, intervals)
+      @chart2 = build_website_chart3(y_Axis, intervals, intervals_in_int, units, max)
     else  
-      filter_by = "0"
-      @tickets = Ticket.filter_by_time(filter_by)
-      @categories.each do |c|
-        x_Axis << c.name
-        y_Axis << @tickets.where(ticket_category_id: c.id).count
-      end
-     
-     combinedData = []
-     x_Axis.each_with_index do |xData, index|
-       combinedData << [xData, y_Axis[index]]
-     end
-     @chart = LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
-      f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
-      f.title({ :text=>"Tickets Per Category"})
-      f.options[:xAxis][:categories] =  x_Axis
-      series = {
-                   :type=> 'pie',
-                   :name=> 'Browser share',
-                   :data=> combinedData
-          }
-      f.series(series)
-      f.plot_options(:pie=>{
-            :allowPointSelect=>true, 
-            :cursor=>"pointer" , 
-            :dataLabels=>{
-              :enabled=>true,
-              :data => x_Axis,
-              :color=>"black",
-              :style=>{
-                :font=>"13px Trebuchet MS, Verdana, sans-serif"
-              }
-            }
-          })
-      end
+      @chart = build_category_graph(intervals, intervals_in_int, x_Axis, y_Axis)
+      
     end
    
     
@@ -327,4 +203,339 @@ class EmployeesController < ApplicationController
       @employee = Employee.find(params[:id])
       redirect_to(root_url) unless @employee == current_employee
     end
+    
+    def build_pie_graph( graph1, graph2, graph_title, has_two_graphs)
+
+      LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
+        f.chart({:defaultSeriesType=>"pie" , :margin=> [50, 200, 60, 170]} )
+        f.title({ :text=> graph_title })
+        f.series( graph1 )
+        if has_two_graphs
+          f.series( graph2 )
+        end
+        f.plot_options(:pie=> {:allowPointSelect=>true, :cursor=>"pointer", :dataLabels=> {:enabled=>true,:color=>"black",:style=> {:font=>"13px Trebuchet MS, Verdana, sans-serif"} } })
+      end
+    end
+    
+    def build_line_graph( xAxis, yAxis, graph_title, axis_title, color)
+
+      LazyHighCharts::HighChart.new('pie', :style=>"height:100%", :style=>"width:100%") do |f|
+        f.title({ :text=> graph_title })
+        f.options[:xAxis][:categories] =  xAxis
+        f.series(:color=> color, :name=>graph_title, :data=> yAxis )
+        f.yAxis [ {:title => {:text => axis_title} }]
+      end
+    end
+    
+    # Graphing Functions
+    def build_category_graph(intervals, intervals_in_int, x_Axis, y_Axis)
+      
+      intervals.reverse!
+      combinedData = []
+      colors = []
+      @tickets = Ticket.where("created_at > ?", intervals[0])
+      
+      @categories.each_with_index do |category, index|
+        combinedData[index] = Hash.new
+        combinedData[index][:name]  = category.name
+        combinedData[index][:y]     = @tickets.where(ticket_category_id: category.id).count
+        colors[index].nil? ? "" : combinedData[index][:color] = colors[index]
+      end
+  
+      graph1_params = Hash.new 
+        graph1_params[:type] = 'pie'
+        graph1_params[:name] ="Tickets per Category"
+        graph1_params[:data] = combinedData
+        
+      build_pie_graph(graph1_params, nil, "Tickets per Category", false )
+    end
+    
+    def build_efficiency_graph1(x_Axis, x_Axis1, y_Axis1, x_Axis2, y_Axis2, intervals, units, max)
+        
+        intervals.reverse!
+        rating_labels = ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"]
+        colors = ['#B43104', '#DBA901', '#D7DF01', '#86B404', '#4B8A08']
+        combinedData = []
+        combinedData2 = []
+        @ratings = Rate.where("created_at > ?", intervals[0])
+        @tickets = Ticket.where("created_at > ?", intervals[0])
+        @statuses = TicketStatus.all
+        
+        (0..4).each do |index|
+          combinedData2[index] = Hash.new
+          combinedData2[index][:name] = rating_labels[index]
+          combinedData2[index][:y]    = @ratings.where(:stars => index+1).count
+          colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
+        end 
+        
+        colors = ['#B43104', '#4B8A08']
+        @statuses.each_with_index do |status, index|
+          combinedData[index] = Hash.new
+          combinedData[index][:name]  = status.status
+          combinedData[index][:y]     = @tickets.where(ticket_status_id: status.id).count
+          colors[index].nil? ? "" : combinedData[index][:color] = colors[index]
+        end
+        
+        graph1_params = Hash.new 
+          graph1_params[:type] = 'pie'
+          graph1_params[:name] ="Resolved vs In Progress"
+          graph1_params[:data] = combinedData
+          graph1_params[:size] = 150
+          graph1_params[:center] = [25, 80]
+        graph2_params = Hash.new 
+          graph2_params[:type] = 'pie'
+          graph2_params[:name] ='Employee Ratings'
+          graph2_params[:data] = combinedData2
+          graph2_params[:size] = 150
+          graph2_params[:center] = [400, 80]
+          
+        build_pie_graph(graph1_params, graph2_params, "Ticket Statuses & Ticket Ratings", true )
+     end
+     
+     def build_efficiency_graph2(x_Axis, y_Axis, intervals, intervals_in_int, units, max)
+   
+        intervals_in_int.reverse!
+        previous_time = Time.now
+        
+        intervals.reverse!.each_with_index do |time, index|
+          total_hours = 0
+          total_tickets = 0
+          Ticket.where("created_at < ?", time).where.not("claimed_at" => nil).each do |ticket|
+             total_hours = total_hours + ((ticket.claimed_at - ticket.created_at) / 3600)
+             total_tickets = total_tickets + 1
+          end
+          (total_tickets == 0) ? y_Axis << 0 : y_Axis << total_hours/total_tickets
+          previous_time = time
+        end
+        intervals.each_with_index do |time, index|
+          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
+        end
+        intervals[intervals.count-1] = "Now"
+        intervals[0] = max
+
+        build_line_graph(intervals, y_Axis, 'Average Time to Claim a Ticket', "Hours", "#A4A4A4")   
+      end
+      
+       def build_employee_activity_graph1(y_Axis, intervals, intervals_in_int, units, max)
+     
+        previous_time = Time.now
+        intervals_in_int.reverse!
+        intervals.reverse!.each_with_index do |time, index|
+          y_Axis  << (Ticket.where.not("employee_id" => nil).where("claimed_at > ?", time).where("created_at < ?", time).count.to_f + Ticket.where("claimed_at" => nil).where("created_at < ?", time).count ) / Employee.all.count.to_f
+          previous_time = time
+        end
+        intervals.each_with_index do |time, index|
+          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
+        end
+        intervals[intervals.count-1] = "Now"
+        intervals[0] = max
+        
+        build_line_graph(intervals, y_Axis, 'Claimed Tickets per Employee', "Tickets per Employee", "blue")   
+      end
+      
+      def build_employee_activity_graph2(y_Axis1, intervals2, intervals_in_int2, units, max)
+        y_Axis1 = []
+        previous_time = Time.now
+        intervals_in_int2.reverse!
+        intervals2.reverse!.each_with_index do |time, index|
+          y_Axis1 << (Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at" => nil).references(:ticket).count.to_f + Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at > ?", time).references(:ticket).count.to_f) / Employee.all.count.to_f
+          previous_time = time
+        end
+        intervals2.each_with_index do |time, index|
+          intervals2[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int2[index], false, :only => units)
+        end
+        intervals2.reverse!
+        intervals2[intervals2.count-1] = "Now"
+        intervals2[0] = max
+        
+        build_line_graph(intervals2, y_Axis1, 'Average Comments per Employee', "Comments per Employee", "green")   
+      end
+     
+    def build_rating_chart(y_Axis, intervals, intervals_in_int, units, max)
+         
+      previous_time = Time.now
+        intervals_in_int.reverse!
+        intervals.reverse!.each_with_index do |time, index|
+          y_Axis  << Rate.where("created_at <= ?", time).sum(:stars)/ Rate.where("created_at <= ?", time).count
+          y_Axis[index] = ( y_Axis[index].nan? ) ? 0 : y_Axis[index]
+          previous_time = time
+          
+        end
+
+        intervals.each_with_index do |time, index|
+          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
+        end
+
+        intervals[intervals.count-1] = "Now"
+        intervals[0] = max
+        LazyHighCharts::HighChart.new('spline', :style=>"height:100%", :style=>"width:100%") do |f|
+          f.title({ :text=>"Average Overall Employee Rating"})
+          f.options[:xAxis][:categories] =  intervals
+          f.series(:color=> "red", :type=> 'spline',:name=> 'Average', :data=> y_Axis)
+          f.yAxis [ {:title => {:text => "Stars ( Out of 5 )"} }]
+          f.yAxis(:min=> 0, :max=>5)
+      end
+    end
+    
+    def build_interaction_graph1(y_Axis, y_Axis1, intervals, intervals_in_int, units, max)
+        previous_time = intervals[intervals.count-1] - intervals_in_int[1]
+        intervals_in_int.reverse!
+
+        intervals.reverse!.each do |time, index|
+          y_Axis  << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, false).count
+          y_Axis1 << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, true).count
+          previous_time = time
+        end
+        intervals.each_with_index do |time, index|
+          intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
+        end
+        
+        intervals[intervals.count-1] = "Now"
+        intervals[0] = max
+        LazyHighCharts::HighChart.new('column') do |f|
+          f.options[:xAxis][:categories] = intervals
+          f.series(:name=>'Employees',:data=> y_Axis)
+          f.series(:name=>'Customers',:data=> y_Axis1)     
+          f.title({ :text=>"Ticket Creation by User"})
+          f.options[:chart][:defaultSeriesType] = "column"
+          f.yAxis [ {:title => {:text => "Tickets"} }]
+          #f.plot_options({:column=>{:stacking=>"percent"}})
+        end
+      end
+      
+       def build_interaction_graph2(y_Axis2, y_Axis3, intervals2, intervals_in_int, units, max)
+          previous_time = intervals2[intervals2.count-1] - intervals_in_int[1]
+          intervals2.reverse!.each do |time, index|
+            y_Axis2  << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, true).count
+            y_Axis3 << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, false).count
+  
+            previous_time = time
+        end
+
+        intervals2.each_with_index do |time, index|
+          intervals2[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
+        end
+        intervals2.reverse!
+        intervals2[intervals2.count-1] = "Now"
+        intervals2[0] = max
+        LazyHighCharts::HighChart.new('column') do |f|
+          f.options[:xAxis][:categories] = intervals2
+          f.series(:name=>'Employees',:data=> y_Axis2)
+          f.series(:name=>'Customers',:data=> y_Axis3)     
+          f.title({ :text=>"Comment Creation by User"})
+          f.options[:chart][:defaultSeriesType] = "column"
+          f.yAxis [ {:title => {:text => "Comments"} }]
+          #f.plot_options({:column=>{:stacking=>"percent"}})
+        end
+      end
+      
+      def build_website_chart1(x_Axis1, y_Axis1, y_Axis2, intervals)
+          
+          operatingSystem_labels = ["Windows 7", "Windows 8.1", "Linux", "Mac OS X", "Android", "iOS"]
+          colors = []
+          combinedData = [] 
+          combinedData2 = []
+
+          @visits = Visit.where("started_at > ?", intervals[intervals.count-1])
+          operatingSystem_labels.each_with_index do |os, index|
+            combinedData2[index] = Hash.new
+            combinedData2[index][:name]  = os
+            combinedData2[index][:y]     =  @visits.where(:os => os).count
+            colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
+          end
+
+          y_Axis1 = Hash.new
+          @visits = Visit.where("started_at > ?", intervals[intervals.count-1])
+          @visits.each do |visit|
+              if y_Axis1[visit.region] == nil
+                  x_Axis1 << visit.region
+                  y_Axis1[visit.region] = 1
+              else
+                  y_Axis1[visit.region] = y_Axis1[visit.region] + 1
+              end
+          end
+          
+          x_Axis1.each_with_index do |xData, index|
+            combinedData[index] = Hash.new
+            combinedData[index][:name]  = xData
+            combinedData[index][:y]     = y_Axis1[xData]
+            colors[index].nil? ? "" : combinedData[index][:color] = colors[index]
+          end
+          
+          graph1_params = Hash.new 
+            graph1_params[:type] = 'pie'
+            graph1_params[:name] ="Traffic Origins"
+            graph1_params[:data] = combinedData
+            graph1_params[:size] = 125
+            graph1_params[:center] = [25, 60]
+          graph2_params = Hash.new 
+            graph2_params[:type] = 'pie'
+            graph2_params[:name] ='Operating Systems'
+            graph2_params[:data] = combinedData2
+            graph2_params[:size] = 125
+            graph2_params[:center] = [400, 60] 
+          
+          build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
+      end
+      
+      def build_website_chart2(y_Axis1, y_Axis2, intervals)
+          behaviors = ["$click","$view", "$change", "$submit"]
+          behaviors_copy = ["click", "view", "change", "submit"]
+          deviceTypes =  ["Desktop", "Tablet", "Mobile"]
+          combinedData = []
+          combinedData2 = []
+          colors = []
+          
+          @events = Ahoy::Event.where("time > ?", intervals[intervals.count-1])
+          @devices = Visit.where("started_at > ?", intervals[intervals.count-1])
+          
+          behaviors.each_with_index do |behavior, index|
+            combinedData2[index] = Hash.new
+            combinedData2[index][:name]  = behaviors_copy[index]
+            combinedData2[index][:y]     =  @events.where(:name => behavior).count
+            colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
+          end
+          
+          deviceTypes.each_with_index do |type, index|
+            combinedData[index] = Hash.new
+            combinedData[index][:name]  = type
+            combinedData[index][:y]     =  @devices.where(:device_type => type).count
+            colors[index].nil? ? "" : combinedData2[index][:color] = colors[index]
+          end
+          
+          graph1_params = Hash.new 
+            graph1_params[:type] = 'pie'
+            graph1_params[:name] ="Traffic Origins"
+            graph1_params[:data] = combinedData
+            graph1_params[:size] = 125
+            graph1_params[:center] = [25, 60]
+          graph2_params = Hash.new 
+            graph2_params[:type] = 'pie'
+            graph2_params[:name] ='Operating Systems'
+            graph2_params[:data] = combinedData2
+            graph2_params[:size] = 125
+            graph2_params[:center] = [400, 60] 
+          
+          build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
+      end
+      
+      def build_website_chart3(y_Axis, intervals, intervals_in_int, units, max)
+          y_Axis = []
+          previous_time = intervals[intervals.count-1] - intervals_in_int[1]
+          intervals_in_int.reverse!
+          
+          intervals.reverse!.each_with_index do |time, index|
+              y_Axis  << Ahoy::Event.where("time <= ? AND time > ?", time, previous_time).where(:name => "$view").count
+              previous_time = time
+          end
+          intervals.each_with_index do |time, index|
+              intervals[index] = view_context.distance_of_time_in_words(Time.now, Time.now + intervals_in_int[index], false, :only => units)
+          end
+          
+          intervals[intervals.count-1] = "Now"
+          intervals[0] = max
+          
+          build_line_graph(intervals, y_Axis, "Number of Website Hits", "Number of Hits", "green")   
+      end
+      
 end

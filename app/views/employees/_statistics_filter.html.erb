@@ -1,7 +1,5 @@
 <div class="refine-label">Refine by</div>
-<%= link_to({:filter => '3', :type => params[:type]}) do %>
-  <div class="item">All Time</div>
-<% end %>
+
 
 <%= link_to({:filter => '0', :type => params[:type]}) do %>
   <div class="item">Past 24 Hours</div>
@@ -13,4 +11,7 @@
 
 <%= link_to({:filter => '2', :type => params[:type]}) do %>
   <div class="item">Past 30 Days</div>
+<% end %>
+<%= link_to({:filter => '3', :type => params[:type]}) do %>
+  <div class="item">All Time</div>
 <% end %>

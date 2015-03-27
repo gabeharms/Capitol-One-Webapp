@@ -26,6 +26,7 @@ class TicketsController < ApplicationController
      
       @ticket.note = nil
       @ticket.employee = current_employee
+      @ticket.claimed_at = Time.now
       @ticket.ticket_status_id = 1
       @ticket.created_by_customer = false
       @ticket.visible = true
@@ -100,6 +101,7 @@ class TicketsController < ApplicationController
       ticket = Ticket.find(ticket)
       if ticket.employee.nil?
         ticket.employee = current_employee
+        ticket.claimed_at = Time.now
         ticket.save
         redirect_to :controller => 'tickets', :action =>'show', :id => ticket.id
       else

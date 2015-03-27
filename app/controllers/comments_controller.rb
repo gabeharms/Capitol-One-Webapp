@@ -13,7 +13,11 @@ class CommentsController < ApplicationController
 
     if ( employee_logged_in? )
       @ticket.unread = true
-      @ticket.employee = current_employee
+      
+      if @ticket.employee != current_employee
+        @ticket.employee = current_employee
+        @ticket.claimed_at = Time.now
+      end
       
       @comment.employee = current_employee
       @comment.initiator = true
