@@ -469,20 +469,20 @@ class EmployeesController < ApplicationController
             graph1_params[:name] ="Traffic Origins"
             graph1_params[:data] = combinedData
             graph1_params[:size] = 125
-            graph1_params[:center] = [25, 60]
+            graph1_params[:center] = [25, 70]
           graph2_params = Hash.new 
             graph2_params[:type] = 'pie'
             graph2_params[:name] ='Operating Systems'
             graph2_params[:data] = combinedData2
             graph2_params[:size] = 125
-            graph2_params[:center] = [400, 60] 
+            graph2_params[:center] = [400, 70] 
           
           build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
       end
       
       def build_website_chart2(y_Axis1, y_Axis2, intervals)
           behaviors = ["$click","$view", "$change", "$submit"]
-          behaviors_copy = ["click", "view", "change", "submit"]
+          behaviors_copy = ["click", "view", "value change", "submit"]
           deviceTypes =  ["Desktop", "Tablet", "Mobile"]
           combinedData = []
           combinedData2 = []
@@ -507,18 +507,18 @@ class EmployeesController < ApplicationController
           
           graph1_params = Hash.new 
             graph1_params[:type] = 'pie'
-            graph1_params[:name] ="Traffic Origins"
+            graph1_params[:name] ="Devices"
             graph1_params[:data] = combinedData
             graph1_params[:size] = 125
             graph1_params[:center] = [25, 60]
           graph2_params = Hash.new 
             graph2_params[:type] = 'pie'
-            graph2_params[:name] ='Operating Systems'
+            graph2_params[:name] ='Website Activity'
             graph2_params[:data] = combinedData2
             graph2_params[:size] = 125
             graph2_params[:center] = [400, 60] 
           
-          build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
+          build_pie_graph(graph1_params, graph2_params, "Devices & Website Activity", true )
       end
       
       def build_website_chart3(y_Axis, intervals, intervals_in_int, units, max)
