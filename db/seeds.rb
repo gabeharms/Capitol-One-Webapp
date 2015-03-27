@@ -87,7 +87,7 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
     stars = rand(1..5).to_f
     rate_created_at = Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f)
     Rate.create!(rater_id: 1, rateable_id: new_ticket.id, stars: stars, rateable_type: "Ticket", dimension: "experience", created_at: rate_created_at )
-    #AverageCache.create!(cacheable_id: new_ticket.id, cacheable_type: "Ticket", avg: stars, qty: 1, dimension: "experience", created_at: rate_created_at  )
+    RatingCache.create!(cacheable_id: new_ticket.id, cacheable_type: "Ticket", avg: stars, qty: 1, dimension: "experience", created_at: rate_created_at  )
   end
 
   if employee_id == nil
@@ -108,7 +108,7 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   
   if new_ticket.employee_id == nil && rand(1..2) == 1
     new_ticket.update_columns(:employee_id => Employee.order("RANDOM()").first.id)
-    new_ticket.update_columns(:claimed_at => Time.at((created_at.to_f - (created_at - 3.days).to_f)*rand + Time.now.to_f))
+    new_ticket.update_columns(:claimed_at => Time.at((created_at.to_f - (created_at + 3.days).to_f)*rand + (created_at - 3.days).to_f))
   end   
 
 end

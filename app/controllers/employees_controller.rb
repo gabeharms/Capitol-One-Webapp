@@ -321,7 +321,7 @@ class EmployeesController < ApplicationController
         previous_time = Time.now
         intervals_in_int.reverse!
         intervals.reverse!.each_with_index do |time, index|
-          y_Axis  << (Ticket.where.not("employee_id" => nil).where("claimed_at > ?", time).where("created_at < ?", time).count.to_f + Ticket.where("claimed_at" => nil).where("created_at < ?", time).count ) / Employee.all.count.to_f
+          y_Axis  << Ticket.where.not("employee_id" => nil).where("created_at < ?", time).where("ticket_status_id" => 1).count.to_f  / Employee.all.count.to_f
           previous_time = time
         end
         intervals.each_with_index do |time, index|
@@ -338,7 +338,7 @@ class EmployeesController < ApplicationController
         previous_time = Time.now
         intervals_in_int2.reverse!
         intervals2.reverse!.each_with_index do |time, index|
-          y_Axis1 << (Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at" => nil).references(:ticket).count.to_f + Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at > ?", time).references(:ticket).count.to_f) / Employee.all.count.to_f
+          y_Axis1 << Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.ticket_status_id" => 1).references(:ticket).count.to_f / Employee.all.count.to_f
           previous_time = time
         end
         intervals2.each_with_index do |time, index|
@@ -374,6 +374,8 @@ class EmployeesController < ApplicationController
           f.series(:color=> "red", :type=> 'spline',:name=> 'Average', :data=> y_Axis)
           f.yAxis [ {:title => {:text => "Stars ( Out of 5 )"} }]
           f.yAxis(:min=> 0, :max=>5)
+          f.yAxis [ {:title => {:text => "Stars"} }]
+
       end
     end
     
