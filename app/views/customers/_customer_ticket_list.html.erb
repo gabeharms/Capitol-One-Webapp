@@ -37,7 +37,11 @@
               <%= time[0..time.index(',')-1] %> ago
             <% elsif time.index(" ") != nil %>
               <% first_space = time.index(" ") %>
-              <%= time[0..time.index(' ', first_space)] %> ago
+                <% if time.index(' ', first_space+1) != nil %>
+                  <%= time[0..time.index(' ', first_space)] %> ago
+                <% else %>
+                  <%= time %> ago
+                <% end %>
             <% else %>
               <%= time %> ago
             <% end %>
@@ -51,7 +55,7 @@
             <% if ticket.ticket_status_id == 1 %>
                 <%= button_to "Resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
             <% elsif ticket.ticket_status_id == 2 %>
-               <p>Please Rate Your Customer Service Experience : <%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %></p>            
+               <p>Customer Service Experience Rating: <%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %></p>            
              <% elsif ticket.ticket_status_id == 3 %><!-- discuss on whether to remove this check mark... -->
                 <%= image_tag("checkmark.png", :alt => "resolved", size: "40x40") %>
             <% end %>

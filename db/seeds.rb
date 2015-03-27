@@ -84,7 +84,10 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   new_ticket = Customer.order("RANDOM()").first.tickets.create!(title: title, employee_id: employee_id, ticket_status_id: status, ticket_category_id: rand(1..catagories.count), created_by_customer: created_by, visible: visible, created_at: created_at, updated_at: created_at, claimed_at: claimed_at)
   
   if status == 2 
-    Rate.create!(rater_id: 1, rateable_id: new_ticket.id, stars: rand(1..5).to_f, rateable_type: "Ticket", dimension: "experience", created_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
+    stars = rand(1..5).to_f
+    rate_created_at = Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f)
+    Rate.create!(rater_id: 1, rateable_id: new_ticket.id, stars: stars, rateable_type: "Ticket", dimension: "experience", created_at: rate_created_at )
+    #AverageCache.create!(cacheable_id: new_ticket.id, cacheable_type: "Ticket", avg: stars, qty: 1, dimension: "experience", created_at: rate_created_at  )
   end
 
   if employee_id == nil
@@ -97,14 +100,15 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   (0..upper_bound).each do
     employee = (employee_id != nil && rand(1..2) == 1) ? employee_id : nil
     initiator = (employee == nil) ? false : true
-    comment_created_at = Time.at((new_ticket.comments.last.created_at.to_f - (Time.now.to_f)).to_f*rand + Time.now.to_f)
+    last_comment_time = (new_ticket.comments.count == 0) ? new_ticket.created_at : new_ticket.comments.last.created_at.to_f
+    comment_created_at = Time.at((last_comment_time - (Time.now.to_f)).to_f*rand + Time.now.to_f)
     new_ticket.comments.create!(employee_id: employee, initiator: initiator, message: "auto populated comment", created_at: comment_created_at)
-    new_ticket.column_update(:updated_at => comment_created_at)
+    new_ticket.update_columns(:updated_at => comment_created_at)
   end
   
   if new_ticket.employee_id == nil && rand(1..2) == 1
-    new_ticket.column_update(:employee_id => Employee.order("RANDOM()").first.id)
-    new_ticket.column_update(:claimed_at => Time.at((created_at.to_f - (created_at - 3.days).to_f)*rand + Time.now.to_f))
+    new_ticket.update_columns(:employee_id => Employee.order("RANDOM()").first.id)
+    new_ticket.update_columns(:claimed_at => Time.at((created_at.to_f - (created_at - 3.days).to_f)*rand + Time.now.to_f))
   end   
 
 end
