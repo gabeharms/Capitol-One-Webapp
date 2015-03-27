@@ -1,47 +1,32 @@
 <% provide(:title, "Statistics") %>
 
-<h1>Statistics</h1>
-
-<div class=".container-fluid" id="container">
+<h3 class="page-title">Statistics</h3>
+<div class="container-fluid" id="container">
   <div class="row">
-    <div class="col-md-4 empl-filter-bar stat-filter stat-right" id="two-four">
-        <%= render 'statistics_types' %>
+    <div class="col-md-3 empl-filter-bar">
+      <%= render 'statistics_filter' %>
+      <%= render 'statistics_types' %>
     </div>
     <div class="col-md-4 graph-area" id="ten-eight">
       <div class="row">
       <% if params[:type] == "employee_activity" || params[:type] == "efficiency" || params[:type] == "interaction_analysis" %>
       	<%=  high_chart("category_graph1", @chart) %>
-      	</div>
-      	<div class="row">
-      	 <%=  high_chart("category_graph2", @chart1) %>
-      	</div>
+      	<%=  high_chart("category_graph2", @chart1) %>
       <% elsif params[:type] == "website_analytics" %>
         <%=  high_chart("website_graph1", @chart) %>
-      	</div>
-      	<div class="row">
       	 <%=  high_chart("website_graph2", @chart1) %>
-      	</div>
-      	<div class="row">
       	 <%=  high_chart("website_graph3", @chart2) %>
-      	</div>
       <% else %> 
     	  <%=  high_chart("category_graph", @chart) %>
-    	  </div>
     	<% end %>
     </div>
-    <style>
-      if (window.chart_category_graph.yAxis[0].getExtremes().dataMax < 10) {
-         window.chart_category_graph.yAxis[0].setExtremes(0, 10);
-       }    
-    </style>
-    <div class="col-md-4 empl-filter-bar stat-filter stat-left" >
-        <%= render 'statistics_filter' %>
-    </div>
-	</div>
-	<h3>Your Rating</h3>
-	You have <%= @employee.num_of_ratings %> rating <br>
-	Your average score is <%= (@employee.total_stars.to_f /  @employee.num_of_ratings.to_f).round(2) %> out of 5 <br>
-	
+  </div>
+</div>
+<!--<h3>Your Rating</h3>
+You have <%= @employee.num_of_ratings %> rating <br>
+Your average score is <%= (@employee.total_stars.to_f /  @employee.num_of_ratings.to_f).round(2) %> out of 5 <br>
+
+>>>>>>> master
 	
 	<% 
 	stars = 0
@@ -53,7 +38,7 @@
 	%>
 	
   The employee average score is <%=(stars.to_f / ratings.to_f).round(2) %> out of 5
-  
+ --> 
 	<!-- Commenting out all of this stuff till it can actually be applied
 	<% if 1 == 0 %>
 	
