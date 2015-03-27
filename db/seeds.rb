@@ -108,7 +108,7 @@ status_id = [1,1,1,2] #allows 75% chance of being 'in progress'
   
   if new_ticket.employee_id == nil && rand(1..2) == 1
     new_ticket.update_columns(:employee_id => Employee.order("RANDOM()").first.id)
-    new_ticket.update_columns(:claimed_at => Time.at((created_at.to_f - (created_at + 3.days).to_f)*rand + (created_at - 3.days).to_f))
+    new_ticket.update_columns(:claimed_at => Time.at((created_at.to_f - (created_at + 3.days).to_f)*rand + (created_at + 3.days).to_f))
   end   
 
 end
