@@ -35,7 +35,7 @@
             <% time = time_ago_in_words(ticket.updated_at) %>
             <% if time.index(',') != nil %>
               <%= time[0..time.index(',')-1] %> ago
-            <% elsif time.index(" ") != nil %>
+            <% elsif time.index(" ") != nil && time.index("less") == nil %>
               <% first_space = time.index(" ") %>
                 <% if time.index(' ', first_space+1) != nil %>
                   <%= time[0..time.index(' ', first_space)] %> ago
