@@ -11,7 +11,7 @@
               <%= time[0..time.index(',')-1] %> ago
             <% elsif time.index(" ") != nil %>
               <% first_space = time.index(" ") %>
-              <%= time[0..time.index(' ', first_space+1)] %> ago
+              <%= time[0..time.index(' ', first_space)] %> ago
             <% else %>
               <%= time %> ago
             <% end %>
