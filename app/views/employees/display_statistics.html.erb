@@ -7,15 +7,14 @@
       <%= render 'statistics_filter' %>
       <%= render 'statistics_types' %>
     </div>
-    <div class="col-md-9 graph-area" id="ten-eight">
-      <div class="row">
+    <div class="col-md-9" id="ten-eight">
       <% if params[:type] == "employee_activity" || params[:type] == "efficiency" || params[:type] == "interaction_analysis" %>
       	<%=  high_chart("category_graph1", @chart) %>
       	<%=  high_chart("category_graph2", @chart1) %>
       <% elsif params[:type] == "website_analytics" %>
         <%=  high_chart("website_graph1", @chart) %>
-      	 <%=  high_chart("website_graph2", @chart1) %>
-      	 <%=  high_chart("website_graph3", @chart2) %>
+        <%=  high_chart("website_graph2", @chart1) %>
+        <%=  high_chart("website_graph3", @chart2) %>
       <% else %> 
     	  <%=  high_chart("category_graph", @chart) %>
     	<% end %>
