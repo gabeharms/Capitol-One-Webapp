@@ -29,6 +29,7 @@ class TicketsController < ApplicationController
       @ticket.ticket_status_id = 1
       @ticket.created_by_customer = false
       @ticket.visible = true
+      @ticket.unread = true
       
       if @ticket.save
         flash[:success] = "Ticket Created!"
