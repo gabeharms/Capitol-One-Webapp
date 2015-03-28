@@ -5,7 +5,20 @@
       <div class="ticket-info">
         <%= link_to(ticket.title, {:controller=>'tickets', :action => 'show', :id => ticket.id}, remote: false, class: 'ticket-title') %>
         <p class="timestamp">
-          <%= time_ago_in_words(ticket.updated_at).capitalize %> ago
+          updated
+            <% time = time_ago_in_words(ticket.updated_at) %>
+            <% if time.index(',') != nil %>
+              <%= time[0..time.index(',')-1] %> ago
+            <% elsif time.index(" ") != nil && time.index("less") == nil %>
+              <% first_space = time.index(" ") %>
+                <% if time.index(' ', first_space+1) != nil %>
+                  <%= time[0..time.index(' ', first_space)] %> ago
+                <% else %>
+                  <%= time %> ago
+                <% end %>
+            <% else %>
+              <%= time %> ago
+            <% end %>
         </p>
       </div>
       <div class="div-align-right">

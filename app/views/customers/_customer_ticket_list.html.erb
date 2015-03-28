@@ -31,7 +31,20 @@
           <% end %>
           
           <p class="timestamp">
-            <%= time_ago_in_words(ticket.updated_at).capitalize %> ago
+            updated
+            <% time = time_ago_in_words(ticket.updated_at) %>
+            <% if time.index(',') != nil %>
+              <%= time[0..time.index(',')-1] %> ago
+            <% elsif time.index(" ") != nil && time.index("less") == nil %>
+              <% first_space = time.index(" ") %>
+                <% if time.index(' ', first_space+1) != nil %>
+                  <%= time[0..time.index(' ', first_space)] %> ago
+                <% else %>
+                  <%= time %> ago
+                <% end %>
+            <% else %>
+              <%= time %> ago
+            <% end %>
           </p>
         </div>
         <div class="div-align-right">
@@ -42,8 +55,8 @@
             <% if ticket.ticket_status_id == 1 %>
                 <%= button_to "Resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
             <% elsif ticket.ticket_status_id == 2 %>
-                <p><%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate', cancel_hint: 'Cancel this vote!', disable_after_rate: false %></p>
-            <% elsif ticket.ticket_status_id == 3 %><!-- discuss on whether to remove this check mark... -->
+               <p>Customer Service Experience Rating: <%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %></p>            
+             <% elsif ticket.ticket_status_id == 3 %><!-- discuss on whether to remove this check mark... -->
                 <%= image_tag("checkmark.png", :alt => "resolved", size: "40x40") %>
             <% end %>
           </div>

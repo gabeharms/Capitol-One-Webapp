@@ -2,6 +2,11 @@ class EmployeeSessionsController < ApplicationController
   
   
   def new
+    if employee_logged_in?
+      redirect_to current_employee
+    elsif customer_logged_in?
+      redirect_to current_customer
+    end
   end
   
   def create
@@ -35,6 +40,17 @@ class EmployeeSessionsController < ApplicationController
     
      # Returns the current logged-in user (if any).
     def current_employee
-      @current_employee ||= employee.find_by(id: session[:employee_id])
+      @current_employee ||= Employee.find_by(id: session[:employee_id])
     end
+    
+    # Returns the current logged-in user (if any).
+    def current_customer
+      @current_customer ||= Customer.find_by(id: session[:customer_id])
+    end
+    
+    # Returns true if the user is logged in, false otherwise.
+    def employee_logged_in?
+      !current_employee.nil?
+    end
+    
 end

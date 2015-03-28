@@ -321,7 +321,7 @@ class EmployeesController < ApplicationController
         previous_time = Time.now
         intervals_in_int.reverse!
         intervals.reverse!.each_with_index do |time, index|
-          y_Axis  << (Ticket.where.not("employee_id" => nil).where("claimed_at > ?", time).where("created_at < ?", time).count.to_f + Ticket.where("claimed_at" => nil).where("created_at < ?", time).count ) / Employee.all.count.to_f
+          y_Axis  << Ticket.where.not("employee_id" => nil).where("created_at < ?", time).where("ticket_status_id" => 1).count.to_f  / Employee.all.count.to_f
           previous_time = time
         end
         intervals.each_with_index do |time, index|
@@ -338,7 +338,7 @@ class EmployeesController < ApplicationController
         previous_time = Time.now
         intervals_in_int2.reverse!
         intervals2.reverse!.each_with_index do |time, index|
-          y_Axis1 << (Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at" => nil).references(:ticket).count.to_f + Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.claimed_at > ?", time).references(:ticket).count.to_f) / Employee.all.count.to_f
+          y_Axis1 << Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.ticket_status_id" => 1).references(:ticket).count.to_f / Employee.all.count.to_f
           previous_time = time
         end
         intervals2.each_with_index do |time, index|
@@ -374,6 +374,8 @@ class EmployeesController < ApplicationController
           f.series(:color=> "red", :type=> 'spline',:name=> 'Average', :data=> y_Axis)
           f.yAxis [ {:title => {:text => "Stars ( Out of 5 )"} }]
           f.yAxis(:min=> 0, :max=>5)
+          f.yAxis [ {:title => {:text => "Stars"} }]
+
       end
     end
     
@@ -467,20 +469,20 @@ class EmployeesController < ApplicationController
             graph1_params[:name] ="Traffic Origins"
             graph1_params[:data] = combinedData
             graph1_params[:size] = 125
-            graph1_params[:center] = [25, 60]
+            graph1_params[:center] = [25, 70]
           graph2_params = Hash.new 
             graph2_params[:type] = 'pie'
             graph2_params[:name] ='Operating Systems'
             graph2_params[:data] = combinedData2
             graph2_params[:size] = 125
-            graph2_params[:center] = [400, 60] 
+            graph2_params[:center] = [400, 70] 
           
           build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
       end
       
       def build_website_chart2(y_Axis1, y_Axis2, intervals)
           behaviors = ["$click","$view", "$change", "$submit"]
-          behaviors_copy = ["click", "view", "change", "submit"]
+          behaviors_copy = ["click", "view", "value change", "submit"]
           deviceTypes =  ["Desktop", "Tablet", "Mobile"]
           combinedData = []
           combinedData2 = []
@@ -505,18 +507,18 @@ class EmployeesController < ApplicationController
           
           graph1_params = Hash.new 
             graph1_params[:type] = 'pie'
-            graph1_params[:name] ="Traffic Origins"
+            graph1_params[:name] ="Devices"
             graph1_params[:data] = combinedData
             graph1_params[:size] = 125
             graph1_params[:center] = [25, 60]
           graph2_params = Hash.new 
             graph2_params[:type] = 'pie'
-            graph2_params[:name] ='Operating Systems'
+            graph2_params[:name] ='Website Activity'
             graph2_params[:data] = combinedData2
             graph2_params[:size] = 125
             graph2_params[:center] = [400, 60] 
           
-          build_pie_graph(graph1_params, graph2_params, "Traffic Origins & Traffic Operating Systems", true )
+          build_pie_graph(graph1_params, graph2_params, "Devices & Website Activity", true )
       end
       
       def build_website_chart3(y_Axis, intervals, intervals_in_int, units, max)
