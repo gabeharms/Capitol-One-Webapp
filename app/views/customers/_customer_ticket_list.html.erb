@@ -48,16 +48,14 @@
           </p>
         </div>
         <div class="div-align-right">
-          <div class="float-right">
+          <!--<div class="float-right">
             <%= button_to "Delete", ticket, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %>
-          </div>
-          <div class="float-right margin-right">
+          </div>-->
+          <div class="float-right margin-right textalign-right">
             <% if ticket.ticket_status_id == 1 %>
                 <%= button_to "Resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
             <% elsif ticket.ticket_status_id == 2 %>
-               Customer Service Experience Rating: <%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %>            
-             <% elsif ticket.ticket_status_id == 3 %><!-- discuss on whether to remove this check mark... -->
-                <%= image_tag("checkmark.png", :alt => "resolved", size: "40x40") %>
+               Customer Service Rating:<%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %>
             <% end %>
           </div>
         </div>
