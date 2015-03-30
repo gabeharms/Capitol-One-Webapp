@@ -119,7 +119,7 @@ behavior = ["$click", "$click", "$view", "$view", "$change", "$submit"]
 states = ["New Jersey", "New Jersey","Pennsylvannia", "Pennsylvannia", "Pennsylvannia", "Pennsylvannia", "New York", "New York", "Maryland", "Virginia", "Virginia", "Virginia", "Florida", "California"]
 
 1000.times do
-  Visit.create!(id: SecureRandom.uuid, os: operatingSystem.sample, device_type: deviceTypes.sample, region: states.sample, started_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
+  Visit.create!(id:  UUIDTools::UUID.random_create, os: operatingSystem.sample, device_type: deviceTypes.sample, region: states.sample, started_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
   Ahoy::Event.create!(id: SecureRandom.uuid, name: behavior.sample, time: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
 end
 
