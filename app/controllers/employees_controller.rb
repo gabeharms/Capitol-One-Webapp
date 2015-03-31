@@ -338,7 +338,7 @@ class EmployeesController < ApplicationController
         previous_time = Time.now
         intervals_in_int2.reverse!
         intervals2.reverse!.each_with_index do |time, index|
-          y_Axis1 << Comment.where("comments.created_at <= ? AND initiator == ?", time, true).includes(:ticket).where("tickets.ticket_status_id" => 1).references(:ticket).count.to_f / Employee.all.count.to_f
+          y_Axis1 << Comment.where("comments.created_at <= ? AND initiator = ?", time, true).includes(:ticket).where("tickets.ticket_status_id" => 1).references(:ticket).count.to_f / Employee.all.count.to_f
           previous_time = time
         end
         intervals2.each_with_index do |time, index|
@@ -384,8 +384,8 @@ class EmployeesController < ApplicationController
         intervals_in_int.reverse!
 
         intervals.reverse!.each do |time, index|
-          y_Axis  << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, false).count
-          y_Axis1 << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer == ?", time, previous_time, true).count
+          y_Axis  << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer = ?", time, previous_time, false).count
+          y_Axis1 << Ticket.where("created_at <= ? AND created_at > ? AND created_by_customer = ?", time, previous_time, true).count
           previous_time = time
         end
         intervals.each_with_index do |time, index|
@@ -408,8 +408,8 @@ class EmployeesController < ApplicationController
        def build_interaction_graph2(y_Axis2, y_Axis3, intervals2, intervals_in_int, units, max)
           previous_time = intervals2[intervals2.count-1] - intervals_in_int[1]
           intervals2.reverse!.each do |time, index|
-            y_Axis2  << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, true).count
-            y_Axis3 << Comment.where("created_at <= ? AND created_at > ? AND initiator == ?", time, previous_time, false).count
+            y_Axis2  << Comment.where("created_at <= ? AND created_at > ? AND initiator = ?", time, previous_time, true).count
+            y_Axis3 << Comment.where("created_at <= ? AND created_at > ? AND initiator = ?", time, previous_time, false).count
   
             previous_time = time
         end
