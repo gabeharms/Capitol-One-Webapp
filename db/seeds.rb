@@ -120,8 +120,9 @@ states = ["New Jersey", "New Jersey","Pennsylvannia", "Pennsylvannia", "Pennsylv
 
 id = 0
 1000.times do
-  Visit.create!(id: SecureRandom.uuid, os: operatingSystem.sample, device_type: deviceTypes.sample, region: states.sample, started_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
-  Ahoy::Event.create!(id: SecureRandom.uuid, name: behavior.sample, time: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
+  Visit.create!(id: Ahoy.ensure_uuid(id), os: operatingSystem.sample, device_type: deviceTypes.sample, region: states.sample, started_at: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f) )
+  Ahoy::Event.create!(id: Ahoy.ensure_uuid(id), name: behavior.sample, time: Time.at((7.months.ago.to_f - Time.now.to_f)*rand + Time.now.to_f))
+  id = id + 1
 end
 
 
