@@ -50,8 +50,16 @@ class TicketsController < ApplicationController
   end
 
   def api_create
+    @ticket = Ticket.new(api_params)
     
-    render :text => "success"
+    @ticket.created_by_customer = false
+    @ticket.visible = true
+    @ticket.unread = true
+    if @ticket.save
+      render :text => "success"
+    else
+      render :text => "failed"
+    end
   end
 
   def destroy
@@ -121,6 +129,10 @@ class TicketsController < ApplicationController
   end
 
   private
+  
+    def api_params
+      params.require(:ticket).permit(:customer_id, :title, :ticket_category_id, :ticket_status_id)
+    end
 
     def ticket_params
       params.require(:ticket).permit(:customer_id, :title, :ticket_category_id)
