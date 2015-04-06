@@ -3,6 +3,10 @@ class TicketsController < ApplicationController
   #before_action :correct_customer,   only: :destroy
   before_action :correct_user, only: [:show, :destroy]
   
+  
+  
+  protect_from_forgery :except => :api_create 
+  
   def create
     if(customer_logged_in?)
       @ticket = current_customer.tickets.build(ticket_params)
@@ -43,6 +47,11 @@ class TicketsController < ApplicationController
     else
        redirect_to customer_login_url
     end
+  end
+
+  def api_create
+    
+    render :text => "success"
   end
 
   def destroy

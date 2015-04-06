@@ -24,6 +24,8 @@ gem 'ahoy_matey'
 gem 'activeuuid', '>= 0.5.0'
 gem 'lazy_high_charts'
 gem 'dotiw'
+gem 'rack-cors', :require => 'rack/cors'
+
 
 group :development, :test do
   gem 'sqlite3',     '1.3.9'

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+  
+  post 'update' => 'tickets#api_create'
 
-
+  
   post '/rate' => 'rater#create', :as => 'rate'
   get 'employee_sessions/new'
 
