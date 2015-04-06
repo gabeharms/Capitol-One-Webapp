@@ -55,11 +55,15 @@ class TicketsController < ApplicationController
     @ticket.created_by_customer = false
     @ticket.visible = true
     @ticket.unread = true
+    
+    status = "failed"
     if @ticket.save
-      render :text => "success"
-    else
-      render :text => "failed"
+      status = "success"
     end
+  end
+  
+  def api_response
+    debugger
   end
 
   def destroy
