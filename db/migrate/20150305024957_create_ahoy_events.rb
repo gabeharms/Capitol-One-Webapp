@@ -1,7 +1,7 @@
 class CreateAhoyEvents < ActiveRecord::Migration
   def change
     create_table :ahoy_events, id: false do |t|
-      t.uuid :id, primary_key: true
+      t.string :id, primary_key: true
       t.uuid :visit_id
 
       # user
