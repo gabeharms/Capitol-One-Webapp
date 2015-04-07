@@ -55,7 +55,7 @@
             <% if ticket.ticket_status_id == 1 %>
                 <%= button_to "Resolve", update_status_path(:ticket_id => ticket.id), class: 'btn btn-default' %>
             <% elsif ticket.ticket_status_id == 2 %>
-               Customer Service Rating:<%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %>
+               Rate this Interaction:<%=  rating_for ticket, "experience", :star => 5, star_path: '/images/ratyrate' %>
             <% end %>
           </div>
         </div>
