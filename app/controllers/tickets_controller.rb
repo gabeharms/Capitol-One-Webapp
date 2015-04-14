@@ -60,6 +60,7 @@ class TicketsController < ApplicationController
     if @ticket.save
       status = "success"
     end
+    redirect_to root_url
   end
   
   def api_response
