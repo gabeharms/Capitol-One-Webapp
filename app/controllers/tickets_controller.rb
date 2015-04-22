@@ -55,7 +55,7 @@ class TicketsController < ApplicationController
     @ticket.created_by_customer = false
     @ticket.visible = true
     @ticket.unread = true
-    
+
     status = "failed"
     if @ticket.save
       status = "success"

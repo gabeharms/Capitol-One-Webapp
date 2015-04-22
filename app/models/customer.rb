@@ -1,24 +1,27 @@
 class Customer < ActiveRecord::Base
-  
   has_many :tickets, dependent: :destroy
-  has_one :notification_type
-  
   before_save { email.downcase! }
-  
-  ratyrate_rater
-  
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   
   validates :first_name,  presence: true, length: { maximum: 50 }
   validates :last_name,   presence: true, length: { maximum: 50 }
   
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  validates :password, length: { minimum: 6 }, allow_blank: true         
-  
-  
+                    
+  validates :password, length: { minimum: 6 }, allow_blank: true        
   has_secure_password
+
+   # Returns the hash digest of the given string.
+  def Customer.digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                  BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
+  
+  has_one :notification_type
+  ratyrate_rater
   
   # Named Scopes and Logic Functions
   def self.search_by_id(id)
@@ -31,10 +34,4 @@ class Customer < ActiveRecord::Base
     where("lower(first_name) = ? OR lower(last_name) = ? OR lower(email) = ? OR id = ?" , search_field.downcase, search_field.downcase, search_field.downcase, search_field.downcase)
   end
   
-   # Returns the hash digest of the given string.
-  def Customer.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                                                  BCrypt::Engine.cost
-    BCrypt::Password.create(string, cost: cost)
-  end
 end

@@ -48,7 +48,8 @@ class CustomersController < ApplicationController
     if params[:search] == ''  #This is useful when user searches for something then deletes the search
       @customers = Customer.all.paginate(page: params[:page])
     elsif params[:search]
-      @customers = Customer.search_by_all(params[:search]).paginate(page: params[:page])
+      @customers = Customer.where('first_name LIKE ? OR last_name LIKE ? OR email LIKE ?', params[:search], params[:search], params[:search]).paginate(page: params[:page])
+      #search_by_all(params[:search]).paginate(page: params[:page])
     else
       @customers = Customer.all.paginate(page: params[:page])
     end

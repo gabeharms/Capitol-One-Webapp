@@ -13,14 +13,14 @@
 
 ActiveRecord::Schema.define(version: 20150305024957) do
 
-  create_table "ahoy_events", force: :cascade do |t|
+  create_table "ahoy_events", id: false, force: :cascade do |t|
+    t.string   "id"
     t.uuid     "visit_id",   limit: 16
     t.string   "name"
     t.text     "properties"
     t.datetime "time"
   end
 
-  add_index "ahoy_events", ["id"], name: "sqlite_autoindex_ahoy_events_1", unique: true
   add_index "ahoy_events", ["time"], name: "index_ahoy_events_on_time"
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id"
 
@@ -141,7 +141,8 @@ ActiveRecord::Schema.define(version: 20150305024957) do
   add_index "tickets", ["ticket_category_id"], name: "index_tickets_on_ticket_category_id"
   add_index "tickets", ["ticket_status_id"], name: "index_tickets_on_ticket_status_id"
 
-  create_table "visits", force: :cascade do |t|
+  create_table "visits", id: false, force: :cascade do |t|
+    t.string   "id"
     t.uuid     "visitor_id",       limit: 16
     t.string   "ip"
     t.text     "user_agent"
@@ -164,7 +165,5 @@ ActiveRecord::Schema.define(version: 20150305024957) do
     t.string   "utm_campaign"
     t.datetime "started_at"
   end
-
-  add_index "visits", ["id"], name: "sqlite_autoindex_visits_1", unique: true
 
 end
