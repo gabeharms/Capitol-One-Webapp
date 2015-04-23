@@ -3,11 +3,11 @@
 <h3 class="page-title">Statistics</h3>
 <div class="container-fluid" id="container">
   <div class="row">
-    <div class="col-md-3 empl-filter-bar">
+    <div class="col-xs-4 col-md-3 empl-filter-bar">
       <%= render 'statistics_filter' %>
       <%= render 'statistics_types' %>
     </div>
-    <div class="col-md-9" id="ten-eight">
+    <div class="col-sm-8 col-md-9" id="ten-eight">
       <% if params[:type] == "employee_activity" || params[:type] == "efficiency" || params[:type] == "interaction_analysis" %>
       	<%=  high_chart("category_graph1", @chart) %>
       	<%=  high_chart("category_graph2", @chart1) %>
