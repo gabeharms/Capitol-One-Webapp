@@ -29,11 +29,12 @@
 </div>
 <div class=".container-fluid" id="container">
   <div class="row">
+    <div class="spacer20"></div>
     <h3 class="page-title">Tickets (<%= @tickets.count %>)</h3>
-    <div class="col-md-2 empl-filter-bar" id="two-four">
+    <div class="col-xs-3 col-md-2 empl-filter-bar" id="two-four">
       <%= render 'shared/filter_column' %>
     </div>
-    <div class="col-md-10" id="ten-eight">
+    <div class="col-sm-9 col-md-10" id="ten-eight">
       
       <% @options = { :Descending => 'Most_Recent', :Ascending => 'Least_Recent' } %>
       <%= 
@@ -42,7 +43,7 @@
 
       <div class="clear-float"></div>
     
-      <div id = "all_tickets" >
+      <div id="all_tickets" >
         <%= render 'shared/all_tickets_list', :tickets => @tickets %>
       </div>
      
