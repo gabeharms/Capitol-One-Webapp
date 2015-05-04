@@ -31,10 +31,10 @@
   <div class="row">
     <div class="spacer20"></div>
     <h3 class="page-title">Tickets (<%= @tickets.count %>)</h3>
-    <div class="col-xs-3 col-md-2 empl-filter-bar" id="two-four">
+    <div class="col-xs-3 col-md-2 empl-filter-bar">
       <%= render 'shared/filter_column' %>
     </div>
-    <div class="col-sm-9 col-md-10" id="ten-eight">
+    <div class="col-sm-9 col-md-10">
       
       <% @options = { :Descending => 'Most_Recent', :Ascending => 'Least_Recent' } %>
       <%= 
